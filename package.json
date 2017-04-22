@@ -1,0 +1,27 @@
+{
+  "name": "redis_be",
+  "version": "0.0.1",
+  "description": "Redis Backend for cocktailz",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NachtmahrEDM/WBA2SS17prottkavsek.git"
+  },
+  "keywords": [
+    "cocktail"
+  ],
+  "author": "Lilith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NachtmahrEDM/WBA2SS17prottkavsek/issues"
+  },
+  "homepage": "https://github.com/NachtmahrEDM/WBA2SS17prottkavsek#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "redis": "^2.7.1"
+  }
+}
