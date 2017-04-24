@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/NachtmahrEDM/WBA2SS17prottkavsek#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "redis": "^2.7.1"
   }
