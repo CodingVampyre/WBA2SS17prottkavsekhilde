@@ -12,7 +12,12 @@ app.get('/', function(req, res) {
 
 app.get('/cocktail/:cocktail', function(req, res){
   client.hgetall("cocktail:"+req.params.cocktail, function(err, result){
-    console.log("cocktail:"+req.params.cocktail);
+    res.send(JSON.stringify(result));
+  });
+});
+
+app.get('/ingredient/:ingredient', function(req, res){
+  client.hgetall("ingredient:"+req.params.ingredient, function(err, result){
     res.send(JSON.stringify(result));
   });
 });
