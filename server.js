@@ -32,6 +32,7 @@ app.get('/ingredient/:ingredient', function(req, res){
 app.put('/ingredient',jsonparser, function(req, res){
   console.log('There was a put on /ingredient: '+req.name);
   //client.hmset("ingredient:"+req.body.name, "name", req.name, "desc", req.desc);
+  //client.lset("ingredient_list:"+req.body.name)
   res.send(JSON.stringify(req.body));
 });
 
