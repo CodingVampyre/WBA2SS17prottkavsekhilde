@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var client = require('redis').createClient();
 var bodyParser = require('body-parser');
-var jsonparser = bodyParser.json();
+
+app.use(bodyParser.json());
 
 client.on('error', function(err){
   console.log('Err: '+ err);
@@ -32,8 +33,8 @@ app.get('/ingredient/:ingredient', function(req, res){
 app.put('/ingredient',jsonparser, function(req, res){
   console.log('There was a put on /ingredient: '+req.name);
   //client.hmset("ingredient:"+req.body.name, "name", req.name, "desc", req.desc);
-  //client.lset("ingredient_list:"+req.body.name)
-  res.send(JSON.stringify(req.body));
+  //client.lpush("ingredient_list:" + req.body.name, ingredient);
+  res.send(jsonparser.use(req.body));
 });
 
 app.listen(3000, function() {
