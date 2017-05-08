@@ -3,15 +3,13 @@
 var fs = require('fs');
 var chalk = require('chalk');
 
-fs.readFile("staedte.json", function(err, dat){
-  dat = JSON.parse(dat); // parsing filestream to json
-  var cities = dat.cities;
+fs.readFile("staedte.json", (err, dat) => {
 
-  // TODO EXTERNALIZE FUNCTION
-  cities.sort(function(a, b) {
-    return a.population - b.population;
-  });
+  // parsing filestream to json and SORT
+  var cities = JSON.parse(dat).cities;
+  cities.sort(mySort);
 
+  // CONVERT TO JS-STRING
   var stringified = JSON.stringify(cities);
   fs.writeFile("updatedcities.json", stringified, (err) => {
     if (err) throw err;
@@ -22,6 +20,7 @@ fs.readFile("staedte.json", function(err, dat){
 
 });
 
+// OUTPUT
 function getData(dat) {
   for (var i=0; i<dat.length; i++) {
     console.log(chalk.red("Name: ", dat[i].name));
@@ -29,4 +28,8 @@ function getData(dat) {
     console.log(chalk.blue("Name: ", dat[i].population));
     console.log("--------");
   }
+}
+
+function mySort(a, b) {
+  return a.population - b.population;
 }
