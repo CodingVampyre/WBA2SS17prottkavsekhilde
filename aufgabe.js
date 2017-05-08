@@ -6,8 +6,7 @@ var chalk = require('chalk');
 fs.readFile("staedte.json", (err, dat) => {
 
   // parsing filestream to json and SORT
-  var cities = JSON.parse(dat).cities;
-  cities.sort(mySort);
+  var cities = JSON.parse(dat).cities.sort(mySort);
 
   // CONVERT TO JS-STRING
   var stringified = JSON.stringify(cities);
