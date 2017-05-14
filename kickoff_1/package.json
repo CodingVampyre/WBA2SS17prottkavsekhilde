@@ -1,0 +1,19 @@
+{
+  "name": "wbakickoff1",
+  "version": "1.0.0",
+  "description": "aufgabe 1 ",
+  "main": "aufgabe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://www.github.com/NachtmahrEDM/WBA2SS17prottkavsekhilde"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "fs": "0.0.1-security"
+  }
+}
