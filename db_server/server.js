@@ -7,6 +7,8 @@ var app = express();
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 
+app.use('/style',express.static('style'));
+
 var testString = "Alex DeLarge";
 
 app.get("/de", function(req, res){
