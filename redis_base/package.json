@@ -1,0 +1,11 @@
+{
+  "name": "redis_base",
+  "version": "1.0.0",
+  "description": "base redis server to json",
+  "main": "clockwork.js",
+  "scripts": {
+    "test": "node clockwork.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
