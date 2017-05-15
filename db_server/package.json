@@ -1,0 +1,16 @@
+{
+  "name": "db_server",
+  "version": "1.0.0",
+  "description": "backend db server",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "pug": "^2.0.0-rc.1"
+  }
+}
