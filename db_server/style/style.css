@@ -1,7 +1,23 @@
+@font-face {
+  font-family: clockwork;
+  src: url("Timepiece.TTF");
+}
+
 body  {
-  font: sans-serif;
+  background-color: #eee;
+  margin: 0 auto;
+  width: 80%;
+  font-family: sans-serif;
 }
 
 h1 {
-  color: #00aabb;
+  font-size: 64px;
+  text-shadow: 0 10px 10px lightgrey;
+  font-family: clockwork;
+  text-align: center;
+  color: #f27233;
+}
+
+p {
+  font-family: OpenSans;
 }
