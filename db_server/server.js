@@ -58,7 +58,7 @@ app.get("/new/cocktail", function (req, res) {
 });
 
 app.post("/createnewcocktail", function(req, res) {
-  res.send("Result: " + JSON.stringify(req.body));
+  res.send(JSON.stringify(req.body));
 });
 
 app.listen(3000, function(){
