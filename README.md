@@ -10,3 +10,4 @@ This System shall provide a Saas which allows it's visitors to share and search 
 ## Planning
 ### Conceptional
 * We currently are developping our bare outlines, prosaic ideas of our system und catching them in an UML-Diagram.
+* New state: db_server and redis_base
