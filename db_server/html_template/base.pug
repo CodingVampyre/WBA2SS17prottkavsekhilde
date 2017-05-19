@@ -5,10 +5,8 @@ html(lang="de")
     link(rel='stylesheet', href='/style/style.css')
   body
     #content
-      h1 #{title}
-      p #{message}
-      a(href="/new/cocktail") New Cocktail
-      ul
-        each val in [1, 2, 3, 4, 5]
-          li= val
+      h1 Cocktails Orange
+      p Wenn du und deine Droogs mal wieder einen Cocktail trinken wollen, right? Dann bist du hier genau richtig. Denn wir wissen, was ihr braucht!
+      form(action="/new/cocktail")
+        button(type="submit") Neuer Cocktail
       include footer.pug

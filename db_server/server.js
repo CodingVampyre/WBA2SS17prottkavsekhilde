@@ -13,12 +13,9 @@ app.use('/style',express.static('style'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
-var testString = "Alex DeLarge";
-
 app.get("/", function(req, res){
   res.render("base.pug", {
-      title: "Cocktails Orange",
-      message: testString
+      
   });
 });
 
@@ -37,10 +34,6 @@ app.get("/impressum", function(req, res) {
 });
 
 app.get("/cocktail/:cocktail", function(req, res) {
-
-  // PLACEHOLDER
-  var desq = "Ein Cocktail, der es in sich hat. Lorde Lorde Lorde!"
-  var name = "Gin Tonic"
 
   res.render("cocktail.pug", {
     title: req.params.cocktail,
@@ -61,7 +54,7 @@ app.post("/createnewcocktail", function(req, res) {
 
 app.get('*', function(req, res){
   res.render("404.pug", {
-    
+
   })
 });
 
