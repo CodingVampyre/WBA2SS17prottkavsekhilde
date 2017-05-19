@@ -18,6 +18,10 @@ h1 {
   color: #f27233;
 }
 
+h1:hover {
+  transform: rotate(-2deg);
+}
+
 p {
   font-family: OpenSans;
 }
@@ -50,7 +54,7 @@ footer {
 
 #content {
   margin: 0 auto;
-  width: 80%;
+  width: 60%;
 }
 
 ::selection {
@@ -109,4 +113,9 @@ button {
 button:hover {
   margin-top: -5px;
   box-shadow: 0px 10px 0 #ddd;
+}
+
+button:active {
+  box-shadow: none;
+  margin-top: 5px;
 }
