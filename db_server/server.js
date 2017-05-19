@@ -9,6 +9,7 @@ app.set('view engine', 'pug');
 app.set("views", "html_template/");
 
 app.use('/style',express.static('style'));
+app.use(express.bodyParser());
 
 var testString = "Alex DeLarge";
 
@@ -52,6 +53,11 @@ app.get("/new/cocktail", function (req, res) {
     res.render("cocktail_form.pug", {
       title: "New Cocktail"
     });
+});
+
+app.post("/createnewcocktail", function(req, res) {
+  console.log("Epnis!");
+  res.send("Result: " + req.params.cocktail_name);
 });
 
 app.listen(3000, function(){
