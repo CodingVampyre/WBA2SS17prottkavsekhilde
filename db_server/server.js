@@ -19,18 +19,24 @@ app.get("/de", function(req, res){
   });
 });
 
+app.get("/", function(req, res) {
+  
+});
+
 app.get("/impressum", function(req, res) {
 
-  var impressum = {
-    "impressum" : {
-      "text": "Dieses Projekt ist veröffentlicht ohne Lizenz!"
-    }
-  };
+  var impressum = fs.readFile('texts/impressum.txt', function(err, data) {
 
-  res.render("impressum.pug", {
-    title: "Impressum",
-    text: impressum.impressum.text
+    if(err) {
+      res.send("Error");
+    }
+
+    res.render("impressum.pug", {
+      title: "Impressum",
+      text: data.toString()
+    });
   });
+
 });
 
 app.get("/cocktail/:cocktail", function(req, res) {
