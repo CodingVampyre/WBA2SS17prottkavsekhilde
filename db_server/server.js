@@ -48,6 +48,12 @@ app.get("/cocktail/:cocktail", function(req, res) {
   });
 });
 
+app.get("/new/cocktail", function (req, res) {
+    res.render("cocktail_form.pug", {
+      title: "New Cocktail"
+    });
+});
+
 app.listen(3000, function(){
   console.log("App is listening on Port 3000...");
 });
