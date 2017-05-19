@@ -12,15 +12,11 @@ app.use('/style',express.static('style'));
 
 var testString = "Alex DeLarge";
 
-app.get("/de", function(req, res){
+app.get("/", function(req, res){
   res.render("base.pug", {
       title: "Cocktails Orange",
       message: testString
   });
-});
-
-app.get("/", function(req, res) {
-  
 });
 
 app.get("/impressum", function(req, res) {
