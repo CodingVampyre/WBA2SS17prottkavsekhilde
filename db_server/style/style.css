@@ -142,3 +142,8 @@ button:active {
   box-shadow: none;
   margin-top: 5px;
 }
+
+.errorfour {
+  font-size: 32px;
+  font-style: italic;
+}

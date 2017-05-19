@@ -26,9 +26,7 @@ app.get("/impressum", function(req, res) {
 
   var impressum = fs.readFile('texts/impressum.txt', function(err, data) {
 
-    if(err) {
-      res.send("Error");
-    }
+    if(err) { res.send("Error");}
 
     res.render("impressum.pug", {
       title: "Impressum",
@@ -59,6 +57,12 @@ app.get("/new/cocktail", function (req, res) {
 
 app.post("/createnewcocktail", function(req, res) {
   res.send(JSON.stringify(req.body));
+});
+
+app.get('*', function(req, res){
+  res.render("404.pug", {
+    
+  })
 });
 
 app.listen(3000, function(){
