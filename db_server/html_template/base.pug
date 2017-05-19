@@ -4,8 +4,10 @@ html(lang="de")
     title= "Cocktails Orange"
     link(rel='stylesheet', href='/style/style.css')
   body
-    h1 #{title}
-    p #{message}
-    ul
-      each val in [1, 2, 3, 4, 5]
-        li= val
+    #content
+      h1 #{title}
+      p #{message}
+      ul
+        each val in [1, 2, 3, 4, 5]
+          li= val
+      include footer.pug
