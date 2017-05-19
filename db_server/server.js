@@ -3,13 +3,15 @@
 var express = require('express');
 var pug = require('pug');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 var app = express();
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 
 app.use('/style',express.static('style'));
-app.use(express.bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 
 var testString = "Alex DeLarge";
 
@@ -56,8 +58,7 @@ app.get("/new/cocktail", function (req, res) {
 });
 
 app.post("/createnewcocktail", function(req, res) {
-  console.log("Epnis!");
-  res.send("Result: " + req.params.cocktail_name);
+  res.send("Result: " + JSON.stringify(req.body));
 });
 
 app.listen(3000, function(){
