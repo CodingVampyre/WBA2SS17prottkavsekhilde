@@ -6,7 +6,7 @@
 body  {
   background-color: #eee;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   font-family: sans-serif;
 }
 
@@ -20,4 +20,38 @@ h1 {
 
 p {
   font-family: OpenSans;
+}
+
+a {
+  text-decoration: none;
+  color: #f27233;
+}
+
+a:hover {
+  text-shadow: 0 0 10px white;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  color: white;
+  background-color: black;
+  opacity: .5;
+}
+
+#footer_content {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#content {
+  margin: 0 auto;
+  width: 80%;
+}
+
+::selection {
+  color: white;
+  background-color: #f27233;
 }

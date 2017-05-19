@@ -1,7 +1,8 @@
 'use strict'
 
 var express = require('express');
-var pug = require('pug')
+var pug = require('pug');
+var fs = require('fs');
 var app = express();
 
 app.set('view engine', 'pug');
@@ -15,6 +16,20 @@ app.get("/de", function(req, res){
   res.render("base.pug", {
       title: "Cocktails Orange",
       message: testString
+  });
+});
+
+app.get("/impressum", function(req, res) {
+
+  var impressum = {
+    "impressum" : {
+      "text": "Dieses Projekt ist veröffentlicht ohne Lizenz!"
+    }
+  };
+
+  res.render("impressum.pug", {
+    title: "Impressum",
+    text: impressum.impressum.text
   });
 });
 
