@@ -9,10 +9,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var T = new Twit({
-  consumer_key: '35OehYnLxTe53lmbilZhKjR1j',
-  consumer_secret: 'eb7iDOqQW96jywKFudoyOs388MR9H3wLCpXHKd4PWODu5NVHz8',
-  access_token: '332316298-elzOdDzXWu9clm0qqIjyJL6l4lTZE2ki0kRBOfVq',
-  access_token_secret: 'eDdLzLdhQMUFzVSRNiRV7SVumdFWc8CkpBQY6UvZeLhhC'
+  consumer_key: '',
+  consumer_secret: '',
+  access_token: '',
+  access_token_secret: ''
 });
 
 app.get('/', function(req, res){
