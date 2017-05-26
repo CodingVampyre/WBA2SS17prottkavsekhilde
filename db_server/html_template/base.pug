@@ -4,8 +4,9 @@ html(lang="de")
     title= "Cocktails Orange"
     link(rel='stylesheet', href='/style/style.css')
   body
-    h1 #{title}
-    p #{message}
-    ul
-      each val in [1, 2, 3, 4, 5]
-        li= val
+    #content
+      h1 Cocktails Orange
+      p Wenn du und deine Droogs mal wieder einen Cocktail trinken wollen, right? Dann bist du hier genau richtig. Denn wir wissen, was ihr braucht!
+      form(action="/new/cocktail")
+        button(type="submit") Neuer Cocktail
+      include footer.pug
