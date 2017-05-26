@@ -57,7 +57,7 @@ app.get("/testrequest", (req, res) => {
   http.get({
     host: 'timsserver.local',
     path: '/gettestenv'
-  }, function(response){
+  }, (response) => {
     response.on("data", (data) => {
       res.send(data);
     });
