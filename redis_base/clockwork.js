@@ -16,6 +16,11 @@ app.get("/user/:username", function(req, res){
 });
 
 });
-app.listen(3000,function(){
+app.listen(3000, '0.0.0.0', function(){
   console.log("Zeit für ein Rein-Raus-Spiel auf Port 3000");
+});
+
+app.get("/gettestenv", (req, res) => {
+  res.send("der Server funktioniert");
+  console.log("der Server funktioniert");
 });
