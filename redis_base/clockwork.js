@@ -11,12 +11,6 @@ app.get("/test",function(req, res){
     res.send((reply));
 });
 
-app.get("/user/:username", function(req, res){
-  client.hgetall("user:"+req.params.username, function(err, rep){
-    console.log("PENISPENIS"+rep);
-    res.send(JSON.stringify(rep));
-  });
-});
 
 });
 app.listen(3000, '0.0.0.0', function(){
@@ -35,4 +29,36 @@ app.get("/list", (req, res) => {
     res.send(JSON.stringify(reply));
 
   });
+});
+
+
+app.post("/user", (req, res) => {
+  client.hgetall("user:"+req.body.name, (error, reply) => {
+    res.send(JSON.stringify(reply));
+  });
+});
+
+app.put("/user", (req, res) => {
+
+  var canset = true;
+
+  client.lrange("list:users", "0", "-1", (error, reply) => {
+
+    for (var i=0; i<reply.length; i++) {
+      if (reply[i] == req.body.name) {
+        canset = false;
+      }
+    }
+    console.log(canset);
+  });
+
+  if (canset) {
+    client.hmset("user:"+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
+      client.rpush("list:users", req.body.name, (error, reply) => {
+        res.send("Saved into liste!");
+      });
+    });
+  } else {
+    res.send("Already exists");
+  }
 });
