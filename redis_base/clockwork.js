@@ -6,36 +6,12 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get("/test",function(req, res){
-  client.hgetall("user:admin", function(err, reply){
-    res.send((reply));
-});
-
-
-});
-app.listen(3000, '0.0.0.0', function(){
-  console.log("Zeit für ein Rein-Raus-Spiel auf Port 3000");
-});
-
-
-app.post("/new/cocktail", (req, res) => {
-  console.log(req);
-  res.send(JSON.stringify(req.body.cocktail_name));
+app.get("/user", (req, res) => {
 
 });
 
-app.get("/list", (req, res) => {
-  client.lrange("test:first","0","-1", (error, reply) => {
-    res.send(JSON.stringify(reply));
-
-  });
-});
-
-
-app.post("/user", (req, res) => {
-  client.hgetall("user:"+req.body.name, (error, reply) => {
-    res.send(JSON.stringify(reply));
-  });
+app.get("/user/:id", (req, res) => {
+  
 });
 
 app.put("/user", (req, res) => {
@@ -60,4 +36,64 @@ app.put("/user", (req, res) => {
       res.send("Already exists");
     }
   });
+});
+
+app.post("/user", (req, res) => {
+
+});
+
+app.delete("/user/:id", (req, res) => {
+
+});
+
+app.get("/cocktails", (req, res) => {
+
+});
+
+app.get("/cocktail/:name", (req, res) => {
+
+});
+
+app.put("/cocktail", (req, res) => {
+
+});
+
+app.post("/cocktail", (req, res) => {
+
+});
+
+app.delete("/cocktail/:name", (req, res) => {
+
+});
+
+app.get("/ingredients", (req, res) => {
+
+});
+
+app.get("/ingredients/:ingredient", (req, res) => {
+
+});
+
+app.put("/ingredients", (req, res) => {
+
+});
+
+app.post("/ingredients", (req, res) => {
+
+});
+
+app.delete("/ingredients/:ingredient", (req, res) => {
+
+});
+
+app.get("/cocktails/:name/ingredients", (req, res) => {
+
+});
+
+app.post("/cocktails/:name/ingredients", (req, res) => {
+
+});
+
+app.listen(3000, '0.0.0.0', function(){
+  console.log("Zeit für ein Rein-Raus-Spiel auf Port 3000");
 });
