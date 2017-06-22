@@ -49,16 +49,15 @@ app.put("/user", (req, res) => {
         canset = false;
       }
     }
-    console.log(canset);
-  });
 
-  if (canset) {
-    client.hmset("user:"+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
-      client.rpush("list:users", req.body.name, (error, reply) => {
-        res.send("Saved into liste!");
+    if (canset) {
+      client.hmset("user:"+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
+        client.rpush("list:users", req.body.name, (error, reply) => {
+          res.send("Saved into liste!");
+        });
       });
-    });
-  } else {
-    res.send("Already exists");
-  }
+    } else {
+      res.send("Already exists");
+    }
+  });
 });
