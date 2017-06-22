@@ -13,7 +13,9 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/user/:id", (req, res) => {
-  
+  client.hgetall("user:"+req.params.id, (error, reply) => {
+    res.send(JSON.stringify(reply));
+  });
 });
 
 app.put("/user", (req, res) => {
