@@ -50,19 +50,19 @@ app.get("/cocktails", (req, res) => {
 
 });
 
-app.get("/cocktail/:name", (req, res) => {
+app.get("/cocktails/:name", (req, res) => {
 
 });
 
-app.put("/cocktail", (req, res) => {
+app.put("/cocktails", (req, res) => {
 
 });
 
-app.post("/cocktail", (req, res) => {
+app.post("/cocktails", (req, res) => {
 
 });
 
-app.delete("/cocktail/:name", (req, res) => {
+app.delete("/cocktails/:name", (req, res) => {
 
 });
 
