@@ -6,6 +6,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// KAVSEK
 app.get("/user", (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
     res.send(JSON.stringify(reply));
@@ -50,6 +51,7 @@ app.delete("/user/:id", (req, res) => {
 
 });
 
+// HILDEBRANDT
 app.get("/cocktails", (req, res) => {
 
 });
@@ -70,6 +72,7 @@ app.delete("/cocktails/:name", (req, res) => {
 
 });
 
+// PROTT
 app.get("/ingredients", (req, res) => {
 
 });
