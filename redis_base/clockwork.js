@@ -7,7 +7,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get("/user", (req, res) => {
-
+  client.lrange("list:users", "0", "-1", (error, reply) => {
+    res.send(JSON.stringify(reply));
+  });
 });
 
 app.get("/user/:id", (req, res) => {
