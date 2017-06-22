@@ -93,7 +93,7 @@ app.delete("/ingredients/:ingredient", (req, res) => {
 
 });
 
-// ALLE
+// KAVSEK, HILDEBRAND & PROTT
 app.get("/cocktails/:name/ingredients", (req, res) => {
 
 });
