@@ -112,23 +112,85 @@ app.delete("/cocktails/:name", (req, res) => {
 
 // PROTT
 app.get("/ingredients", (req, res) => {
-
+  client.lrange("list:ingredients", "0", "-1", (error, reply) => {
+    res.send(JSON.stringify(reply));
+  });
 });
 
 app.get("/ingredients/:ingredient", (req, res) => {
-
+  client.hgetall("ingredients:"+req.params.ingredient, (error, reply) => {
+    res.send(JSON.stringify(reply));
+  });
 });
 
 app.put("/ingredients", (req, res) => {
 
+    var canset = true;
+
+    client.lrange("list:ingredients", "0", "-1", (error, reply) => {
+
+      for (var i=0; i<reply.length; i++) {
+        if (reply[i] == req.body.name) {
+          canset = false;
+        }
+      }
+
+      if (canset) {
+        client.hmset("ingredient:"+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+          client.rpush("list:ingredients", req.body.name, (error, reply) => {
+            res.send("Saved into liste!");
+          });
+        });
+      } else {
+        res.send("Already exists");
+      }
+    });
 });
 
 app.post("/ingredients", (req, res) => {
+  var canupdate = false;
 
+  client.lrange("list:ingredients", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if (reply[i] == req.body.name) {
+        canset = true;
+        break;
+      }
+    }
+
+    // TODO let only update was was provided
+    if (canset) {
+      client.hmset("ingredient":+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+        client.rpush("list:ingredients", req.body.name, (error, reply) => {
+          res.send("Updated into list");
+        });
+      });
+    } else {
+      res.send("Entry did not exist");
+    }
+  });
 });
 
 app.delete("/ingredients/:ingredient", (req, res) => {
+  var candelete = false;
+  client.lrange("list:ingredients", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if(reply[i] == req.body.name) {
+        candelete = true;
+        break;
+      }
+    }
 
+    if (candelete) {
+      client.del("ingredient:"+req.body.name, (error, reply) => {
+        client.lrem("list:ingredients", "0", req.body.name, (error, reply) => {
+          res.send("DELETION SUCCESSFUL");
+        });
+      });
+    } else {
+      res.send("NON EXISTENT ENTRY COULD NOT BE DELETED");
+    }
+  });
 });
 
 // KAVSEK, HILDEBRAND & PROTT
