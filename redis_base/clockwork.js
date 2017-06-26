@@ -3,10 +3,10 @@ var client = require ("redis").createClient();
 var bodyParser = require ("body-parser");
 var app = express();
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+var jsonparser = bodyParser.json();
 
 // KAVSEK
 app.get("/user", (req, res) => {
@@ -21,7 +21,7 @@ app.get("/user/:id", (req, res) => {
   });
 });
 
-app.put("/user", bodyParser, (req, res) => {
+app.put("/user", jsonparser, (req, res) => {
 
   var canset = true;
 
@@ -30,13 +30,13 @@ app.put("/user", bodyParser, (req, res) => {
     console.log(req.body.name);
 
     for (var i=0; i<reply.length; i++) {
-      if (reply[i] == mydata.name) {
+      if (reply[i] == req.body.name) {
         canset = false;
       }
     }
 
     if (canset) {
-      client.hmset("user:"+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
+      client.hmset("user:"+req.body.name, "name", req.body.name, "mail", req.body.email, "pass", req.body.pass, (error, reply) => {
         client.rpush("list:users", req.body.name, (error, reply) => {
           res.send("Saved into liste!");
         });
@@ -47,12 +47,12 @@ app.put("/user", bodyParser, (req, res) => {
   });
 });
 
-app.post("/user", (req, res) => {
+app.post("/user", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
-      if (reply[i] == req.body.name) {
+      if (reply[j] == req.body.name) {
         canset = true;
         break;
       }
@@ -71,7 +71,7 @@ app.post("/user", (req, res) => {
   });
 });
 
-app.delete("/user/:id", (req, res) => {
+app.delete("/user/:id", jsonparser, (req, res) => {
   var candelete = false;
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
