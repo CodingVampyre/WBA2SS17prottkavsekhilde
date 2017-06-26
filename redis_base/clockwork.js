@@ -83,7 +83,7 @@ app.delete("/user/:id", jsonparser, (req, res) => {
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
-      if(reply[i] == req.body.name) {
+      if(reply[j] == req.body.name) {
         candelete = true;
         break;
       }
