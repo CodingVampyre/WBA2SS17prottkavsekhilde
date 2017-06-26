@@ -127,7 +127,7 @@ app.get("/ingredients/:ingredient", (req, res) => {
   });
 });
 
-app.put("/ingredients", (req, res) => {
+app.put("/ingredients", jsonparser, (req, res) => {
 
     var canset = true;
 
@@ -151,7 +151,7 @@ app.put("/ingredients", (req, res) => {
     });
 });
 
-app.post("/ingredients", (req, res) => {
+app.post("/ingredients", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
@@ -175,7 +175,7 @@ app.post("/ingredients", (req, res) => {
   });
 });
 
-app.delete("/ingredients/:ingredient", (req, res) => {
+app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
   var candelete = false;
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
@@ -198,6 +198,11 @@ app.delete("/ingredients/:ingredient", (req, res) => {
 });
 
 // KAVSEK, HILDEBRAND & PROTT
+
+app.put("/cocktails/:name/ingredients", (req, res) => {
+
+});
+
 app.get("/cocktails/:name/ingredients", (req, res) => {
 
 });
