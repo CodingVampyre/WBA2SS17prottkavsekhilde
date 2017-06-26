@@ -79,7 +79,7 @@ app.delete("/user/:id", (req, res) => {
 
     if (candelete) {
       client.del("user:"+req.body.name, (error, reply) => {
-        client.lrem("list:users", req.body.name, (error, reply) => {
+        client.lrem("list:users", "0", req.body.name, (error, reply) => {
           res.send("DELETION SUCCESSFUL");
         });
       });
