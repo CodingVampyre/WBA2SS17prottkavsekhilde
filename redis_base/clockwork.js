@@ -44,11 +44,49 @@ app.put("/user", (req, res) => {
 });
 
 app.post("/user", (req, res) => {
+  var canupdate = false;
 
+  client.lrange("list:users", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if (reply[i] == req.body.name) {
+        canset = true;
+        break;
+      }
+    }
+
+    // TODO let only update was was provided
+    if (canset) {
+      client.hmset("user":+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
+        client.rpush("list:users", req.body.name, (error, reply) => {
+          res.send("Updated into list");
+        });
+      });
+    } else {
+      res.send("Entry did not exist");
+    }
+  });
 });
 
 app.delete("/user/:id", (req, res) => {
+  var candelete = false;
+  client.lrange("list:users", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if(reply[i] == req.body.name) {
+        candelete = true;
+        break;
+      }
+    }
 
+    if (candelete) {
+      client.del("user:"+req.body.name, (error, reply) => {
+        client.lrem("list:users", req.body.name, (error, reply) => {
+          res.send("DELETION SUCCESSFUL");
+        });
+      });
+    } else {
+      res.send("NON EXISTENT ENTRY COULD NOT BE DELETED");
+    }
+  });
 });
 
 // HILDEBRANDT
