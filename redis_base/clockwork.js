@@ -64,7 +64,7 @@ app.post("/user", jsonparser, (req, res) => {
     }
 
     // TODO Update should only be allowed if the provided user-entry is existent
-    if (canset) {
+    if (canupdate) {
       client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
       res.set({'Content-Type':'text/plain'});
       res.write('SUCCESS: UPDATE USER');
