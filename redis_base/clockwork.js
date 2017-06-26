@@ -4,7 +4,9 @@ var bodyParser = require ("body-parser");
 var app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // KAVSEK
 app.get("/user", (req, res) => {
@@ -19,14 +21,16 @@ app.get("/user/:id", (req, res) => {
   });
 });
 
-app.put("/user", (req, res) => {
+app.put("/user", bodyParser, (req, res) => {
 
   var canset = true;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
 
+    console.log(req.body.name);
+
     for (var i=0; i<reply.length; i++) {
-      if (reply[i] == req.body.name) {
+      if (reply[i] == mydata.name) {
         canset = false;
       }
     }
