@@ -3,6 +3,8 @@ var client = require ("redis").createClient();
 var bodyParser = require ("body-parser");
 var app = express();
 
+const PORT = 3000;
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -11,13 +13,17 @@ var jsonparser = bodyParser.json();
 // KAVSEK
 app.get("/user", (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
-    res.send(JSON.stringify(reply));
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
   });
 });
 
 app.get("/user/:id", (req, res) => {
   client.hgetall("user:"+req.params.id, (error, reply) => {
-    res.send(JSON.stringify(reply));
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
   });
 });
 
@@ -38,11 +44,11 @@ app.put("/user", jsonparser, (req, res) => {
     if (canset) {
       client.hmset("user:"+req.body.name, "name", req.body.name, "mail", req.body.email, "pass", req.body.pass, (error, reply) => {
         client.rpush("list:users", req.body.name, (error, reply) => {
-          res.send("Saved into liste!");
+          res.send("SAVED");
         });
       });
     } else {
-      res.send("Already exists");
+      res.send("ALREADY EXISTENT");
     }
   });
 });
@@ -203,14 +209,20 @@ app.put("/cocktails/:name/ingredients", (req, res) => {
 
 });
 
-app.get("/cocktails/:name/ingredients", (req, res) => {
-
+app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
+  client.lrange("cocktail:"+req.body.name+":ingredients", "0", "-1", (error, reply) => {
+    res.set({
+      'Content-Type': "application/json",
+    });
+    res.write(req.body);
+    res.end();
+  });
 });
 
 app.post("/cocktails/:name/ingredients", (req, res) => {
 
 });
 
-app.listen(3001, '0.0.0.0', function(){
-  console.log("Zeit für ein Rein-Raus-Spiel auf Port 3000");
+app.listen(PORT, '0.0.0.0', function(){
+  console.log("Zeit für ein Rein-Raus-Spiel auf Port"+PORT);
 });
