@@ -137,7 +137,7 @@ app.get("/ingredients", (req, res) => {
 
 //TODO the GET method for a specific ingredient does not work properly yet
 app.get("/ingredients/:ingredient", (req, res) => {
-  client.hgetall("ingredient:"+req.params.name, (error, reply) => {
+  client.hgetall("ingredient:"+req.params.ingredient, (error, reply) => {
     res.set({'Content-Type': 'application/json'});
     res.write(JSON.stringify(reply));
     res.end();
