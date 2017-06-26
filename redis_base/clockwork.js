@@ -37,7 +37,7 @@ app.put("/user", jsonparser, (req, res) => {
     }
 
     if (canset) {
-      client.hmset("user:"+req.body.name, "name", req.body.name, "mail", req.body.email, "pass", req.body.pass, (error, reply) => {
+      client.hmset("user:"+req.body.name, "name", req.body.name, "mail", req.body.mail, "pass", req.body.pass, (error, reply) => {
         client.rpush("list:users", req.body.name, (error, reply) => {
           res.send("SAVED");
         });
@@ -59,12 +59,10 @@ app.post("/user", jsonparser, (req, res) => {
       }
     }
 
-    // TODO let only update was was provided
+    // TODO Update should only be allowed if the provided user-entry is existent
     if (canset) {
       client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
-        client.rpush("list:users", req.body.name, (error, reply) => {
-          res.send("Updated into list");
-        });
+        res.send("UPDATED");
       });
     } else {
       res.send("Entry did not exist");
@@ -74,7 +72,7 @@ app.post("/user", jsonparser, (req, res) => {
 
 app.delete("/user/:id", jsonparser, (req, res) => {
   var candelete = false;
-  
+
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
       if(reply[i] == req.body.name) {
