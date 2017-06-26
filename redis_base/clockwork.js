@@ -129,69 +129,78 @@ app.delete("/cocktails/:name", (req, res) => {
 // PROTT
 app.get("/ingredients", (req, res) => {
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
-    res.send(JSON.stringify(reply));
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
   });
 });
 
+//TODO the GET method for a specific ingredient does not work properly yet
 app.get("/ingredients/:ingredient", (req, res) => {
-  client.hgetall("ingredients:"+req.params.ingredient, (error, reply) => {
-    res.send(JSON.stringify(reply));
+  client.hgetall("ingredient:"+req.params.name, (error, reply) => {
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
   });
 });
 
 app.put("/ingredients", jsonparser, (req, res) => {
+  var canset = true;
 
-    var canset = true;
+  client.lrange("list:ingredients", "0", "-1", (error, reply) => {
 
-    client.lrange("list:ingredients", "0", "-1", (error, reply) => {
+    for (var i=0; i<reply.length; i++) {
+      if (reply[i] == req.body.name) canset = false;
+    }
 
-      for (var i=0; i<reply.length; i++) {
-        if (reply[i] == req.body.name) {
-          canset = false;
-        }
-      }
-
-      if (canset) {
-        client.hmset("ingredient:"+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
-          client.rpush("list:ingredients", req.body.name, (error, reply) => {
-            res.send("Saved into liste!");
-          });
+    if (canset) {
+      client.hmset("ingredient:"+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+        client.rpush("list:ingredients", req.body.name, (error, listreply) => {
+          res.set({'Content-Type':'application/json'});
+          res.write(JSON.stringify(reply));
+          res.end();
         });
-      } else {
-        res.send("Already exists");
-      }
-    });
-});
+      });
+    } else {
+      res.set({'Content-Type':'text/plain'});
+      res.write('OBJECT ALREADY EXISTS');
+      res.end();
+    }
+  });
+  });
 
 app.post("/ingredients", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
-      if (reply[i] == req.body.name) {
-        canset = true;
+      if (reply[j] == req.body.name) {
+        canupdate = true;
         break;
       }
     }
 
-    // TODO let only update was was provided
-    if (canset) {
-      client.hmset("ingredient:"+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
-        client.rpush("list:ingredients", req.body.name, (error, reply) => {
-          res.send("Updated into list");
-        });
+    // TODO Update should only be allowed if the provided user-entry is existent
+    if (canupdate) {
+      client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+      res.set({'Content-Type':'text/plain'});
+      res.write('SUCCESS: UPDATE INGREDIENT');
+      res.end();
       });
     } else {
-      res.send("Entry did not exist");
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
     }
   });
 });
 
 app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
   var candelete = false;
+
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
-      if(reply[i] == req.body.name) {
+      if(reply[j] == req.body.name) {
         candelete = true;
         break;
       }
@@ -200,14 +209,19 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
     if (candelete) {
       client.del("ingredient:"+req.body.name, (error, reply) => {
         client.lrem("list:ingredients", "0", req.body.name, (error, reply) => {
-          res.send("DELETION SUCCESSFUL");
+          res.set({'Content-Type':'text/plain'});
+          res.write('SUCCESS: DELETE INGREDIENT');
+          res.end();
         });
       });
     } else {
-      res.send("NON EXISTENT ENTRY COULD NOT BE DELETED");
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
     }
   });
 });
+
 
 // KAVSEK, HILDEBRAND & PROTT
 
