@@ -225,7 +225,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 
 // KAVSEK, HILDEBRAND & PROTT
 
-app.put("/cocktails/:name/ingredients", (req, res) => {
+app.put("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   var canset = true;
 
   client.lrange("cocktails:"+ req.name +":ingredients", "0", "-1", (error, reply) => {
