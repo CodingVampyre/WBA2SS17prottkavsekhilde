@@ -56,7 +56,7 @@ app.post("/user", (req, res) => {
 
     // TODO let only update was was provided
     if (canset) {
-      client.hmset("user":+req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
+      client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
         client.rpush("list:users", req.body.name, (error, reply) => {
           res.send("Updated into list");
         });
@@ -160,7 +160,7 @@ app.post("/ingredients", (req, res) => {
 
     // TODO let only update was was provided
     if (canset) {
-      client.hmset("ingredient":+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+      client.hmset("ingredient:"+req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
         client.rpush("list:ingredients", req.body.name, (error, reply) => {
           res.send("Updated into list");
         });
@@ -202,6 +202,6 @@ app.post("/cocktails/:name/ingredients", (req, res) => {
 
 });
 
-app.listen(3000, '0.0.0.0', function(){
+app.listen(3001, '0.0.0.0', function(){
   console.log("Zeit für ein Rein-Raus-Spiel auf Port 3000");
 });
