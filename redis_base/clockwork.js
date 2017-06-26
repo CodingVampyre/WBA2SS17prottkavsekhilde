@@ -58,7 +58,7 @@ app.post("/user", jsonparser, (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
       if (reply[j] == req.body.name) {
-        canset = true;
+        canupdate = true;
         break;
       }
     }
