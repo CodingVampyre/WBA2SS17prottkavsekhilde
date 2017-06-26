@@ -225,31 +225,28 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 
 // KAVSEK, HILDEBRAND & PROTT
 
-app.put("/cocktails/:name/ingredients", jsonparser, (req, res) => {
+app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
 
   client.lrange("cocktails:"+ req.name +":ingredients", "0", "-1", (error, reply) => {
 
-    for (var i=0; i<reply.length; i++) {
-      if (reply[i] == req.body.name) canset = false;
-    }
-
     if (canset) {
-      for (var x = 0; x < req.body.ingredients.length(); ++x) {
-        client.hmset("user:"+req.body.ingredients[x].name, "name", req.body.ingredients[x].name, "desc", req.body.ingredients[x].desc, (error, reply) => {
-          client.rpush("cocktails:"+req.body.ingredients[x].name+":ingredients", req.body.ingredients[x].name, (error, listreply) => {
-            res.set({'Content-Type':'application/json'});
-            res.write(JSON.stringify(reply));
-            res.end();
+      req.body.ingredients.forEach((element) => {
+        client.hmset("ingredient:"+element.name, "name", element.name, "desc", element.desc, (error, reply) => {
+          client.rpush("cocktails:"+elements.name+":ingredients", element.name, (error, listreply) => {
+            
           });
-       });
-      }
-    } else {
-      res.set({'Content-Type':'text/plain'});
-      res.write('OBJECT ALREADY EXISTS');
-      res.end();
+        });
+      });
     }
   });
+  next();
+});
+
+app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+    res.set({'Content-Type':'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
 });
 
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
