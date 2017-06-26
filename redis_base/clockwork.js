@@ -28,17 +28,12 @@ app.get("/user/:id", (req, res) => {
 });
 
 app.put("/user", jsonparser, (req, res) => {
-
   var canset = true;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
 
-    console.log(req.body.name);
-
     for (var i=0; i<reply.length; i++) {
-      if (reply[i] == req.body.name) {
-        canset = false;
-      }
+      if (reply[i] == req.body.name) canset = false;
     }
 
     if (canset) {
@@ -79,6 +74,7 @@ app.post("/user", jsonparser, (req, res) => {
 
 app.delete("/user/:id", jsonparser, (req, res) => {
   var candelete = false;
+  
   client.lrange("list:users", "0", "-1", (error, reply) => {
     for (var j = 0; j<reply.length; j++) {
       if(reply[i] == req.body.name) {
