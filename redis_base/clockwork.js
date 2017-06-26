@@ -38,12 +38,16 @@ app.put("/user", jsonparser, (req, res) => {
 
     if (canset) {
       client.hmset("user:"+req.body.name, "name", req.body.name, "mail", req.body.mail, "pass", req.body.pass, (error, reply) => {
-        client.rpush("list:users", req.body.name, (error, reply) => {
-          res.send("SAVED");
+        client.rpush("list:users", req.body.name, (error, listreply) => {
+          res.set({'Content-Type':'application/json'});
+          res.write(JSON.stringify(reply));
+          res.end();
         });
       });
     } else {
-      res.send("ALREADY EXISTENT");
+      res.set({'Content-Type':'text/plain'});
+      res.write('OBJECT ALREADY EXISTS');
+      res.end();
     }
   });
 });
@@ -62,10 +66,14 @@ app.post("/user", jsonparser, (req, res) => {
     // TODO Update should only be allowed if the provided user-entry is existent
     if (canset) {
       client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
-        res.send("UPDATED");
+      res.set({'Content-Type':'text/plain'});
+      res.write('SUCCESS: UPDATE USER');
+      res.end();
       });
     } else {
-      res.send("Entry did not exist");
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
     }
   });
 });
@@ -84,11 +92,15 @@ app.delete("/user/:id", jsonparser, (req, res) => {
     if (candelete) {
       client.del("user:"+req.body.name, (error, reply) => {
         client.lrem("list:users", "0", req.body.name, (error, reply) => {
-          res.send("DELETION SUCCESSFUL");
+          res.set({'Content-Type':'text/plain'});
+          res.write('SUCCESS: DELETE USER');
+          res.end();
         });
       });
     } else {
-      res.send("NON EXISTENT ENTRY COULD NOT BE DELETED");
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
     }
   });
 });
