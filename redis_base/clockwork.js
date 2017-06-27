@@ -107,23 +107,94 @@ app.delete("/user/:id", jsonparser, (req, res) => {
 
 // HILDEBRANDT
 app.get("/cocktails", (req, res) => {
-
+    client.lrange("list:cocktails", "0", "-1", (error, reply) => {
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
+  });
 });
 
 app.get("/cocktails/:name", (req, res) => {
-
+    client.hgetall("cocktail:"+req.params.name, (error, reply) => {
+    res.set({'Content-Type': 'application/json'});
+    res.write(JSON.stringify(reply));
+    res.end();
+  });
 });
 
-app.put("/cocktails", (req, res) => {
+app.put("/cocktails",jsonparser, (req, res) => {
+    var canset = true;
 
+  client.lrange("list:cocktails", "0", "-1", (error, reply) => {
+
+    for (var i=0; i<reply.length; i++) {
+      if (reply[i] == req.body.name) canset = false;
+    }
+
+    if (canset) {
+      client.hmset("cocktail:"+req.body.name, "name", req.body.name, "desc", req.body.desc,(error, reply) => {
+        client.rpush("list:cocktails", req.body.name, (error, listreply) => {
+          res.set({'Content-Type':'application/json'});
+          res.write(JSON.stringify(reply));
+          res.end();
+        });
+      });
+    } else {
+      res.set({'Content-Type':'text/plain'});
+      res.write('OBJECT ALREADY EXISTS');
+      res.end();
+    }
+  });
 });
 
-app.post("/cocktails", (req, res) => {
+app.post("/cocktails",jsonparser, (req, res) => {
+   var canupdate = false;
 
+  client.lrange("list:cocktails", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if (reply[j] == req.body.name) {
+        canupdate = true;
+        break;
+      }
+    }
+    if (canupdate) {
+      client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+      res.set({'Content-Type':'text/plain'});
+      res.write('SUCCESS: UPDATE USER');
+      res.end();
+      });
+    } else {
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
+    }
+  });
 });
 
-app.delete("/cocktails/:name", (req, res) => {
+app.delete("/cocktails/:name",jsonparser, (req, res) => {
+    var candelete = false;
 
+  client.lrange("list:cocktails", "0", "-1", (error, reply) => {
+    for (var j = 0; j<reply.length; j++) {
+      if(reply[j] == req.params.name) {
+        candelete = true;
+        break;
+      }
+    }
+    if (candelete) {
+      client.del("cocktails:"+req.params.name, (error, reply) => {
+        client.lrem("list:cocktails", "0", req.params.name, (error, reply) => {
+          res.set({'Content-Type':'text/plain'});
+          res.write('SUCCESS: DELETE COCKTAIL');
+          res.end();
+        });
+      });
+    } else {
+      res.set({'Content-Type':'text/plain'});
+      res.write('ERROR: NO OBJECT IN DATABASE');
+      res.end();
+    }
+  });
 });
 
 // PROTT
