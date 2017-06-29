@@ -65,7 +65,7 @@ app.get("/testrequest", jsonparser, (req, res) => {
   }, (response) => {
     response.on("data", (data) => {
       res.set({'Content-Type':'application/json'});
-      res.write(JSON.stringify(data));
+      res.write(JSON.stringify(data.data));
       res.end();
     });
   });
