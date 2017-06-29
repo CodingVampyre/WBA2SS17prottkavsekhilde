@@ -18,9 +18,8 @@ var service_provider_data = {
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
-
 app.use('/style',express.static('style'));
-//app.use(bodyParser.json());
+
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -81,5 +80,11 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, function(){
+
+  if (PORT == "undefined") {
+    console.log("Please provide a port number as command parameter");
+    process.exit(-1);
+  }
+
   console.log("App is listening on Port " + PORT + "...");
 });
