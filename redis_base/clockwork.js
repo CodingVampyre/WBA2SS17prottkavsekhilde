@@ -3,7 +3,7 @@ var client = require ("redis").createClient();
 var bodyParser = require ("body-parser");
 var app = express();
 
-const PORT = 3000;
+const PORT = process.argv[2];
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -132,7 +132,7 @@ app.put("/cocktails",jsonparser, (req, res) => {
     }
 
     if (canset) {
-      client.hmset("cocktail:"+req.body.name, "name", req.body.name, "desc", req.body.desc,(error, reply) => {
+      client.hmset("cocktail:"+req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date,(error, reply) => {
         client.rpush("list:cocktails", req.body.name, (error, listreply) => {
           res.set({'Content-Type':'application/json'});
           res.write(JSON.stringify(reply));
@@ -158,7 +158,7 @@ app.post("/cocktails",jsonparser, (req, res) => {
       }
     }
     if (canupdate) {
-      client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
+      client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) => {
       res.set({'Content-Type':'text/plain'});
       res.write('SUCCESS: UPDATE USER');
       res.end();
