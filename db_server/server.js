@@ -9,6 +9,13 @@ var app = express();
 
 const PORT = process.argv[2];
 
+var service_provider_data = {
+  host: '127.0.0.1',
+  path: '/cocktails',
+  port: '1337',
+  method: 'GET'
+}
+
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 
@@ -57,12 +64,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 });
 
 app.get("/testrequest", jsonparser, (req, res) => {
-  http.get({
-    host: '127.0.0.1',
-    path: '/cocktails',
-    port: '1337',
-    method: 'GET'
-  }, (response) => {
+  http.get(service_provider_data, (response) => {
     response.setEncoding('utf8');
     response.on("data", (data) => {
       res.set({'Content-Type':'application/json'});
