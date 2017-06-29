@@ -6,15 +6,23 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var http = require('http');
 var app = express();
+var twit = require('twit'); // USE external API of twitter
 
 const PORT = process.argv[2];
 
-var service_provider_data = {
+var service_provider_cocktails = {
   host: '127.0.0.1',
   path: '/cocktails',
   port: '1337',
   method: 'GET'
 }
+
+var twitter_data = new twit({
+  consumer_key: '',
+  consumer_secret: '',
+  access_token: '',
+  access_token_secret: ''
+})
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
@@ -63,13 +71,23 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 });
 
 app.get("/testrequest", jsonparser, (req, res) => {
-  http.get(service_provider_data, (response) => {
+  http.get(service_provider_cocktails, (response) => {
     response.setEncoding('utf8');
     response.on("data", (data) => {
       res.set({'Content-Type':'application/json'});
       res.write(data);
       res.end();
     });
+  });
+});
+
+app.get("/twitter_test", (req, res) => {
+  twit.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
+    if (err) console.log(err);
+
+    res.set({'Content-Type':'text/json'});
+    res.write(JSON.stringify(data.statuses));
+    res.end();
   });
 });
 
