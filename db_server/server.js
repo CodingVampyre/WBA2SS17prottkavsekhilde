@@ -7,11 +7,14 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var app = express();
 
+const PORT = process.argv[2];
+
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 
 app.use('/style',express.static('style'));
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
+var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get("/", (req, res) => {
@@ -49,14 +52,16 @@ app.get("/new/cocktail", (req, res) => {
     });
 });
 
-app.post("/createnewcocktail", (req, res) => {
+app.post("/createnewcocktail", jsonparser, (req, res) => {
   res.send(JSON.stringify(req.body));
 });
 
 app.get("/testrequest", (req, res) => {
   http.get({
-    host: 'timsserver.local',
-    path: '/gettestenv'
+    host: 'localhost',
+    path: '/cocktails',
+    port: '1337',
+    method: 'GET'
   }, (response) => {
     response.on("data", (data) => {
       res.send(data);
@@ -70,6 +75,6 @@ app.get('*', (req, res) => {
   })
 });
 
-app.listen(3000, function(){
-  console.log("App is listening on Port 3000...");
+app.listen(PORT, function(){
+  console.log("App is listening on Port " + PORT + "...");
 });
