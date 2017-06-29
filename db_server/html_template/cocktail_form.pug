@@ -1,10 +1,8 @@
 doctype html
 html
-  head
-    title #{title}
-    link(rel='stylesheet', href='/style/style.css')
+  include basic/head.pug
   body
-    include footer.pug
+    include basic/footer.pug
     #content
       h1 New Cocktail
       form(method='POST' action='/createnewcocktail')

@@ -1,12 +1,10 @@
 doctype html
 html(lang="de")
-  head
-    title= "Cocktails Orange"
-    link(rel='stylesheet', href='/style/style.css')
+  include basic/head.pug
   body
     #content
       h1 Cocktails Orange
       p Wenn du und deine Droogs mal wieder einen Cocktail trinken wollen, right? Dann bist du hier genau richtig. Denn wir wissen, was ihr braucht!
       form(action="/new/cocktail")
         button(type="submit") Neuer Cocktail
-      include footer.pug
+      include basic/footer.pug
