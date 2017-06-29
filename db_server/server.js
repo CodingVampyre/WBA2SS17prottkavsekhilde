@@ -81,7 +81,7 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, function(){
 
-  if (PORT == "undefined") {
+  if (PORT == undefined) {
     console.log("Please provide a port number as command parameter");
     process.exit(-1);
   }
