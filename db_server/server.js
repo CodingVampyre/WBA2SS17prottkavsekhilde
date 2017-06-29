@@ -17,16 +17,16 @@ var service_provider_cocktails = {
   method: 'GET'
 }
 
-var twitter_data = new twit({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token: '',
-  access_token_secret: ''
-})
+var twitter_data;
+
+fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
+  twitter_data = rep.toString();
+});
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 app.use('/style',express.static('style'));
+app.use('/misc', express.static('misc'));
 
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
