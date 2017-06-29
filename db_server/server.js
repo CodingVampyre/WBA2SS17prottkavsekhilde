@@ -56,7 +56,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
   res.send(JSON.stringify(req.body));
 });
 
-app.get("/testrequest", (req, res) => {
+app.get("/testrequest", jsonparser, (req, res) => {
   http.get({
     host: 'localhost',
     path: '/cocktails',
@@ -64,7 +64,9 @@ app.get("/testrequest", (req, res) => {
     method: 'GET'
   }, (response) => {
     response.on("data", (data) => {
-      res.send(data);
+      res.set({'Content-Type':'application/json'});
+      res.write(JSON.stringify(data));
+      res.close();
     });
   });
 });
