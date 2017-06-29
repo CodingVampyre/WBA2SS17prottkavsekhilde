@@ -58,7 +58,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
 app.get("/testrequest", jsonparser, (req, res) => {
   http.get({
-    host: 'localhost',
+    host: '127.0.0.1',
     path: '/cocktails',
     port: '1337',
     method: 'GET'
@@ -66,7 +66,7 @@ app.get("/testrequest", jsonparser, (req, res) => {
     response.setEncoding('utf8');
     response.on("data", (data) => {
       res.set({'Content-Type':'application/json'});
-      res.write(JSON.stringify(data));
+      res.write(data);
       res.end();
     });
   });
