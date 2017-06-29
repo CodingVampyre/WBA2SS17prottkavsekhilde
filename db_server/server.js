@@ -63,9 +63,10 @@ app.get("/testrequest", jsonparser, (req, res) => {
     port: '1337',
     method: 'GET'
   }, (response) => {
+    response.setEncoding('utf8');
     response.on("data", (data) => {
       res.set({'Content-Type':'application/json'});
-      res.write(JSON.stringify(data.data));
+      res.write(JSON.stringify(data));
       res.end();
     });
   });
