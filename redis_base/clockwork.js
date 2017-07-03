@@ -27,7 +27,7 @@ app.get("/user/:id", (req, res) => {
   });
 });
 
-app.put("/user", jsonparser, (req, res) => {
+app.post("/user", jsonparser, (req, res) => {
   var canset = true;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
@@ -52,7 +52,7 @@ app.put("/user", jsonparser, (req, res) => {
   });
 });
 
-app.post("/user", jsonparser, (req, res) => {
+app.put("/user", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
@@ -122,7 +122,7 @@ app.get("/cocktails/:name", (req, res) => {
   });
 });
 
-app.put("/cocktails", jsonparser, (req, res) => {
+app.post("/cocktails", jsonparser, (req, res) => {
   var canset = true;
 
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
@@ -147,7 +147,7 @@ app.put("/cocktails", jsonparser, (req, res) => {
   });
 });
 
-app.post("/cocktails", jsonparser, (req, res) => {
+app.put("/cocktails", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
@@ -215,7 +215,7 @@ app.get("/ingredients/:ingredient", (req, res) => {
   });
 });
 
-app.put("/ingredients", jsonparser, (req, res) => {
+app.post("/ingredients", jsonparser, (req, res) => {
   var canset = true;
 
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
@@ -240,7 +240,7 @@ app.put("/ingredients", jsonparser, (req, res) => {
   });
 });
 
-app.post("/ingredients", jsonparser, (req, res) => {
+app.put("/ingredients", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
@@ -295,7 +295,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 
 // KAVSEK, HILDEBRAND & PROTT
 
-app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
 
     if (reply.length) {
@@ -314,7 +314,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
-app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.write(JSON.stringify(reply));
   res.end();
@@ -330,7 +330,7 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   });
 });
 
-app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
     if (reply.length) {
@@ -353,7 +353,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
-app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.write(JSON.stringify(reply));
   res.end();
