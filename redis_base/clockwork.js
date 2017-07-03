@@ -331,13 +331,21 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
 });
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+  var canset = true;
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
     if (reply.length) {
       req.body.ingredients.forEach((element) => {
-        client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
-          client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => {
-
+        reply.forEach((entryInList)=>{
+          req.body.forEach((newElement) => {
+            if(entryInList.name==newElement.name) {
+              canset = false;
+            }
           });
+          if(canset){
+            client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
+              client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => {});
+            });
+          }
         });
       });
     }
