@@ -65,7 +65,7 @@ app.post("/user", jsonparser, (req, res) => {
 
     // TODO Update should only be allowed if the provided user-entry is existent
     if (canupdate) {
-      client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) =>  {
+      client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
         res.write('SUCCESS: UPDATE USER');
         res.end();
@@ -158,7 +158,7 @@ app.post("/cocktails", jsonparser, (req, res) => {
       }
     }
     if (canupdate) {
-      client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) =>  {
+      client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
         res.write('SUCCESS: UPDATE USER');
         res.end();
@@ -252,7 +252,7 @@ app.post("/ingredients", jsonparser, (req, res) => {
     }
 
     if (canupdate) {
-      client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) =>  {
+      client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
         res.write('SUCCESS: UPDATE INGREDIENT');
         res.end();
@@ -335,15 +335,15 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
     if (reply.length) {
       req.body.ingredients.forEach((element) => {
-        reply.forEach((entryInList)=>{
+        reply.forEach((entryInList) => {
           req.body.forEach((newElement) => {
-            if(entryInList.name==newElement.name) {
+            if (entryInList.name == newElement.name) {
               canset = false;
             }
           });
-          if(canset){
+          if (canset) {
             client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
-              client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => {});
+              client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => { });
             });
           }
         });
@@ -360,5 +360,5 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.listen(PORT, '0.0.0.0', function () {
-  console.log("Zeit für ein Rein-Raus-Spiel auf Port" + PORT);
+  console.log("Zeit für ein Rein-Raus-Spiel auf Port: " + PORT);
 });
