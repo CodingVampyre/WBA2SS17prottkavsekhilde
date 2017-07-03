@@ -304,7 +304,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
     if (canset) {
       req.body.ingredients.forEach((element) => {
         client.hmset("ingredient:"+element.name, "name", element.name, "desc", element.desc, (error, reply) => {
-          client.rpush("cocktails:"+elements.name+":ingredients", element.name, (error, listreply) => {
+          client.rpush("cocktails:"+element.name+":ingredients", element.name, (error, listreply) => {
             
           });
         });
@@ -330,9 +330,27 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   });
 });
 
-// TODO
-app.post("/cocktails/:name/ingredients", (req, res) => {
+app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+  var canset = false;
 
+  client.lrange("cocktails:"+req.name+":ingredients", "0", "-1", (error, reply) => {
+    if (canset) {
+      req.body.ingredients.forEach((element) => {
+        client.hmset("ingredient:"+element.name, "name", element.name, "desc", element.desc, (error, reply) => {
+          client.rpush("cocktails:"+element.name+":ingredients", element.name, (error, listreply) => {
+
+          });
+        });
+      });
+    }
+  });
+  next();
+});
+
+app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+  res.set({'Content-Type':'application/json'});
+  res.write(JSON.stringify(reply));
+  res.end();
 });
 
 app.listen(PORT, '0.0.0.0', function(){
