@@ -81,8 +81,15 @@ app.get("/twitter_test/:search", jsonparser, (req, res) => {
   mytwitter.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
     if (err) console.log(err);
 
-    res.set({'Content-Type':'text/json'});
-    res.write(JSON.stringify(data.statuses));
+    var puttt = "";
+    var statuses = data.statuses;
+
+    for (var bla = 0; bla<statuses.length; ++bla) {
+      puttt += "<h1>" + statuses[bla].user.name +"</h1><p>: " + statuses[bla].text + "</p>";
+    }
+
+    res.set({'Content-Type':'text/html'});
+    res.write(JSON.stringify(puttt));
     res.end();
   });
 });
