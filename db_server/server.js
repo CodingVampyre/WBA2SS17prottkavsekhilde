@@ -77,7 +77,7 @@ app.get("/testrequest", jsonparser, (req, res) => {
   });
 });
 
-app.get("/twitter_test", jsonparser, (req, res) => {
+app.get("/twitter_test/:search", jsonparser, (req, res) => {
   mytwitter.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
     if (err) console.log(err);
 
