@@ -8,6 +8,11 @@ var http = require('http');
 var app = express();
 var twit = require('twit'); // USE external API of twitter
 
+app.set('view engine', 'pug');
+app.set("views", "html_template/");
+app.use('/style',express.static('style'));
+app.use('/misc', express.static('misc'));
+
 const PORT = process.argv[2];
 
 var service_provider_cocktails = {
@@ -17,16 +22,7 @@ var service_provider_cocktails = {
   method: 'GET'
 }
 
-var twitter_data;
-
-fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
-  twitter_data = rep.toString();
-});
-
-app.set('view engine', 'pug');
-app.set("views", "html_template/");
-app.use('/style',express.static('style'));
-app.use('/misc', express.static('misc'));
+var mytwitter;
 
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -81,8 +77,8 @@ app.get("/testrequest", jsonparser, (req, res) => {
   });
 });
 
-app.get("/twitter_test", (req, res) => {
-  twit.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
+app.get("/twitter_test", jsonparser, (req, res) => {
+  mytwitter.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
     if (err) console.log(err);
 
     res.set({'Content-Type':'text/json'});
@@ -103,6 +99,10 @@ app.listen(PORT, function(){
     console.log("Please provide a port number as command parameter");
     process.exit(-1);
   }
+
+  fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
+    mytwitter = new twit(JSON.parse(rep));
+  });
 
   console.log("App is listening on Port " + PORT + "...");
 });
