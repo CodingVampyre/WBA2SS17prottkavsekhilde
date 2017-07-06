@@ -94,6 +94,12 @@ app.get("/twitter_test/:search", jsonparser, (req, res) => {
   });
 });
 
+app.get("/testtweet", jsonparser, (req, res) => {
+  mytwitter.post('statuses/update', { status: 'Welcome to the Real World!' }, function(err, data, response) {
+    console.log(data);
+  });
+});
+
 app.get('*', (req, res) => {
   res.render("404.pug", {
 
