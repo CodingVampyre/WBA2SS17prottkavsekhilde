@@ -51,7 +51,7 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   var provider = {
     host: '127.0.0.1',
-    path: '/cocktails/:name',
+    path: '/cocktails/'+req.params.name,
     port: '1337',
     method: 'GET'
   };
