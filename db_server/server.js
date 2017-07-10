@@ -117,6 +117,9 @@ app.get("/testtweet", jsonparser, (req, res) => {
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
+  mytwitter.get("search/tweets", {q: "Milch", count: 3}, (err, data, response) => {
+    socket.emit(data.statuses.length);
+  });
   io.on('disconnect', () => {
     console.log("Bye Bye, droog!");
   });

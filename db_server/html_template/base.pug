@@ -4,6 +4,9 @@ html(lang="de")
   script(src="/socket.io/socket.io.js")
   script.
       var socket = io();
+      socket.on('connect', (data) =>{
+        alert(data);
+      });
   body
     #content
       h1 Cocktails Orange
