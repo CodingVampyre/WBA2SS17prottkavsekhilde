@@ -295,8 +295,9 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 // KAVSEK, HILDEBRAND & PROTT
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-  client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
 
+  client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
+    console.log(JSON.parse(reply));
     if (reply.length) {
       req.body.ingredients.forEach((element) => {
         reply.forEach((entryInList) => {
@@ -315,7 +316,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
-  res.write(JSON.stringify(reply));
+  res.write("Penis");
   res.end();
 });
 
