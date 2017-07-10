@@ -7,6 +7,7 @@ var pug = require('pug');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var http = require('http');
+var request = require('request');
 var app = express();
 var twit = require('twit'); // USE external API of twitter
 
@@ -41,6 +42,34 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/rcocktails", jsonparser, (req, res) => {
+
+  var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
+
+  var requ = request.get(myurl, (error, response, body) => {
+    console.log("Error: "+ error);
+    console.log("Response: " + response);
+    console.log("Body: " + body);
+
+    if (!error) {
+      body = JSON.parse(body);
+      body.forEach((element) => {
+        console.log(element);
+      });
+      res.render("cocktaillist.pug", {
+        listi: body
+      });
+    } else {
+      res.render("cocktaillist.pug", {
+        listi: null
+      });
+    }
+
+  });
+
+});
+
+// DEPRECATED - DELETE AFTER TESTING ABOVE!
 app.get("/cocktails", jsonparser, (req, res) => {
 
   var cocktailList = {
@@ -52,7 +81,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
   var resres;
 
-  http.get(cocktailList, (response) => {
+  var req = http.get(cocktailList, (response) => {
 
     response.setEncoding('utf8');
     response.on("data", (data) => {
@@ -75,6 +104,10 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
       });
     });
+  });
+
+  req.on('err', (e) => {
+    console.log("Lemmeh Smash... Please! - "+e);
   });
 });
 
