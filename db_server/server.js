@@ -57,8 +57,10 @@ app.get("/cocktail/:cocktail", (req, res) => {
   };
 
   http.get(provider, (response) => {
+    console.log("Response: " + response.toString());
     response.setEncoding('utf8');
     response.on("data", (data)=>{
+      console.log("Data from Dienstgeber: "+data);
       res.render("cocktail.pug", {
         cocktail: data.name,
         description: data.desc
