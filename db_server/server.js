@@ -1,5 +1,6 @@
 'use strict'
 const PORT = process.argv[2];
+const DIENSTNUTZERPORT = 1337;
 
 var express = require('express');
 var pug = require('pug');
@@ -49,15 +50,21 @@ app.get("/", (req, res) => {
 
 app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
-  var provider = {
+  var getSpecificCocktail = {
     host: '127.0.0.1',
     path: '/cocktails/'+req.params.cocktail,
-    port: '1337',
+    port: DIENSTNUTZERPORT,
     method: 'GET'
   };
 
-  http.get(provider, (response) => {
-    console.log("Response: " + response.toString());
+  var getSpecificCocktailIngredients = {
+    host: '127.0.0.1',
+    path: '/cocktails/'+req.params.cocktail+"/ingredients",
+    port: DIENSTNUTZERPORT,
+    method: 'GET'
+  }
+
+  http.get(getSpecificCocktail, (response) => {
     response.setEncoding('utf8');
     response.on("data", (data)=>{
       console.log("Data from Dienstgeber: "+JSON.parse(data));
