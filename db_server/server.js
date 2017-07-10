@@ -57,7 +57,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
       console.log(data);
 
       res.render("cocktaillist.pug", {
-        mydata: data
+        listi: data
       })
     });
   });
@@ -109,11 +109,24 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     port: DIENSTNUTZERPORT,
     method: 'GET'
   };
+
+  var postSpecificCocktail = {
+    host: '127.0.0.1',
+    path: '/cocktails',
+    port: DIENSTNUTZERPORT,
+    method: 'POST'
+  };
+
   console.log(JSON.stringify(req.body));
 
-  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: http://127.0.0.1/cocktail/" + req.body.cocktail_name;
+  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.cocktail_name;
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
+
+    http.post(postSpecificCocktail, (response) => {
+
+    });
+
     http.get(getSpecificCocktail, (response) => {
       response.setEncoding('utf8');
       response.on("data", (data) => {

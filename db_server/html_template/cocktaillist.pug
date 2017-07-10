@@ -1,0 +1,11 @@
+doctype html
+html
+  include basic/head.pug
+  body
+    #content
+
+    - each val in #{listi}
+        p= val
+
+      form(action="/")
+        button(type="submit" value="Alright!") Rightyright!
