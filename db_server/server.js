@@ -85,8 +85,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
     res.send("/");
   });
-
-  res.send(JSON.stringify(req.body));
+  
 });
 
 app.get("/twitter_test/:search", jsonparser, (req, res) => {
