@@ -5,6 +5,7 @@ const DIENSTNUTZERPORT = 1337;
 var express = require('express');
 var pug = require('pug');
 var fs = require('fs');
+var exists = require('url-exists');
 var bodyParser = require('body-parser');
 var http = require('http');
 var app = express();
@@ -72,7 +73,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
         res.render("cocktaillist.pug", {
           listi: data
         });
-        
+
       });
     });
   });
