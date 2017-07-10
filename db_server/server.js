@@ -60,7 +60,8 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
     console.log("Response: " + response.toString());
     response.setEncoding('utf8');
     response.on("data", (data)=>{
-      console.log("Data from Dienstgeber: "+data);
+      console.log("Data from Dienstgeber: "+JSON.parse(data));
+      data=JSON.parse(data);
       res.render("cocktail.pug", {
         cocktail: data.name,
         description: data.desc
