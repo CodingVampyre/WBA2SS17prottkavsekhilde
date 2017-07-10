@@ -105,10 +105,11 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   var getSpecificCocktail = {
     host: '127.0.0.1',
-    path: '/cocktails/'+req.body.cocktail_name,
+    path: '/cocktail/'+req.body.cocktail_name,
     port: DIENSTNUTZERPORT,
     method: 'GET'
   };
+  console.log(JSON.stringify(req.body));
 
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: http://127.0.0.1/cocktail/" + req.body.cocktail_name;
 
@@ -116,8 +117,8 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     http.get(getSpecificCocktail, (response) => {
       response.setEncoding('utf8');
       response.on("data", (data) => {
-        data = JSON.parse(data);
-
+        
+        console.log(data);
         res.render("cocktail.pug", {
           cocktail: data.name,
           description: data.desc
