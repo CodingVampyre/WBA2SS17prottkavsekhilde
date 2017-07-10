@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/cocktails", jsonparser, (req, res) => {
+
   var cocktailList = {
     host: '127.0.0.1',
     path: '/cocktails',
@@ -50,6 +51,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
   }
 
   http.get(cocktailList, (response) => {
+
     response.setEncoding('utf8');
     response.on("data", (data) => {
       data = JSON.parse(data);
@@ -75,7 +77,8 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
       res.render("cocktaillist.pug", {
         listi: data
-      })
+      });
+      
     });
   });
 });
