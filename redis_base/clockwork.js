@@ -296,20 +296,25 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
-  client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
- //   console.log(JSON.parse(reply));
-    if (reply.length) {
+  var allname = "cocktails:" + req.params.name + ":ingredients";
+
+  client.lrange(allname, "0", "-1", (error, reply) => {
+
+    if (reply.length == 0) {
       req.body.ingredients.forEach((element) => {
-        reply.forEach((entryInList) => {
-          if (entryInList.name == element.name) {
-            client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
-              client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => {
-                console.log("first:"+element.name)
-              });
-            });
-          }
-        })
+
+        client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
+          client.rpush(allname, element.name, (error, listreply) => {
+
+            console.log("dgsjlfawebglk<ejzglireglzhrekygho");
+          });
+        });
       });
+    } else {
+      client.lrange(allname, "0", "-1", (errr, repp) => {
+        console.log("deineMutter " + JSON.stringify(repp));
+      });
+      console.log("Der Scheiss ist schon da, du Hurensohn!");
     }
   });
   next();
@@ -322,7 +327,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
-    console.log(req.params.name);
+  console.log(req.params.name);
   client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
     res.set({
       'Content-Type': "application/json",
