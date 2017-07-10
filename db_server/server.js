@@ -15,13 +15,6 @@ app.set("views", "html_template/");
 app.use('/style',express.static('style'));
 app.use('/misc', express.static('misc'));
 
-var service_provider_cocktails = {
-  host: '127.0.0.1',
-  path: '/cocktails',
-  port: '1337',
-  method: 'GET'
-}
-
 var mytwitter;
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -66,13 +59,15 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   http.get(getSpecificCocktail, (response) => {
     response.setEncoding('utf8');
-    response.on("data", (data)=>{
-      console.log("Data from Dienstgeber: "+JSON.parse(data));
+
+    response.on("data", (data) => {
       data=JSON.parse(data);
+
       res.render("cocktail.pug", {
         cocktail: data.name,
         description: data.desc
       });
+
     });
   });
 });
@@ -83,53 +78,42 @@ app.get("/new/cocktail", (req, res) => {
     });
 });
 
+// TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
-  res.send(JSON.stringify(req.body));
-});
 
-app.get("/testrequest", jsonparser, (req, res) => {
-  http.get(service_provider_cocktails, (response) => {
-    response.setEncoding('utf8');
-    response.on("data", (data) => {
-      res.set({'Content-Type':'application/json'});
-      res.write(data);
-      res.end();
+  var getSpecificCocktail = {
+    host: '127.0.0.1',
+    path: '/cocktails/'+req.body.cocktail_name,
+    port: DIENSTNUTZERPORT,
+    method: 'GET'
+  };
+
+  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: http://127.0.0.1/cocktail/" + req.body.cocktail_name;
+
+  mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
+    http.get(getSpecificCocktail, (response) => {
+      response.setEncoding('utf8');
+      response.on("data", (data) => {
+        data = JSON.parse(data);
+
+        res.render("cocktail.pug", {
+          cocktail: data.name,
+          description: data.desc
+        });
+      });
     });
   });
-});
 
-app.get("/twitter_test/:search", jsonparser, (req, res) => {
-  mytwitter.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
-    if (err) console.log(err);
-
-    var puttt = "";
-    var statuses = data.statuses;
-
-    for (var bla = 0; bla<statuses.length; ++bla) {
-      puttt += "<h1>" + statuses[bla].user.name +"</h1><p>: " + statuses[bla].text + "</p>";
-    }
-
-    res.set({'Content-Type':'text/html'});
-    res.write(JSON.stringify(puttt));
-    res.end();
-  });
-});
-
-app.get("/testtweet/:message", jsonparser, (req, res) => {
-  mytwitter.post('statuses/update', { status: req.params.message }, function(err, data, response) {
-    console.log(data);
-    res.set({'Content-Type':'text/plain'});
-    res.write("Tweet wurde gesendet <3");
-    res.end();
-  });
 });
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
 
-  setInterval(()=>{
-    mytwitter.get("search/tweets", {q: "Milch", count: 1}, (err, data, response) =>{
-      socket.emit('fakenews', data.statuses[0].user.name);
+  setInterval( () => {
+    mytwitter.get("statuses/user_timeline", {name: "@CocktailsOrange", count: 1}, (err, data, response) =>{
+      console.log(JSON.stringify(data[0].text));
+      var statuses = data[0];
+      socket.emit('fakenews', statuses.text);
     });
   }, 5000);
 
