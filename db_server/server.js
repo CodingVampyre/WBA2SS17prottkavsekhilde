@@ -75,10 +75,13 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
             });
           });
+      }, () => {
+        console.log("Thus shit wurx!");
       });
 
       res.render("cocktaillist.pug", {
-        listi: data
+        listi: data,
+        blasti: data2
       });
 
     });
