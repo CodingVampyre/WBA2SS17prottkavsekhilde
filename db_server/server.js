@@ -55,7 +55,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
       data = JSON.parse(data);
 
       data.forEach((element) => {
-          console.log(element);
+          console.log("Test"+element);
       });
 
       res.render("cocktaillist.pug", {
