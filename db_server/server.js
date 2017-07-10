@@ -77,11 +77,10 @@ app.get("/cocktails", jsonparser, (req, res) => {
           });
       }, () => {
         console.log("Thus shit wurx!");
-      });
-
-      res.render("cocktaillist.pug", {
-        listi: data,
-        blasti: data2
+        res.render("cocktaillist.pug", {
+          listi: data,
+          blasti: data2
+         });
       });
 
     });
