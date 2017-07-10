@@ -50,6 +50,8 @@ app.get("/cocktails", jsonparser, (req, res) => {
     method: 'GET'
   }
 
+  var resres;
+
   http.get(cocktailList, (response) => {
 
     response.setEncoding('utf8');
@@ -58,30 +60,29 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
       data.forEach((element) => {
 
-          var getSingle = {
-            host: '127.0.0.1',
-            path: '/cocktails/'+element,
-            port: DIENSTNUTZERPORT,
-            method: 'GET'
-          }
+        var getSingle = {
+          host: '127.0.0.1',
+          path: '/cocktails/'+element,
+          port: DIENSTNUTZERPORT,
+          method: 'GET'
+        }
 
-          console.log("Element: " + element);
+        console.log("Element: " + element);
 
-          http.get(getSingle, (response2) => {
-            response2.setEncoding('utf8');
-            response2.on("data", (data2) => {
-              data2 = JSON.parse(data2);
+        http.get(getSingle, (response2) => {
+          response2.setEncoding('utf8');
+          response2.on("data", (data2) => {
+            data2 = JSON.parse(data2);
 
-              console.log("Data2: " + JSON.stringify(data2));
-              console.log("Thus shit wurx!");
-              res.render("cocktaillist.pug", {
-                listi: data,
-                blasti: data2
-              });
+            console.log("Data2: " + JSON.stringify(data2));
+            resres += data2 + "\n";
+            res.render("cocktaillist.pug", {
+              listi: data,
+              blasti: resres
             });
           });
+        });
       });
-
     });
   });
 });
