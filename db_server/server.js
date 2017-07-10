@@ -1,4 +1,5 @@
 'use strict'
+const PORT = process.argv[2];
 
 var express = require('express');
 var pug = require('pug');
@@ -7,14 +8,11 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var app = express();
 var twit = require('twit'); // USE external API of twitter
-var io = require('socket.io')(http);
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
 app.use('/style',express.static('style'));
 app.use('/misc', express.static('misc'));
-
-const PORT = process.argv[2];
 
 var service_provider_cocktails = {
   host: '127.0.0.1',
@@ -27,6 +25,22 @@ var mytwitter;
 
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
+
+const server = app.listen(PORT, function(){
+
+  if (PORT == undefined) {
+    console.log("Please provide a port number as command parameter");
+    process.exit(-1);
+  }
+
+  fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
+    mytwitter = new twit(JSON.parse(rep));
+  });
+
+  console.log("App is listening on Port " + PORT + "...");
+});
+
+var io = require('socket.io')(server);
 
 app.get("/", (req, res) => {
   res.render("base.pug", {
@@ -112,18 +126,4 @@ app.get('*', (req, res) => {
   res.render("404.pug", {
 
   })
-});
-
-app.listen(PORT, function(){
-
-  if (PORT == undefined) {
-    console.log("Please provide a port number as command parameter");
-    process.exit(-1);
-  }
-
-  fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
-    mytwitter = new twit(JSON.parse(rep));
-  });
-
-  console.log("App is listening on Port " + PORT + "...");
 });

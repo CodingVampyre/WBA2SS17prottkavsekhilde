@@ -1,6 +1,9 @@
 doctype html
 html(lang="de")
   include basic/head.pug
+  script(src="/socket.io/socket.io.js")
+  script.
+      var socket = io();
   body
     #content
       h1 Cocktails Orange
