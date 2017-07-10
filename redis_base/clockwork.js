@@ -173,7 +173,6 @@ app.put("/cocktails", jsonparser, (req, res) => {
 
 app.delete("/cocktails/:name", jsonparser, (req, res) => {
   var candelete = false;
-
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
     for (var j = 0; j < reply.length; j++) {
       if (reply[j] == req.params.name) {
