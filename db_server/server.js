@@ -41,6 +41,28 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/cocktails", jsonparser, (req, res) => {
+  var cocktailList = {
+    host: '127.0.0.1',
+    path: '/cocktails',
+    port: DIENSTNUTZERPORT,
+    method: 'GET'
+  }
+
+  http.get(cocktailList, (response) => {
+    response.setEncoding('utf8');
+    response.on("data", (data) => {
+      data = JSON.parse(data);
+
+      console.log(data);
+
+      res.render("cocktaillist.pug", {
+        mydata: data
+      })
+    });
+  });
+});
+
 app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   var getSpecificCocktail = {
@@ -111,7 +133,6 @@ io.on('connection', (socket) => {
 
   setInterval( () => {
     mytwitter.get("statuses/user_timeline", {name: "@CocktailsOrange", count: 1}, (err, data, response) =>{
-      console.log(JSON.stringify(data[0].text));
       var statuses = data[0];
       socket.emit('fakenews', statuses.text);
     });

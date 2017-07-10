@@ -12,7 +12,6 @@ html(lang="de")
     });
 
     socket.on('fakenews', (data) => {
-      console.log(data);
       document.getElementById("mes").innerHTML = data;
     });
 
@@ -22,4 +21,14 @@ html(lang="de")
       p Wenn du und deine Droogs mal wieder einen Cocktail trinken wollen, right? Dann bist du hier genau richtig. Denn wir wissen, was ihr braucht!
       form(action="/new/cocktail")
         button(type="submit") Neuer Cocktail
+
+      form(action="/new/user")
+        button(type="submit") Neuer Nutzer
+
+      form(action="/new/ingredient")
+        button(type="submit") Neue Zutat
+
+      form(action="/cocktails")
+        button(type="submit") Alle Cocktails
+
       p(id="mes") Hier sollten Tweets stehen
