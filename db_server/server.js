@@ -55,7 +55,22 @@ app.get("/cocktails", jsonparser, (req, res) => {
       data = JSON.parse(data);
 
       data.forEach((element) => {
-          console.log("Test"+element);
+          var getSingle = {
+            host: '127.0.0.1',
+            path: '/cocktails'+element,
+            port: DIENSTNUTZERPORT,
+            method: 'GET'
+          }
+
+          http.get(getSingle, (response2) => {
+            response2.setEncoding('utf8');
+            response2.on("data", (data2) => {
+              data2 = JSON.parse(data2);
+
+              console.log(data);
+
+            });
+          });
       });
 
       res.render("cocktaillist.pug", {
