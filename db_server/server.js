@@ -59,7 +59,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
       data.forEach((element) => {
           var getSingle = {
             host: '127.0.0.1',
-            path: '/cocktails'+element,
+            path: '/cocktails/'+element,
             port: DIENSTNUTZERPORT,
             method: 'GET'
           }
@@ -78,7 +78,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
       res.render("cocktaillist.pug", {
         listi: data
       });
-      
+
     });
   });
 });
