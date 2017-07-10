@@ -4,9 +4,9 @@ html
   body
     #content
         h1 Alle Cocktails
-        ul
-            each val in listi
-            li
+        
+        each val in listi
+            p
                 a(href="/cocktail/"+val)= val
 
         form(action="/")
