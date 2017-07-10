@@ -22,7 +22,6 @@ var service_provider_cocktails = {
 }
 
 var mytwitter;
-
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -48,25 +47,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/impressum", (req, res) => {
-
-  var impressum = fs.readFile('texts/impressum.txt', (err, data) => {
-
-    if(err) { res.send("Error");}
-
-    res.render("impressum.pug", {
-      title: "Impressum",
-      text: data.toString()
-    });
-  });
-
-});
-
 app.get("/cocktail/:cocktail", (req, res) => {
 
   var provider = {
     host: '127.0.0.1',
-    path: '/cocktails',
+    path: '/cocktails/:name',
     port: '1337',
     method: 'GET'
   };
@@ -128,14 +113,17 @@ app.get("/testtweet", jsonparser, (req, res) => {
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
+
   setInterval(()=>{
     mytwitter.get("search/tweets", {q: "Milch", count: 1}, (err, data, response) =>{
       socket.emit('fakenews', data.statuses[0].user.name);
     });
   }, 5000);
+
   io.on('disconnect', () => {
     console.log("Bye Bye, droog!");
   });
+
 });
 
 app.get('*', (req, res) => {
