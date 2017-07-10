@@ -57,6 +57,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
       data = JSON.parse(data);
 
       data.forEach((element) => {
+
           var getSingle = {
             host: '127.0.0.1',
             path: '/cocktails/'+element,
@@ -72,15 +73,13 @@ app.get("/cocktails", jsonparser, (req, res) => {
               data2 = JSON.parse(data2);
 
               console.log("Data2: " + JSON.stringify(data2));
-
+              console.log("Thus shit wurx!");
+              res.render("cocktaillist.pug", {
+                listi: data,
+                blasti: data2
+              });
             });
           });
-      }, () => {
-        console.log("Thus shit wurx!");
-        res.render("cocktaillist.pug", {
-          listi: data,
-          blasti: data2
-         });
       });
 
     });
