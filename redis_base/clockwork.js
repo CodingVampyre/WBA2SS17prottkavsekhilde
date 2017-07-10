@@ -297,13 +297,14 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
   client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
-    console.log(JSON.parse(reply));
+ //   console.log(JSON.parse(reply));
     if (reply.length) {
       req.body.ingredients.forEach((element) => {
         reply.forEach((entryInList) => {
           if (entryInList.name == element.name) {
             client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
               client.rpush("cocktails:" + element.name + ":ingredients", element.name, (error, listreply) => {
+                console.log("first:"+element.name)
               });
             });
           }
@@ -321,14 +322,17 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
-  client.lrange("cocktail:" + req.body.name + ":ingredients", "0", "-1", (error, reply) => {
+    console.log(req.params.name);
+  client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
     res.set({
       'Content-Type': "application/json",
     });
-    res.write(req.body);
+    res.write(reply.toString());
     res.end();
   });
 });
+
+
 
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
