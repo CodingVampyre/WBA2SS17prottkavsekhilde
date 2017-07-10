@@ -78,40 +78,32 @@ app.get("/new/cocktail", (req, res) => {
     });
 });
 
+// TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
-  var mymessage = "Hey! There was a BRAND NEW cocktail on our site, my droogs: " + req.body.cocktail_name;
+  var getSpecificCocktail = {
+    host: '127.0.0.1',
+    path: '/cocktails/'+req.body.cocktail_name,
+    port: DIENSTNUTZERPORT,
+    method: 'GET'
+  };
+
+  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: http://127.0.0.1/cocktail/" + req.body.cocktail_name;
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
-    res.send("/");
+    http.get(getSpecificCocktail, (response) => {
+      response.setEncoding('utf8');
+      response.on("data", (data) => {
+        data = JSON.parse(data);
+
+        res.render("cocktail.pug", {
+          cocktail: data.name,
+          description: data.desc
+        });
+      });
+    });
   });
-  
-});
 
-app.get("/twitter_test/:search", jsonparser, (req, res) => {
-  mytwitter.get("search/tweets", {q: req.params.search, count: 10}, (err, data, response) => {
-    if (err) console.log(err);
-
-    var puttt = "";
-    var statuses = data.statuses;
-
-    for (var bla = 0; bla<statuses.length; ++bla) {
-      puttt += "<h1>" + statuses[bla].user.name +"</h1><p>: " + statuses[bla].text + "</p>";
-    }
-
-    res.set({'Content-Type':'text/html'});
-    res.write(JSON.stringify(puttt));
-    res.end();
-  });
-});
-
-app.get("/testtweet/:message", jsonparser, (req, res) => {
-  mytwitter.post('statuses/update', { status: req.params.message }, function(err, data, response) {
-    console.log(data);
-    res.set({'Content-Type':'text/plain'});
-    res.write("Tweet wurde gesendet <3");
-    res.end();
-  });
 });
 
 io.on('connection', (socket) => {
