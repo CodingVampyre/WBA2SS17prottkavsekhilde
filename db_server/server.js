@@ -71,7 +71,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
             response2.on("data", (data2) => {
               data2 = JSON.parse(data2);
 
-              console.log("Data2: " + data2);
+              console.log("Data2: " + JSON.stringify(data2));
 
             });
           });
