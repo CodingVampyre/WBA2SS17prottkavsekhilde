@@ -54,7 +54,9 @@ app.get("/cocktails", jsonparser, (req, res) => {
     response.on("data", (data) => {
       data = JSON.parse(data);
 
-      console.log(data);
+      data.forEach((element) => {
+          console.log(element);
+      });
 
       res.render("cocktaillist.pug", {
         listi: data
