@@ -105,6 +105,8 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
     response.on("data", (data) => {
       data=JSON.parse(data);
 
+      console(data);
+
       res.render("cocktail.pug", {
         cocktail: data.name,
         description: data.desc
