@@ -115,9 +115,12 @@ app.get("/twitter_test/:search", jsonparser, (req, res) => {
   });
 });
 
-app.get("/testtweet", jsonparser, (req, res) => {
-  mytwitter.post('statuses/update', { status: 'Welcome to the Real World!' }, function(err, data, response) {
+app.get("/testtweet/:message", jsonparser, (req, res) => {
+  mytwitter.post('statuses/update', { status: req.params.message }, function(err, data, response) {
     console.log(data);
+    res.set({'Content-Type':'text/plain'});
+    res.write("Tweet wurde gesendet <3");
+    res.end();
   });
 });
 
