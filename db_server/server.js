@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/cocktail/:cocktail", (req, res) => {
+app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   var provider = {
     host: '127.0.0.1',
