@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var app = express();
 var twit = require('twit'); // USE external API of twitter
+var io = require('socket.io')(http);
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
@@ -97,6 +98,13 @@ app.get("/twitter_test/:search", jsonparser, (req, res) => {
 app.get("/testtweet", jsonparser, (req, res) => {
   mytwitter.post('statuses/update', { status: 'Welcome to the Real World!' }, function(err, data, response) {
     console.log(data);
+  });
+});
+
+io.on('connection', (socket) => {
+  console.log("Another day began, another user connected.");
+  io.on('disconnect', () => {
+    console.log("Bye Bye, droog!");
   });
 });
 
