@@ -4,8 +4,10 @@ html
   body
     #content
         h1 Alle Cocktails
-        each val in listi
-            a(href="/cocktail/"+val)= val + "\n"
+        ul
+            each val in listi
+            li
+                a(href="/cocktail/"+val)= val
 
         form(action="/")
             button(type="submit" value="Alright!") Rightyright!
