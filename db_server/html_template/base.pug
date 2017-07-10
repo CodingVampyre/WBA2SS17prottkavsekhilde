@@ -5,8 +5,11 @@ html(lang="de")
   script.
       var socket = io();
       socket.on('connect', (data) =>{
-        alert(data);
+        // Here is what happens when a connection is established
       });
+      socket.on('fakenews', (data)=> {
+        alert(data);
+      })
   body
     #content
       h1 Cocktails Orange

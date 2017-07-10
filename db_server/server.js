@@ -64,10 +64,21 @@ app.get("/impressum", (req, res) => {
 
 app.get("/cocktail/:cocktail", (req, res) => {
 
-  res.render("cocktail.pug", {
-    title: req.params.cocktail,
-    cocktail: name,
-    description: desq
+  var provider = {
+    host: '127.0.0.1',
+    path: '/cocktails',
+    port: '1337',
+    method: 'GET'
+  };
+
+  http.get(provider, (response) => {
+    response.setEncoding('utf8');
+    response.on("data", (data)=>{
+      res.render("cocktail.pug", {
+        cocktail: response.name,
+        description: res.desc
+      });
+    });
   });
 });
 
@@ -117,9 +128,11 @@ app.get("/testtweet", jsonparser, (req, res) => {
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
-  mytwitter.get("search/tweets", {q: "Milch", count: 3}, (err, data, response) => {
-    socket.emit(data.statuses.length);
-  });
+  setInterval(()=>{
+    mytwitter.get("search/tweets", {q: "Milch", count: 1}, (err, data, response) =>{
+      socket.emit('fakenews', data.statuses[0].user.name);
+    });
+  }, 5000);
   io.on('disconnect', () => {
     console.log("Bye Bye, droog!");
   });
