@@ -60,8 +60,8 @@ app.get("/cocktail/:cocktail", (req, res) => {
     response.setEncoding('utf8');
     response.on("data", (data)=>{
       res.render("cocktail.pug", {
-        cocktail: response.name,
-        description: res.desc
+        cocktail: data.name,
+        description: data.desc
       });
     });
   });
