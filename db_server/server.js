@@ -69,20 +69,10 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
         console.log("Element: " + element);
 
-        // TODO Find out HOW THE FUCK ONE SHALL WORK WITH CALLBACK OF FOREACH!!!
-        http.get(getSingle, (response2) => {
-          response2.setEncoding('utf8');
-          response2.on("data", (data2) => {
-            data2 = JSON.parse(data2);
-
-            console.log("Data2: " + JSON.stringify(data2));
-            resres += data2 + "\n";
-            res.render("cocktaillist.pug", {
-              listi: data,
-              blasti: resres
-            });
-          });
+        res.render("cocktaillist.pug", {
+          listi: data
         });
+        
       });
     });
   });
