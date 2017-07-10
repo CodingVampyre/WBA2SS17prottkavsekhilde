@@ -64,12 +64,14 @@ app.get("/cocktails", jsonparser, (req, res) => {
             method: 'GET'
           }
 
+          console.log("Element: " + element);
+
           http.get(getSingle, (response2) => {
             response2.setEncoding('utf8');
             response2.on("data", (data2) => {
               data2 = JSON.parse(data2);
 
-              console.log(data);
+              console.log("Data: " + data);
 
             });
           });
@@ -105,7 +107,7 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
     response.on("data", (data) => {
       data=JSON.parse(data);
 
-      console("Göbbels: " + data);
+      console.log("Göbbels: " + data);
 
       res.render("cocktail.pug", {
         cocktail: data.name,
