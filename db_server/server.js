@@ -69,6 +69,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
         console.log("Element: " + element);
 
+        // TODO Find out HOW THE FUCK ONE SHALL WORK WITH CALLBACK OF FOREACH!!!
         http.get(getSingle, (response2) => {
           response2.setEncoding('utf8');
           response2.on("data", (data2) => {
