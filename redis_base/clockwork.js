@@ -322,7 +322,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
-  res.write("Penis");
+  res.write("Oki Doki");
   res.end();
 });
 
