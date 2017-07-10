@@ -1,19 +1,26 @@
 doctype html
 html(lang="de")
+
   include basic/head.pug
   script(src="/socket.io/socket.io.js")
   script.
-      var socket = io();
-      socket.on('connect', (data) =>{
-        // Here is what happens when a connection is established
-      });
-      socket.on('fakenews', (data)=> {
-        alert(data);
-      })
+    var socket = io();
+    var myMessage;
+
+    socket.on('connect', (data) => {
+      // Here is what happens when a connection is established
+    });
+
+    socket.on('fakenews', (data) => {
+      console.log(data);
+      document.getElementById("mes").innerHTML = data;
+    });
+
   body
     #content
       h1 Cocktails Orange
       p Wenn du und deine Droogs mal wieder einen Cocktail trinken wollen, right? Dann bist du hier genau richtig. Denn wir wissen, was ihr braucht!
       form(action="/new/cocktail")
         button(type="submit") Neuer Cocktail
+      p(id="mes") Hier sollten Tweets stehen
       include basic/footer.pug

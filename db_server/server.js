@@ -15,13 +15,6 @@ app.set("views", "html_template/");
 app.use('/style',express.static('style'));
 app.use('/misc', express.static('misc'));
 
-var service_provider_cocktails = {
-  host: '127.0.0.1',
-  path: '/cocktails',
-  port: '1337',
-  method: 'GET'
-}
-
 var mytwitter;
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -66,13 +59,15 @@ app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   http.get(getSpecificCocktail, (response) => {
     response.setEncoding('utf8');
-    response.on("data", (data)=>{
-      console.log("Data from Dienstgeber: "+JSON.parse(data));
+
+    response.on("data", (data) => {
       data=JSON.parse(data);
+
       res.render("cocktail.pug", {
         cocktail: data.name,
         description: data.desc
       });
+
     });
   });
 });
@@ -84,18 +79,14 @@ app.get("/new/cocktail", (req, res) => {
 });
 
 app.post("/createnewcocktail", jsonparser, (req, res) => {
-  res.send(JSON.stringify(req.body));
-});
 
-app.get("/testrequest", jsonparser, (req, res) => {
-  http.get(service_provider_cocktails, (response) => {
-    response.setEncoding('utf8');
-    response.on("data", (data) => {
-      res.set({'Content-Type':'application/json'});
-      res.write(data);
-      res.end();
-    });
+  var mymessage = "Hey! There was a BRAND NEW cocktail on our site, my droogs: " + req.body.cocktail_name;
+
+  mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
+    res.send("/");
   });
+
+  res.send(JSON.stringify(req.body));
 });
 
 app.get("/twitter_test/:search", jsonparser, (req, res) => {
@@ -127,9 +118,11 @@ app.get("/testtweet/:message", jsonparser, (req, res) => {
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
 
-  setInterval(()=>{
-    mytwitter.get("search/tweets", {q: "Milch", count: 1}, (err, data, response) =>{
-      socket.emit('fakenews', data.statuses[0].user.name);
+  setInterval( () => {
+    mytwitter.get("statuses/user_timeline", {name: "@CocktailsOrange", count: 1}, (err, data, response) =>{
+      console.log(JSON.stringify(data[0].text));
+      var statuses = data[0];
+      socket.emit('fakenews', statuses.text);
     });
   }, 5000);
 

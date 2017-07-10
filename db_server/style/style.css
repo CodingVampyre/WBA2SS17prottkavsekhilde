@@ -137,3 +137,15 @@ button:active {
   font-size: 32px;
   font-style: italic;
 }
+
+#mes {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 0 10px 0 black;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+  background-color: #4099FF;
+  color: white;
+}
