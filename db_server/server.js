@@ -127,7 +127,16 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     var myform = {url: postSpecificCocktail, form: req.body};
 
     request.post(myform, (error, response, body) => {
-      console.log("Respone: " + response);
+      console.log("Respone: " + JSON.parse(response));
+
+      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
+      request.get(newpost, (error, response, body) => {
+        res.render("cocktail.pug", {
+          cocktail: body.name,
+          description: body.desc
+        });
+      });
+
     });
   });
 
