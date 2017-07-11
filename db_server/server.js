@@ -91,7 +91,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
         if (!error2) {
           res.render("cocktail.pug", {
             cocktail: body.name,
-            description: body.desc, // TODO Add Ingredients
+            description: body.desc,
             ingredients: body2
           });
         } else {
