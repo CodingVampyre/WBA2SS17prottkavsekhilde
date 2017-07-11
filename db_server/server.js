@@ -89,7 +89,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
         console.log("myingredients: " + body2);
 
-        body2 = JSON.parse(body2);
+        body2 = JSON.stringify(body2);
 
         console.log("myingredients(STRINGIFIED: " + body2);
 
