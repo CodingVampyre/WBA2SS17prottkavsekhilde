@@ -132,15 +132,31 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       console.log("Error: " + error);
 
       var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
+<<<<<<< HEAD
       request.get(newpost, (error2, response2, body2) => {
+=======
+      var newing = "http//127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name+"/ingredients";
+
+      request.get(newpost, (error, response, body) => {
+>>>>>>> d98a3c11490d0f490e163dd32c381586fba014a2
 
         body = JSON.parse(body2);
 
+<<<<<<< HEAD
         res.render("cocktail.pug", {
           cocktail: body.name,
           description: body.desc,
           ingredients: body2
+=======
+        request.get(newing, (error2, response2, body2) => {
+          res.render("cocktail.pug", {
+            cocktail: body.name,
+            description: body.desc,
+            ingredients: body2
+          });
+>>>>>>> d98a3c11490d0f490e163dd32c381586fba014a2
         });
+
       });
 
     });
