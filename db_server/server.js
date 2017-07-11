@@ -134,15 +134,16 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
       var newing = "http//127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name+"/ingredients";
 
-      request.get(newpost, (error, response, body) => {
+      request.get(newpost, (error2, response2, body2) => {
 
         body = JSON.parse(body);
+        console.log("Body: " + body2);
 
-        request.get(newing, (error2, response2, body2) => {
+        request.get(newing, (error3, response3, body3) => {
           res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: body2
+            cocktail: body2.name,
+            description: body2.desc,
+            ingredients: body3
           });
         });
 
