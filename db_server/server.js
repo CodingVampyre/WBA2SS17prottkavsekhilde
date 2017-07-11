@@ -71,7 +71,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
 // TODO TEST;
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktails;
+  var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktail;
   var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
 
   request.get(mycocktail, (error, response, body) => {
