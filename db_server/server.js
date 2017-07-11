@@ -191,6 +191,9 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
       });
 
     }
+
+    console.log("Bla bla bla!");
+
   });
 
 });
