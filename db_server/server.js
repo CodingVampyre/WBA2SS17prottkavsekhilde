@@ -198,7 +198,7 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 
 });
 
-app.get("/users", (err, reply) => {
+app.get("/users", (err, res) => {
   res.render("users.pug", {
 
   });
