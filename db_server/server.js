@@ -73,11 +73,6 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
   request.get(mycocktail, (error, response, body) => {
 
-    //console.log("Request: "+mycocktail);
-    //console.log("error: "+error);
-    //console.log("response: "+response);
-    //console.log("body: "+body);
-
     if(!error) {
       body = JSON.parse(body);
 
@@ -168,10 +163,6 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 
   request.get(domain, (error, response, body) => {
 
-    console.log("Error: " + error);
-    console.log("Response: " + response);
-    console.log("Body: "+ body);
-
     if (!error) {
 
       body = JSON.parse(body);
@@ -219,6 +210,10 @@ io.on('connection', (socket) => {
   // Real Time Update of all existing Users, TODO Test
   setInterval( () => {
     request.get(users, (error, response, body) => {
+
+      console.log("Link: "+ users);
+      console.log("body: " + body);
+
       if (!error) {
         socket.emit('userlist', body);
       } else {
