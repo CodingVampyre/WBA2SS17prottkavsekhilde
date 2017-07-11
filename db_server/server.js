@@ -163,7 +163,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 app.get("/ingredient/:name", jsonparser, (req, res) => {
   var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/ingredients/"+req.params.name;
 
-  cosole.lg("--------");
+  console.log("--------");
   console.log("Request: " + domain);
 
   request.get(domain, (error, response, body) => {
