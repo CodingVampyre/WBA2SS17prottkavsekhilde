@@ -172,7 +172,7 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
     console.log("Response: " + response);
     console.log("Body: "+ body);
 
-    if (error === null) {
+    if (!error) {
 
       console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
 
@@ -180,11 +180,16 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
         name: body.name,
         desc: body.desc
       });
+
     } else {
+
+      console.log("There WAS in fact an Error, bitch!");
+
       res.render("ingredient.pug", {
         name: "Swiggity Swooty",
         desc: "No Ingredientudy!"
       });
+
     }
   });
 
