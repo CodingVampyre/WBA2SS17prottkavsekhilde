@@ -122,7 +122,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
 
-    http.post(postSpecificCocktail, (response) => {
+    require.post(postSpecificCocktail, (response) => {
       console.log("Response: " + response);
     });
   });
