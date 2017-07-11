@@ -133,9 +133,6 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
       request.get(newpost, (error2, response2, body2) => {
 
-        body = JSON.stringify(body);
-        body2 = JSON.stringify(body2);
-
         console.log("Body:" + body);
         console.log("Body2: " + body2);
 
