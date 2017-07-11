@@ -131,6 +131,9 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
       var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
       request.get(newpost, (error, response, body) => {
+
+        body = JSON.parse(body);
+
         res.render("cocktail.pug", {
           cocktail: body.name,
           description: body.desc
