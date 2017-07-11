@@ -116,9 +116,9 @@ app.get("/new/cocktail", (req, res) => {
 // TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktail/"+req.body.cocktail_name;
+  var getSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktail/"+req.body.name;
   var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails";
-  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.cocktail_name;
+  var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
 
