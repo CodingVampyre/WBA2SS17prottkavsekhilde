@@ -305,8 +305,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
         client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
           client.rpush(allname, element.name, (error, listreply) => {
-
-            console.log("dgsjlfawebglk<ejzglireglzhrekygho");
+            
           });
         });
       });
