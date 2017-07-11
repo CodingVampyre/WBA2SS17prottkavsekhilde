@@ -202,6 +202,8 @@ app.get("/users", (err, res) => {
   });
 });
 
+// TODO: GENAU HIER! JA! HIER: app.get("/users/:name") MIT EINER PUG NAMENS "singleuser.pug", die genau so funktionier wie die cocktailsachen.
+
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
   var users = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users"
