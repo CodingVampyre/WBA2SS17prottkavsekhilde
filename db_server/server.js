@@ -72,19 +72,18 @@ app.get("/cocktails", jsonparser, (req, res) => {
 // TODO TEST;
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktail;
-  var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
 
   request.get(mycocktail, (error, response, body) => {
 
-    console.log("Request: "+mycocktail);
-    console.log("error: "+error);
-    console.log("response: "+response);
-    console.log("body: "+body);
+    //console.log("Request: "+mycocktail);
+    //console.log("error: "+error);
+    //console.log("response: "+response);
+    //console.log("body: "+body);
 
     if(!error) {
       body = JSON.parse(body);
 
-      var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.params.cocktail+"/ingredients";
+      var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.params.cocktail+"/ingredients";
 
       request.get(myingredients, (error2, response2, body2) => {
 
