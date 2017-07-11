@@ -163,7 +163,15 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 app.get("/ingredient/:name", jsonparser, (req, res) => {
   var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/ingredients/"+req.params.name;
 
+  cosole.lg("--------");
+  console.log("Request: " + domain);
+
   request.get(domain, (error, response, body) => {
+
+    console.log("Error: " + error);
+    console.log("Response: " + response);
+    console.log("Body: "+ body);
+
     if (!error) {
       pug.render("ingredient.pug", {
         name: "Adi",
