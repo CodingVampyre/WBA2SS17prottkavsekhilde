@@ -147,6 +147,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   })
 });
 
+// FINISHED
 app.get("/new/cocktail", (req, res) => {
     res.render("cocktail_form.pug", {
       title: "New Cocktail"
@@ -170,8 +171,8 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     method: 'POST'
   };
 
-  console.log(JSON.stringify(req.body));
-
+  var getSpecificCocktail = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktail/"+req.body.cocktail_name;
+  var postSpecificCocktail = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails";
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.cocktail_name;
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
