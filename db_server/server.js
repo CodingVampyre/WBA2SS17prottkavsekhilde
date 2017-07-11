@@ -122,7 +122,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
       var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
 
-      request.get(cycocktail, (error2, response2, body2) => {
+      request.get(mycocktail, (error2, response2, body2) => {
 
         if (!error2) {
           res.render("cocktail.pug", {
