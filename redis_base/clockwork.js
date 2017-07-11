@@ -124,7 +124,7 @@ app.get("/cocktails/:name", (req, res) => {
 
 app.post("/cocktails", jsonparser, (req, res) => {
   var canset = true;
-
+  //  console.log(req);
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
 
     for (var i = 0; i < reply.length; i++) {
@@ -311,9 +311,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
       });
     } else {
       client.lrange(allname, "0", "-1", (errr, repp) => {
-        console.log("deineMutter " + JSON.stringify(repp));
       });
-      console.log("Der Scheiss ist schon da, du Hurensohn!");
     }
   });
   next();
