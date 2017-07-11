@@ -134,9 +134,10 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       request.get(newpost, (error2, response2, body2) => {
 
         request.get(newing, (error3, response3, body3) => {
-
+          console.log("newing: "+ newing);
           console.log("Body2: " + body2);
-          console.log("body3:" + body3);
+
+          console.log("For Ingredients: Error is " + error3 + " and body is " + body3);
 
           res.render("cocktail.pug", {
             cocktail: body2.name,
