@@ -153,7 +153,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
             res.render("cocktail.pug", {
               cocktail: body2.name,
               description: body2.desc,
-              ingredients: JSON.stringify("[]")
+              ingredients: JSON.parse("[]")
             });
           }
           
