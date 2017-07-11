@@ -139,11 +139,20 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
           console.log("For Ingredients: Error is " + error3 + " and body is " + body3);
 
-          res.render("cocktail.pug", {
-            cocktail: body2.name,
-            description: body2.desc,
-            ingredients: body3
-          });
+          if (!error3) {
+            res.render("cocktail.pug", {
+              cocktail: body2.name,
+              description: body2.desc,
+              ingredients: body3
+            });
+          } else {
+            res.render("cocktail.pug", {
+              cocktail: body2.name,
+              description: body2.desc,
+              ingredients: "[]"
+            });
+          }
+          
 
         });
       });
