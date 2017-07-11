@@ -2,9 +2,10 @@ doctype html
 html(lang="de")
   include basic/head.pug
   body
-    dev#content
+    #content
       h1 #{cocktail}
-      div#content
-        p#desq #{description}
+      p#desq #{description}
+      each val in ingredients
+        p.ingredient= val
 
       a(href="/cocktails") ZURÜÜÜCK!
