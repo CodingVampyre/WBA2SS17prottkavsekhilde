@@ -137,6 +137,9 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
           console.log("newing: "+ newing);
           console.log("Body2: " + body2);
 
+          body = JSON.parse(body);
+          body2 = JSON.parse(body2);
+
           console.log("For Ingredients: Error is " + error3 + " and body is " + body3);
           console.log("Test: " + body2.name);
 
