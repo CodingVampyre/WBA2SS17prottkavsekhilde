@@ -211,6 +211,7 @@ io.on('connection', (socket) => {
   setInterval( () => {
     request.get(users, (error, response, body) => {
 
+      console.log("Error: " + error);
       console.log("Link: "+ users);
       console.log("body: " + body);
 
