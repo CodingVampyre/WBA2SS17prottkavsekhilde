@@ -116,20 +116,6 @@ app.get("/new/cocktail", (req, res) => {
 // TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = {
-    host: '127.0.0.1',
-    path: '/cocktail/'+req.body.cocktail_name,
-    port: DIENSTNUTZERPORT,
-    method: 'GET'
-  };
-
-  var postSpecificCocktail = {
-    host: '127.0.0.1',
-    path: '/cocktails',
-    port: DIENSTNUTZERPORT,
-    method: 'POST'
-  };
-
   var getSpecificCocktail = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktail/"+req.body.cocktail_name;
   var postSpecificCocktail = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails";
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.cocktail_name;
@@ -137,19 +123,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
 
     http.post(postSpecificCocktail, (response) => {
-
-    });
-
-    http.get(getSpecificCocktail, (response) => {
-      response.setEncoding('utf8');
-      response.on("data", (data) => {
-        
-        console.log(data);
-        res.render("cocktail.pug", {
-          cocktail: data.name,
-          description: data.desc
-        });
-      });
+      console.log("Response: " + response);
     });
   });
 
@@ -207,13 +181,9 @@ io.on('connection', (socket) => {
     });
   }, 5000);
 
-  // Real Time Update of all existing Users, TODO Test
+  // Real Time Update of all existing Users
   setInterval( () => {
     request.get(users, (error, response, body) => {
-
-      console.log("Error: " + error);
-      console.log("Link: "+ users);
-      console.log("body: " + body);
 
       if (!error) {
         socket.emit('userlist', body);
