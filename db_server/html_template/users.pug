@@ -11,7 +11,16 @@ html
     });
 
     socket.on('userlist', (data) => {
-      document.getElementById("lili").innerHTML = data;
+
+      var swiggity = "";
+
+      data = JSON.parse(data);
+      for (var i = 0; i < data.length; ++i) {
+        console.log(data.name);
+        swiggity += "<p>"+data.name+"</p>";
+      }
+
+      document.getElementById("lili").innerHTML = swiggity;
     });
   body
     #content

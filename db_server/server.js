@@ -48,9 +48,6 @@ app.get("/cocktails", jsonparser, (req, res) => {
   var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
 
   request.get(myurl, (error, response, body) => {
-    //console.log("Error: "+ error);
-    //console.log("Response: " + response);
-    //console.log("Body: " + body);
 
     if (!error) {
       body = JSON.parse(body);
