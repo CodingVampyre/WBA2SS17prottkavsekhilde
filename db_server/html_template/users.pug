@@ -11,12 +11,12 @@ html
     });
 
     socket.on('userlist', (data) => {
-      document.getElementById("mes").innerHTML = data;
+      document.getElementById("lili").innerHTML = data;
     });
   body
     #content
         h1 Alle Nutzer
-        p#mes Nutzer.
+        p#lili Nutzer.
             a(href="/users/"+val)= val
 
         form(action="/")
