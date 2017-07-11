@@ -132,14 +132,14 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       console.log("Error: " + error);
 
       var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
-      request.get(newpost, (error, response, body) => {
+      request.get(newpost, (error2, response2, body2) => {
 
-        body = JSON.parse(body);
+        body = JSON.parse(body2);
 
         res.render("cocktail.pug", {
           cocktail: body.name,
           description: body.desc,
-          ingredients: null
+          ingredients: body2
         });
       });
 
