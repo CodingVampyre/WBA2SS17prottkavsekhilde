@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/rcocktails", jsonparser, (req, res) => {
+app.get("/cocktails", jsonparser, (req, res) => {
 
   var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
 
@@ -69,54 +69,18 @@ app.get("/rcocktails", jsonparser, (req, res) => {
 
 });
 
-// DEPRECATED - DELETE AFTER TESTING ABOVE!
-app.get("/cocktails", jsonparser, (req, res) => {
-
-  var cocktailList = {
-    host: '127.0.0.1',
-    path: '/cocktails',
-    port: DIENSTNUTZERPORT,
-    method: 'GET'
-  }
-
-  var resres;
-
-  var req = http.get(cocktailList, (response) => {
-
-    response.setEncoding('utf8');
-    response.on("data", (data) => {
-      data = JSON.parse(data);
-
-      data.forEach((element) => {
-
-        var getSingle = {
-          host: '127.0.0.1',
-          path: '/cocktails/'+element,
-          port: DIENSTNUTZERPORT,
-          method: 'GET'
-        }
-
-        console.log("Element: " + element);
-
-        res.render("cocktaillist.pug", {
-          listi: data
-        });
-
-      });
-    });
-  });
-
-  req.on('err', (e) => {
-    console.log("Lemmeh Smash... Please! - "+e);
-  });
-});
-
 // TODO TEST;
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktails;
   var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
 
   request.get(mycocktail, (error, response, body) => {
+
+    console.log("Request: "+mycocktail);
+    console.log("error: "+error);
+    console.log("response: "+response);
+    console.log("body: "+body);
+
     if(!error) {
       body = JSON.parse(body);
 
