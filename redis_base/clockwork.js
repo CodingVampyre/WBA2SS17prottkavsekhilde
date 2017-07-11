@@ -329,9 +329,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   console.log(req.params.name);
   client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
-    res.set({
-      'Content-Type': "application/json",
-    });
+    res.set({'Content-Type': "application/json",});
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -363,7 +361,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-  res.set({ 'Content-Type': 'application/json' });
+  res.set({'Content-Type': 'application/json'});
   res.write(JSON.stringify(reply));
   res.end();
 });
