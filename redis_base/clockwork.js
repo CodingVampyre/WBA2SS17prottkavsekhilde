@@ -368,5 +368,5 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.listen(PORT, '0.0.0.0', function () {
-  console.log("Zeit für ein Rein-Raus-Spiel auf Port: " + PORT);
+  console.log("Port is ready for take off: " + PORT);
 });
