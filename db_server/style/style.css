@@ -142,7 +142,8 @@ button:active {
 #mes {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateY(-50%);
   box-shadow: 0 0 10px 0 black;
   padding: 20px;
   margin: 20px;

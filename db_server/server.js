@@ -46,7 +46,7 @@ app.get("/rcocktails", jsonparser, (req, res) => {
 
   var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
 
-  var requ = request.get(myurl, (error, response, body) => {
+  request.get(myurl, (error, response, body) => {
     console.log("Error: "+ error);
     console.log("Response: " + response);
     console.log("Body: " + body);
@@ -111,6 +111,32 @@ app.get("/cocktails", jsonparser, (req, res) => {
   });
 });
 
+// TODO TEST; APPLY INGREDIENTS
+app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
+  var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktails;
+  var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
+
+  request.get(mycocktail, (error, response, body) => {
+    if(!error) {
+      body = JSON.parse(body);
+
+      res.render("cocktail.pug", {
+        cocktail: body.name,
+        description: body.desc
+      });
+
+    } else {
+
+    }
+  })
+
+  res.set({'Content-Type':'application/json'});
+  res.write(mycocktails);
+  res.write(myingredients);
+  res.end();
+});
+
+// TODO SOON DEPRECATED
 app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
 
   var getSpecificCocktail = {
