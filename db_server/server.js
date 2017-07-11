@@ -220,13 +220,26 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
+  var users = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users"
 
+  // Real Time Updates Of Tweets by our account
   setInterval( () => {
     mytwitter.get("statuses/user_timeline", {name: "@CocktailsOrange", count: 1}, (err, data, response) =>{
       var statuses = data[0];
       socket.emit('fakenews', statuses.text);
     });
   }, 5000);
+
+  // Real Time Update of all existing Users, TODO Test
+  setInterval( () => {
+    request.get(users, (error, response, body) => {
+      if (!error) {
+        socket.emit('userlist', body);
+      } else {
+        socket.emit('userlist', null);
+      }
+    })
+  }, 2000);
 
   io.on('disconnect', () => {
     console.log("Bye Bye, droog!");
