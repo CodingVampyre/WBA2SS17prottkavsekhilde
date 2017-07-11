@@ -124,7 +124,7 @@ app.get("/cocktails/:name", (req, res) => {
 
 app.post("/cocktails", jsonparser, (req, res) => {
   var canset = true;
-  //  console.log(req);
+    console.log(req);
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
 
     for (var i = 0; i < reply.length; i++) {
