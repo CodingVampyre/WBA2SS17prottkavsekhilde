@@ -84,7 +84,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
     if(!error) {
       body = JSON.parse(body);
 
-      var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
+      var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.params.cocktail+"/ingredients";
 
       request.get(myingredients, (error2, response2, body2) => {
 
