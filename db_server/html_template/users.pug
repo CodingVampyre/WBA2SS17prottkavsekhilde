@@ -19,7 +19,7 @@ html
 
       for (var i = 0; i < data.length; ++i) {
         console.log("Data[i]: "+data[i]);
-        swiggity += "<p>"+data+"</p>";
+        swiggity += "<a href='/users/" + data[i] + "'>"+data[i]+"</a>";
       }
 
       document.getElementById("lili").innerHTML = swiggity;
