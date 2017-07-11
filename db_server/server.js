@@ -174,6 +174,8 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 
     if (!error) {
 
+      body = JSON.parse(body);
+
       console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
 
       res.render("ingredient.pug", {
@@ -191,8 +193,6 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
       });
 
     }
-
-    console.log("Bla bla bla!");
 
   });
 
