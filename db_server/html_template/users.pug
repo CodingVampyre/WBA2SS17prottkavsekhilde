@@ -13,8 +13,8 @@ html
     socket.on('userlist', (data) => {
 
       var swiggity = "";
+      console.log(data);
 
-      data = JSON.stringify(data);
       for (var i = 0; i < data.length; ++i) {
         console.log(data.name);
         swiggity += "<p>"+data.name+"</p>";
