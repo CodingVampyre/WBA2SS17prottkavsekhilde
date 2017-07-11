@@ -1,0 +1,23 @@
+doctype html
+html
+  include basic/head.pug
+  script(src="/socket.io/socket.io.js")
+  script.
+    var socket = io();
+    var myMessage;
+
+    socket.on('connect', (data) => {
+      // Here is what happens when a connection is established
+    });
+
+    socket.on('userlist', (data) => {
+      document.getElementById("mes").innerHTML = data;
+    });
+  body
+    #content
+        h1 Alle Nutzer
+        p#mes Nutzer.
+            a(href="/users/"+val)= val
+
+        form(action="/")
+            button(type="submit" value="Alright!") Rightyright!

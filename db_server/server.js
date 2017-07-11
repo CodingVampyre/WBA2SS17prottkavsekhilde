@@ -173,15 +173,27 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
     console.log("Body: "+ body);
 
     if (!error) {
-      pug.render("ingredient.pug", {
-        name: "Adi",
-        desc: "Nicht Hitl."
+
+      console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
+
+      res.render("ingredient.pug", {
+        name: body.name,
+        desc: body.desc
       });
     } else {
-      res.send("No!");
+      res.render("ingredient.pug", {
+        name: "Swiggity Swooty",
+        desc: "No Ingredientudy!"
+      });
     }
   });
 
+});
+
+app.get("/users", (err, reply) => {
+  res.render("users.pug", {
+
+  });
 });
 
 io.on('connection', (socket) => {
