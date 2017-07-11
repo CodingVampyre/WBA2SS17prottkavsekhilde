@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
 var jsonparser = bodyParser.json();
 
 // KAVSEK
-app.get("/user", (req, res) => {
+app.get("/users", (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
     res.write(JSON.stringify(reply));
@@ -19,7 +19,7 @@ app.get("/user", (req, res) => {
   });
 });
 
-app.get("/user/:id", (req, res) => {
+app.get("/users/:id", (req, res) => {
   client.hgetall("user:" + req.params.id, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
     res.write(JSON.stringify(reply));
@@ -27,7 +27,7 @@ app.get("/user/:id", (req, res) => {
   });
 });
 
-app.post("/user", jsonparser, (req, res) => {
+app.post("/users", jsonparser, (req, res) => {
   var canset = true;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
@@ -52,7 +52,7 @@ app.post("/user", jsonparser, (req, res) => {
   });
 });
 
-app.put("/user", jsonparser, (req, res) => {
+app.put("/users", jsonparser, (req, res) => {
   var canupdate = false;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
@@ -78,7 +78,7 @@ app.put("/user", jsonparser, (req, res) => {
   });
 });
 
-app.delete("/user/:id", jsonparser, (req, res) => {
+app.delete("/users/:id", jsonparser, (req, res) => {
   var candelete = false;
 
   client.lrange("list:users", "0", "-1", (error, reply) => {
