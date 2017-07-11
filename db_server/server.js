@@ -91,6 +91,8 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
         body2 = JSON.stringify(body2);
 
+        console.log("myingredients(STRINGIFIED: " + body2);
+
         if (!error2) {
           res.render("cocktail.pug", {
             cocktail: body.name,
