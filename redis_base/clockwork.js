@@ -332,7 +332,7 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
     res.set({
       'Content-Type': "application/json",
     });
-    res.write(JSON.parse(reply));
+    res.write(JSON.stringify(reply));
     res.end();
   });
 });
