@@ -111,7 +111,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
   });
 });
 
-// TODO TEST; APPLY INGREDIENTS
+// TODO TEST;
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktails;
   var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
@@ -120,54 +120,31 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
     if(!error) {
       body = JSON.parse(body);
 
-      res.render("cocktail.pug", {
-        cocktail: body.name,
-        description: body.desc
+      var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
+
+      request.get(cycocktail, (error2, response2, body2) => {
+
+        if (!error2) {
+          res.render("cocktail.pug", {
+            cocktail: body.name,
+            description: body.desc, // TODO Add Ingredients
+            ingredients: body2
+          });
+        } else {
+          res.render("cocktail.pug", {
+            cocktail: body.name,
+            description: body.desc,
+            ingredients: null
+          });
+        }
       });
-
     } else {
-
+      res.render("cocktail.pug", {
+        cocktail: "Fehler",
+        description: "leider Konnten wir ihren Cock...Tail nicht finden."
+      });
     }
   })
-
-  res.set({'Content-Type':'application/json'});
-  res.write(mycocktails);
-  res.write(myingredients);
-  res.end();
-});
-
-// TODO SOON DEPRECATED
-app.get("/cocktail/:cocktail", jsonparser, (req, res) => {
-
-  var getSpecificCocktail = {
-    host: '127.0.0.1',
-    path: '/cocktails/'+req.params.cocktail,
-    port: DIENSTNUTZERPORT,
-    method: 'GET'
-  };
-
-  var getSpecificCocktailIngredients = {
-    host: '127.0.0.1',
-    path: '/cocktails/'+req.params.cocktail+"/ingredients",
-    port: DIENSTNUTZERPORT,
-    method: 'GET'
-  }
-
-  http.get(getSpecificCocktail, (response) => {
-    response.setEncoding('utf8');
-
-    response.on("data", (data) => {
-      data=JSON.parse(data);
-
-      console.log("Göbbels: " + data);
-
-      res.render("cocktail.pug", {
-        cocktail: data.name,
-        description: data.desc
-      });
-
-    });
-  });
 });
 
 app.get("/new/cocktail", (req, res) => {
