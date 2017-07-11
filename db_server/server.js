@@ -172,7 +172,7 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
     console.log("Response: " + response);
     console.log("Body: "+ body);
 
-    if (!error) {
+    if (error === null) {
 
       console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
 
