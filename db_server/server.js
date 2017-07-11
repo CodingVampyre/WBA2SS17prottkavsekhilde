@@ -86,7 +86,9 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
       var myingredients = "127.0.0.1:"+DIENSTNUTZERPORT+"/"+req.params.cocktail+"/ingredients";
 
-      request.get(mycocktail, (error2, response2, body2) => {
+      request.get(myingredients, (error2, response2, body2) => {
+
+        console.log("myingredients: " + myingredients);
 
         if (!error2) {
           res.render("cocktail.pug", {
