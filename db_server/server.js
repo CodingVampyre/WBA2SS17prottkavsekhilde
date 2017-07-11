@@ -124,9 +124,9 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
     console.log("Status: " + JSON.stringify(req.body));
 
-    var myform = {formData: JSON.stringify(req.body)};
+    var myform = {url: postSoecificCocktail, formData: req.body};
 
-    request.post({url: postSpecificCocktail, myform}, (error, response, body) => {
+    request.post(myform, (error, response, body) => {
       console.log("Respone: " + response);
     });
   });
