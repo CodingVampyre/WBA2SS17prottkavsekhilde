@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
   });
 });
 
+// STATUS: FINISHED
 app.get("/cocktails", jsonparser, (req, res) => {
 
   var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
@@ -64,12 +65,9 @@ app.get("/cocktails", jsonparser, (req, res) => {
         listi: null
       });
     }
-
   });
-
 });
 
-// TODO TEST;
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktail;
 
@@ -113,7 +111,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   })
 });
 
-// FINISHED
+// STATUS: FINISHED
 app.get("/new/cocktail", (req, res) => {
     res.render("cocktail_form.pug", {
       title: "New Cocktail"
@@ -158,6 +156,22 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
         });
       });
     });
+  });
+
+});
+
+app.get("/ingredient/:name", jsonparser, (req, res) => {
+  var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/ingredients/"+req.params.name;
+
+  request.get(domain, (error, response, body) => {
+    if (!error) {
+      pug.render("ingredient.pug", {
+        name: "Adi",
+        desc: "Nicht Hitl."
+      });
+    } else {
+      res.send("No!");
+    }
   });
 
 });
