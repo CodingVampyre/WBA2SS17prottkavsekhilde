@@ -356,7 +356,7 @@ function parseZutaten(zlist) {
   };
 
   console.log("zlist: " + zlist);
-  for (var i=0; i<zlist.length; ++i) {
+  for (var i=0; i<zlist.length; i++) {
 
     if (zlist[i] == ">") {
 
