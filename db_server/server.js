@@ -136,7 +136,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     request.post(myform, (error, response, body) => {
 
       var newpost = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name;
-      var newing = "http//127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients";
+      var newing = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients";
 
       var stuff = JSON.stringify(JSON.parse(parseZutaten(req.body.ingr)));
 
