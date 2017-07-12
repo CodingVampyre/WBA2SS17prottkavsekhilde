@@ -99,12 +99,14 @@ app.delete("/users/:id", jsonparser, (req, res) => {
       client.del("user:" + req.body.name, (error, reply) => {
         client.lrem("list:users", "0", req.body.name, (error, reply) => {
           res.set({ 'Content-Type': 'text/plain' });
+          res.status(200);
           res.write('SUCCESS: DELETE USER');
           res.end();
         });
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(442);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -115,6 +117,7 @@ app.delete("/users/:id", jsonparser, (req, res) => {
 app.get("/cocktails", (req, res) => {
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -123,6 +126,7 @@ app.get("/cocktails", (req, res) => {
 app.get("/cocktails/:name", (req, res) => {
   client.hgetall("cocktail:" + req.params.name, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -141,12 +145,14 @@ app.post("/cocktails", jsonparser, (req, res) => {
       client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) => {
         client.rpush("list:cocktails", req.body.name, (error, listreply) => {
           res.set({ 'Content-Type': 'application/json' });
+          res.status(200);
           res.write(JSON.stringify(reply));
           res.end();
         });
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(400);
       res.write('OBJECT ALREADY EXISTS');
       res.end();
     }
@@ -166,6 +172,7 @@ app.put("/cocktails", jsonparser, (req, res) => {
     if (canupdate) {
       client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
+        res.status(200);
         res.write('SUCCESS: UPDATE USER');
         res.end();
       });
