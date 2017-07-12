@@ -121,54 +121,21 @@ app.get("/new/cocktail", (req, res) => {
 // TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktail/" + req.body.name;
-  var postSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails";
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
 
   mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
-    console.log("Ingr: " + (req.body.ingr));
-    console.log("Ingr as JSON: " + JSON.stringify(req.body.ingr));
-    console.log("Ingr parsed & as JSON: " + JSON.stringify(parseZutaten(req.body.ingr)));
-
-    var myform = { url: postSpecificCocktail, form: req.body };
+    var myform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
     request.post(myform, (error, response, body) => {
 
-      var newpost = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name;
-      var newing = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients";
-
       var stuff = JSON.stringify(JSON.parse(parseZutaten(req.body.ingr)));
+      var ingform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", form: stuff };
 
-      var ingform = { url: newing, form: stuff };
-
-      request.post(ingform, (error4, response4, body4) => {
-        request.get(newpost, (error2, response2, body2) => {
-          request.get(newing, (error3, response3, body3) => {
-
-            body = JSON.parse(body);
-            body2 = JSON.parse(body2);
-
-            if (!error3) {
-
-              res.render("cocktail.pug", {
-                cocktail: body2.name,
-                description: body2.desc,
-                ingredients: body3
-              });
-
-            } else {
-
-              res.render("cocktail.pug", {
-                cocktail: body2.name,
-                description: body2.desc,
-                ingredients: JSON.parse("[]")
-              });
-
-            }
-          });
-        });
+      request.post(ingform, (error1, response1, body1) => {
+        res.send("Success");
       });
+      
     });
   });
 
