@@ -378,6 +378,10 @@ function parseZutaten(zlist) {
       ingri = "";
       menge = "";
 
+    } else if (zlist[i] == "\n" || zlist[i] == "\r") {
+      
+      continue;
+
     } else {
 
       if (ingrActive) {
