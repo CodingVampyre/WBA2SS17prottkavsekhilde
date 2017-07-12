@@ -10,6 +10,7 @@ var http = require('http');
 var request = require('request');
 var app = express();
 var twit = require('twit'); // USE external API of twitter
+var crypto = require('crypto');
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
