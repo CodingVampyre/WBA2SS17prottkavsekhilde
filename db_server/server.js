@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.get('/testparser', (req, res) => {
   console.log("This Query is fulfilled!");
-  parseZutaten("Blablabla+2cl.Cola+1l.Eis+2 Würfel");
+  parseZutaten(">Blablabla+2cl.Cola+1l.Eis+2 Würfel");
   res.send("Check Dienstnutzer-Console Smash! Please!");
 });
 
@@ -344,14 +344,55 @@ app.get('*', (req, res) => {
 function parseZutaten(zlist) {
 
   var mylist = [];
+  var ingrActive = false;
+  var mengActive = false;
+
+  var ingri = "";
+  var menge = "";
+
+  var singlezutat = {
+    ingr: null,
+    meng: null
+  };
 
   console.log("zlist: " + zlist);
   for (var i=0; i<zlist.length; ++i) {
     console.log("i: " + i + " = " + zlist[i]);
-    if (zlist[i] == "+") {
-      console.log("Trenner");
-    } else if (zlist[i] == ".") {
-      console.log("Neue Zutat");
+
+    if (zlist[i] == ">") {
+      ingrActive = true;
+      mengActive = false;
     }
+
+    if (zlist[i] == "+") {
+      
+      ingrActive = false;
+      mengActive = true;
+
+    } else if (zlist[i] == ".") {
+      
+      ingrActive = true;
+      mengActive = false;
+
+      singlezutat.ingr = ingri;
+      singlezutat.meng = menge;
+
+      mylist.push(singlezutat);
+
+      singlezutat.ingr = null;
+      singlezutat.meng = null;
+      ingri = "";
+      menge = "";
+
+    } else {
+      if (ingrActive) {
+        ingri += zlist[i];
+      } else if (mengActive) {
+        menge += zlist[i];
+      }
+    }
+
+    console.log(JSON.stringify(mylist));
+
   }
 }
