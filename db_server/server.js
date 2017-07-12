@@ -379,7 +379,7 @@ function parseZutaten(zlist) {
       //console.log("singlezutat.ingr == " + singlezutat.ingr);
       //console.log("singlezutat.meng == " + singlezutat.meng);
 
-      mylist.push(singlezutat);
+      mylist.push(JSON.parse(JSON.stringify(singlezutat)));
       console.log("Mylist in der Schleife: " + JSON.stringify(mylist));
 
       singlezutat.ingr = null;
