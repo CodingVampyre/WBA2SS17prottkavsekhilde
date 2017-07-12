@@ -260,33 +260,43 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
-  console.log("req.body: " + req.body);
+  console.log("req.body.name: " + req.body.name);
+  console.log("req.body.mail: " + req.body.mail);
+  console.log("req.body.pass: " + req.body.pass);
 
-    var myform = {url: postSpecificCocktail, form: req.body};
+  var ourbody = {
+    name: req.body.name,
+    mail: req.body.mail,
+    pass: hash
+  }
 
-    request.post(myform, (error, response, body) => {
+  console.log(JSON.stringify(ourbody));
 
-      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.body.name;
+  var myform = {url: postSpecificCocktail, form: req.body};
 
-      request.get(newpost, (error, response, body) => {
+  request.post(myform, (error, response, body) => {
 
-          body = JSON.parse(body);
-          console.log("body: "+body)
-          if (!error) {
-            res.render("singleuser.pug", {
-              name: body.name,
-              pass: body.pass,
-              mail: body.mail
-            });
-          } else {
-            res.render("singleuser.pug", {
-              name: body.name,
-              pass: body.pass,
-              mail: body.mail
-            });
-          }
-        });
-    });
+    var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.body.name;
+
+    request.get(newpost, (error, response, body) => {
+
+        body = JSON.parse(body);
+        console.log("body: "+body)
+        if (!error) {
+          res.render("singleuser.pug", {
+            name: body.name,
+            pass: body.pass,
+            mail: body.mail
+          });
+        } else {
+          res.render("singleuser.pug", {
+            name: body.name,
+            pass: body.pass,
+            mail: body.mail
+          });
+        }
+      });
+  });
 });
 
 io.on('connection', (socket) => {
