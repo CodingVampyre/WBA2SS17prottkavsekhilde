@@ -263,23 +263,23 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
     request.post(myform, (error, response, body) => {
 
-      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
+      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.body.name;
 
       request.get(newpost, (error, response, body) => {
 
           body = JSON.parse(body);
-
+          console.log("body: "+body)
           if (!error) {
             res.render("singleuser.pug", {
-              cocktail: body.name,
-              password: body.pass,
-              email: body.mail
+              name: body.name,
+              pass: body.pass,
+              mail: body.mail
             });
           } else {
             res.render("singleuser.pug", {
-              cocktail: body.name,
-              password: body.desc,
-              email: JSON.parse("[]")
+              name: body.name,
+              pass: body.pass,
+              mail: body.mail
             });
           }
         });
