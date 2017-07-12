@@ -329,15 +329,13 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
   client.lrange(allname, "0", "-1", (error, reply) => {
 
-    console.log("Stringyfied req.body: " + JSON.stringify(req.body));
-
     if (reply.length == 0) {
       req.body.forEach((element) => {
 
         console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
-          client.rpush(allname, element.name, (error, listreply) => {
+          client.rpush(allname, element.ingr, (error, listreply) => {
 
           });
         });
