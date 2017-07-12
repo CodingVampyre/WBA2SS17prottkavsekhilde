@@ -126,9 +126,9 @@ app.get("/cocktails", (req, res) => {
 app.get("/cocktails/:name", (req, res) => {
   client.hgetall("cocktail:" + req.params.name, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
-    if(reply!=null){
-    res.status(200);
-    res.write(JSON.stringify(reply));
+    if (reply != null) {
+      res.status(200);
+      res.write(JSON.stringify(reply));
     } else {
       res.status(404);
       res.write(JSON.stringify("NOT FOUND"));
@@ -139,7 +139,7 @@ app.get("/cocktails/:name", (req, res) => {
 
 app.post("/cocktails", jsonparser, (req, res) => {
   var canset = true;
-    console.log(req);
+  //console.log(req);
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
 
     for (var i = 0; i < reply.length; i++) {
@@ -324,6 +324,9 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 // KAVSEK, HILDEBRAND & PROTT
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+
+  console.log("Findet statt: c/n/i");
+
   var allname = "cocktails:" + req.params.name + ":ingredients";
 
   client.lrange(allname, "0", "-1", (error, reply) => {
@@ -331,7 +334,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
     if (reply.length == 0) {
       req.body.forEach((element) => {
 
-        //console.log("Element: " + element.ingr + " - " + element.meng);
+        console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
           client.rpush(allname, element.name, (error, listreply) => {
@@ -359,7 +362,7 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
 
     console.log("Reply, Cocktails: " + reply);
 
-    res.set({'Content-Type': 'application/json'});
+    res.set({ 'Content-Type': 'application/json' });
     res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
@@ -390,7 +393,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-  res.set({'Content-Type': 'application/json'});
+  res.set({ 'Content-Type': 'application/json' });
   res.status(200);
   res.write(JSON.stringify(reply));
   res.end();
