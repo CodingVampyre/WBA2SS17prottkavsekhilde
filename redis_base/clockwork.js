@@ -68,12 +68,13 @@ app.put("/users", jsonparser, (req, res) => {
     if (canupdate) {
       client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
+        res.status(201);
         res.write('SUCCESS: UPDATE USER');
         res.end();
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(201);
+      res.status(442); //TODO END
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
