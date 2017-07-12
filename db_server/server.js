@@ -14,14 +14,14 @@ var crypto = require('crypto');
 
 app.set('view engine', 'pug');
 app.set("views", "html_template/");
-app.use('/style',express.static('style'));
+app.use('/style', express.static('style'));
 app.use('/misc', express.static('misc'));
 
 var mytwitter;
 var jsonparser = bodyParser.json();
 app.use(bodyParser.urlencoded({ extended: false }))
 
-const server = app.listen(PORT, function(){
+const server = app.listen(PORT, function () {
 
   if (PORT == undefined) {
     console.log("Please provide a port number as command parameter");
@@ -53,7 +53,7 @@ app.get('/testparser', (req, res) => {
 // STATUS: FINISHED
 app.get("/cocktails", jsonparser, (req, res) => {
 
-  var myurl = 'http://127.0.0.1:'+DIENSTNUTZERPORT+"/cocktails";
+  var myurl = 'http://127.0.0.1:' + DIENSTNUTZERPORT + "/cocktails";
 
   request.get(myurl, (error, response, body) => {
 
@@ -74,14 +74,14 @@ app.get("/cocktails", jsonparser, (req, res) => {
 });
 
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var mycocktail = "http://127.0.0.1:"+ DIENSTNUTZERPORT + "/cocktails/"+req.params.cocktail;
+  var mycocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
 
   request.get(mycocktail, (error, response, body) => {
 
-    if(!error) {
+    if (!error) {
       body = JSON.parse(body);
 
-      var myingredients = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.params.cocktail+"/ingredients";
+      var myingredients = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
 
       request.get(myingredients, (error2, response2, body2) => {
 
@@ -113,51 +113,58 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
 // STATUS: FINISHED
 app.get("/new/cocktail", (req, res) => {
-    res.render("cocktail_form.pug", {
-      title: "New Cocktail"
-    });
+  res.render("cocktail_form.pug", {
+    title: "New Cocktail"
+  });
 });
 
 // TODO test_required
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktail/"+req.body.name;
-  var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails";
+  var getSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktail/" + req.body.name;
+  var postSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails";
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
 
-  mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
+  mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
-    var myform = {url: postSpecificCocktail, form: req.body};
+    console.log("Ingr: " + (req.body.ingr));
+    console.log("Ingr as JSON: " + JSON.stringify(req.body.ingr));
+    console.log("Ingr parsed & as JSON: " + JSON.stringify(parseZutaten(req.body.ingr)));
+
+    var myform = { url: postSpecificCocktail, form: req.body };
 
     request.post(myform, (error, response, body) => {
 
-      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
-      var newing = "http//127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name+"/ingredients";
+      var newpost = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name;
+      var newing = "http//127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients";
 
-      request.get(newpost, (error2, response2, body2) => {
+      var ingform = { url: newing, form: req.body.ingr };
 
-        request.get(newing, (error3, response3, body3) => {
+      request.post(ingform, (error4, response4, body4) => {
+        request.get(newpost, (error2, response2, body2) => {
+          request.get(newing, (error3, response3, body3) => {
 
-          body = JSON.parse(body);
-          body2 = JSON.parse(body2);
+            body = JSON.parse(body);
+            body2 = JSON.parse(body2);
 
-          if (!error3) {
+            if (!error3) {
 
-            res.render("cocktail.pug", {
-              cocktail: body2.name,
-              description: body2.desc,
-              ingredients: body3
-            });
+              res.render("cocktail.pug", {
+                cocktail: body2.name,
+                description: body2.desc,
+                ingredients: body3
+              });
 
-          } else {
+            } else {
 
-            res.render("cocktail.pug", {
-              cocktail: body2.name,
-              description: body2.desc,
-              ingredients: JSON.parse("[]")
-            });
+              res.render("cocktail.pug", {
+                cocktail: body2.name,
+                description: body2.desc,
+                ingredients: JSON.parse("[]")
+              });
 
-          }
+            }
+          });
         });
       });
     });
@@ -166,7 +173,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 });
 
 app.get("/ingredient/:name", jsonparser, (req, res) => {
-  var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/ingredients/"+req.params.name;
+  var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
   console.log("--------");
   console.log("Request: " + domain);
@@ -210,7 +217,7 @@ app.get("/users", (err, res) => {
 
 //FINISHED
 app.get("/users/:name", jsonparser, (req, res) => {
-  var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.params.name;
+  var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
   console.log("--------");
   console.log("Request: " + domain);
@@ -251,15 +258,15 @@ app.get("/users", (err, res) => {
 });
 
 app.get("/new/user", (req, res) => {
-    res.render("user_form.pug", {
-      title: "New User"
-    });
+  res.render("user_form.pug", {
+    title: "New User"
+  });
 });
 
 app.post("/createnewuser", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/user/"+req.body.name;
-  var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users";
+  var getSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/user/" + req.body.name;
+  var postSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
   console.log("req.body.name: " + req.body.name);
@@ -274,47 +281,47 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
   console.log(JSON.stringify(ourbody));
 
-  var myform = {url: postSpecificCocktail, form: ourbody};
+  var myform = { url: postSpecificCocktail, form: ourbody };
 
   request.post(myform, (error, response, body) => {
 
-    var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.body.name;
+    var newpost = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users/" + req.body.name;
 
     request.get(newpost, (error, response, body) => {
 
-        body = JSON.parse(body);
-        console.log("body: "+body)
-        if (!error) {
-          res.render("singleuser.pug", {
-            name: body.name,
-            pass: body.pass,
-            mail: body.mail
-          });
-        } else {
-          res.render("singleuser.pug", {
-            name: body.name,
-            pass: body.pass,
-            mail: body.mail
-          });
-        }
-      });
+      body = JSON.parse(body);
+      console.log("body: " + body)
+      if (!error) {
+        res.render("singleuser.pug", {
+          name: body.name,
+          pass: body.pass,
+          mail: body.mail
+        });
+      } else {
+        res.render("singleuser.pug", {
+          name: body.name,
+          pass: body.pass,
+          mail: body.mail
+        });
+      }
+    });
   });
 });
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
-  var users = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users"
+  var users = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users"
 
   // Real Time Updates Of Tweets by our account
-  setInterval( () => {
-    mytwitter.get("statuses/user_timeline", {name: "@CocktailsOrange", count: 1}, (err, data, response) =>{
+  setInterval(() => {
+    mytwitter.get("statuses/user_timeline", { name: "@CocktailsOrange", count: 1 }, (err, data, response) => {
       var statuses = data[0];
       socket.emit('fakenews', statuses.text);
     });
   }, 5000);
 
   // Real Time Update of all existing Users
-  setInterval( () => {
+  setInterval(() => {
     request.get(users, (error, response, body) => {
 
       if (!error) {
@@ -352,15 +359,15 @@ function parseZutaten(zlist) {
   };
 
   console.log("zlist: " + zlist);
-  for (var i=0; i<=zlist.length; i++) {
+  for (var i = 0; i <= zlist.length; i++) {
 
     if (zlist[i] == "+") {
-      
+
       ingrActive = false;
       mengActive = true;
 
     } else if (zlist[i] == ".") {
-      
+
       ingrActive = true;
       mengActive = false;
 
