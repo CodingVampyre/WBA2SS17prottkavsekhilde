@@ -196,14 +196,58 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 
 });
 
+
+//STATUS: FINISHED
 app.get("/users", (err, res) => {
   res.render("users.pug", {
 
   });
 });
 
+
 // TODO: GENAU HIER! JA! HIER: app.get("/users/:name") MIT EINER PUG NAMENS "singleuser.pug", die genau so funktionier wie die cocktailsachen.
 // TODO: HILDEBRANDT
+
+app.get("/user/:name", jsonparser, (req, res) => {
+  var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.params.name;
+
+  console.log("--------");
+  console.log("Request: " + domain);
+
+  request.get(domain, (error, response, body) => {
+
+    if (!error) {
+
+      body = JSON.parse(body);
+
+      console.log("--> No Error. Writing " + body.name + " and " + body.pass + " to the shizzle");
+
+      res.render("singleuser.pug", {
+        name: body.name,
+        pass: body.pass,
+        mail: body.mail
+      });
+
+    } else {
+
+      console.log("There WAS in fact an Error, bitch!");
+
+      res.render("ingredient.pug", {
+        name: "Swiggity Swooty",
+        desc: "No Ingredientudy!"
+      });
+
+    }
+
+  });
+
+});
+
+app.get("/users", (err, res) => {
+  res.render("users.pug", {
+
+  });
+});
 
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
