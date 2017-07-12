@@ -319,7 +319,6 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 // KAVSEK, HILDEBRAND & PROTT
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-//TODO add http status codes
   var allname = "cocktails:" + req.params.name + ":ingredients";
 
   client.lrange(allname, "0", "-1", (error, reply) => {
@@ -360,8 +359,6 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   });
 });
 
-
-//TODO add http status codes
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
