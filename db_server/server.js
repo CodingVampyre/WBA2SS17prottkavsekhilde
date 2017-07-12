@@ -358,6 +358,8 @@ function parseZutaten(zlist) {
   console.log("zlist: " + zlist);
   for (var i=0; i<=zlist.length; i++) {
 
+    console.log("i: " + i + " == " + zlist.length + "?");
+
     if (zlist[i] == ">") {
 
       ingrActive = true;
