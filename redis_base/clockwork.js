@@ -77,7 +77,7 @@ app.put("/users", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(442); //TODO END
+      res.status(404); //TODO END
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -106,7 +106,7 @@ app.delete("/users/:id", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(442);
+      res.status(404);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -178,7 +178,7 @@ app.put("/cocktails", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(442);
+      res.status(404);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -205,7 +205,7 @@ app.delete("/cocktails/:name", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(400);
+      res.status(404);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -252,7 +252,7 @@ app.post("/ingredients", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
-      res.status(442);
+      res.status(404);
       res.write('OBJECT ALREADY EXISTS');
       res.end();
     }
