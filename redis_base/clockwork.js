@@ -178,6 +178,7 @@ app.put("/cocktails", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(442);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -197,12 +198,14 @@ app.delete("/cocktails/:name", jsonparser, (req, res) => {
       client.del("cocktails:" + req.params.name, (error, reply) => {
         client.lrem("list:cocktails", "0", req.params.name, (error, reply) => {
           res.set({ 'Content-Type': 'text/plain' });
+          res.status(200);
           res.write('SUCCESS: DELETE COCKTAIL');
           res.end();
         });
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(400);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -213,6 +216,7 @@ app.delete("/cocktails/:name", jsonparser, (req, res) => {
 app.get("/ingredients", (req, res) => {
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -222,6 +226,7 @@ app.get("/ingredients", (req, res) => {
 app.get("/ingredients/:ingredient", (req, res) => {
   client.hgetall("ingredient:" + req.params.ingredient, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -240,12 +245,14 @@ app.post("/ingredients", jsonparser, (req, res) => {
       client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
         client.rpush("list:ingredients", req.body.name, (error, listreply) => {
           res.set({ 'Content-Type': 'application/json' });
+          res.status(200);
           res.write(JSON.stringify(reply));
           res.end();
         });
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(442);
       res.write('OBJECT ALREADY EXISTS');
       res.end();
     }
@@ -266,11 +273,13 @@ app.put("/ingredients", jsonparser, (req, res) => {
     if (canupdate) {
       client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
+        res.status(200);
         res.write('SUCCESS: UPDATE INGREDIENT');
         res.end();
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(400);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -292,6 +301,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
       client.del("ingredient:" + req.body.name, (error, reply) => {
         client.lrem("list:ingredients", "0", req.body.name, (error, reply) => {
           res.set({ 'Content-Type': 'text/plain' });
+          res.status(200);
           res.write('SUCCESS: DELETE INGREDIENT');
           res.end();
         });
