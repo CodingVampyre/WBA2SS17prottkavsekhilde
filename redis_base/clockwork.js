@@ -73,6 +73,7 @@ app.put("/users", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(201);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -320,6 +321,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
+  res.status(201);
   res.write("Oki Doki");
   res.end();
 });
