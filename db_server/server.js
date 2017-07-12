@@ -356,9 +356,7 @@ function parseZutaten(zlist) {
   };
 
   console.log("zlist: " + zlist);
-  for (var i=0; i<zlist.length; i++) {
-
-    console.log("i: " + i + " müsste genau " + zlist.length + " sein");
+  for (var i=0; i<=zlist.length; i++) {
 
     if (zlist[i] == ">") {
 
@@ -379,7 +377,6 @@ function parseZutaten(zlist) {
       singlezutat.meng = menge;
 
       mylist.push(JSON.parse(JSON.stringify(singlezutat)));
-      console.log("Mylist in der Schleife: " + JSON.stringify(mylist));
 
       singlezutat.ingr = null;
       singlezutat.meng = null;
