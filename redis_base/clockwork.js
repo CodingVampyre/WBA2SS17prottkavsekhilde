@@ -321,8 +321,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 });
 
 
-// KAVSEK, HILDEBRAND & PROTT
-
+// TODO instead of LIST and HASH, Only save in Hash!!!
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
   var allname = "cocktails:" + req.params.name + ":ingredients";
@@ -355,6 +354,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.end();
 });
 
+// TODO Change; Should get Single hash
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
 
