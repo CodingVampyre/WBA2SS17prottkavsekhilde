@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.get('/testparser', (req, res) => {
 
-  var resu = parseZutaten(">Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.")
+  var resu = parseZutaten("Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.")
   console.log(resu);
   res.send(resu);
 });
