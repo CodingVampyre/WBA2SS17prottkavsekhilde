@@ -128,6 +128,8 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
 
     console.log("Ingr: " + (req.body.ingr));
+    console.log("Ingr as JSON: " + JSON.stringify(req.body.ingr));
+    console.log("Ingr parsed & as JSON: " + JSON.stringify(parseZutaten(zlist)));
 
     var myform = {url: postSpecificCocktail, form: req.body};
 
