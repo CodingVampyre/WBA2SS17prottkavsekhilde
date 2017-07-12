@@ -127,7 +127,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   mytwitter.post('statuses/update', {status: mymessage}, (err, data, response) => {
 
-    console.log("Status: " + JSON.stringify(req.body));
+    console.log("Ingr: " + req.body.ingr);
 
     var myform = {url: postSpecificCocktail, form: req.body};
 
@@ -139,30 +139,27 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       request.get(newpost, (error2, response2, body2) => {
 
         request.get(newing, (error3, response3, body3) => {
-          console.log("newing: "+ newing);
-          console.log("Body2: " + body2);
 
           body = JSON.parse(body);
           body2 = JSON.parse(body2);
 
-          console.log("For Ingredients: Error is " + error3 + " and body is " + body3);
-          console.log("Test: " + body2.name);
-
           if (!error3) {
+            
             res.render("cocktail.pug", {
               cocktail: body2.name,
               description: body2.desc,
               ingredients: body3
             });
+
           } else {
+
             res.render("cocktail.pug", {
               cocktail: body2.name,
               description: body2.desc,
               ingredients: JSON.parse("[]")
             });
-          }
-          
 
+          }
         });
       });
     });
