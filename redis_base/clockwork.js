@@ -14,6 +14,7 @@ var jsonparser = bodyParser.json();
 app.get("/users", (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -22,6 +23,7 @@ app.get("/users", (req, res) => {
 app.get("/users/:id", (req, res) => {
   client.hgetall("user:" + req.params.id, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
@@ -47,6 +49,7 @@ app.post("/users", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(400);
       res.write('OBJECT ALREADY EXISTS');
       res.end();
     }
@@ -308,7 +311,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
         client.hmset("ingredient:" + element.name, "name", element.name, "desc", element.desc, (error, reply) => {
           client.rpush(allname, element.name, (error, listreply) => {
-            
+
           });
         });
       });
