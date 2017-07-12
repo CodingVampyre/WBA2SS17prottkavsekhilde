@@ -325,13 +325,12 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
-  console.log("Findet statt: c/n/i");
 
   var allname = "cocktails:" + req.params.name + ":ingredients";
 
   client.lrange(allname, "0", "-1", (error, reply) => {
 
-    console.log(JSON.stringify(req.body));
+    console.log("Stringyfied req.body: " + JSON.stringify(req.body));
 
     if (reply.length == 0) {
       req.body.forEach((element) => {
