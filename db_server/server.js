@@ -393,11 +393,8 @@ function parseZutaten(zlist) {
       } else if (mengActive) {
         menge += zlist[i];
       }
-      //console.log("ingri after iteration: " + ingri);
-      //console.log("menge after iteration: " + menge);
     }
 
-    console.log(JSON.stringify(mylist));
-
   }
+  console.log(JSON.stringify(mylist));
 }
