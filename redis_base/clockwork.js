@@ -40,6 +40,7 @@ app.post("/users", jsonparser, (req, res) => {
       client.hmset("user:" + req.body.name, "name", req.body.name, "mail", req.body.mail, "pass", req.body.pass, (error, reply) => {
         client.rpush("list:users", req.body.name, (error, listreply) => {
           res.set({ 'Content-Type': 'application/json' });
+          res.status(201);
           res.write(JSON.stringify(reply));
           res.end();
         });
