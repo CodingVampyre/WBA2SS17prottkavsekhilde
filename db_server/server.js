@@ -357,7 +357,6 @@ function parseZutaten(zlist) {
 
   console.log("zlist: " + zlist);
   for (var i=0; i<zlist.length; ++i) {
-    console.log("i: " + i + " = " + zlist[i]);
 
     if (zlist[i] == ">") {
       ingrActive = true;
@@ -377,6 +376,9 @@ function parseZutaten(zlist) {
       singlezutat.ingr = ingri;
       singlezutat.meng = menge;
 
+      console.log("singlezutat.ingr == " + singlezutat.ingr);
+      console.log("singlezutat.meng == " + singlezutat.meng);
+
       mylist.push(singlezutat);
 
       singlezutat.ingr = null;
@@ -390,6 +392,8 @@ function parseZutaten(zlist) {
       } else if (mengActive) {
         menge += zlist[i];
       }
+      console.log("ingri after iteration: " + ingri);
+      console.log("menge after iteration_ " + menge);
     }
 
     console.log(JSON.stringify(mylist));
