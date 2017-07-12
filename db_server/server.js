@@ -272,7 +272,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
   console.log(JSON.stringify(ourbody));
 
-  var myform = {url: postSpecificCocktail, form: req.body};
+  var myform = {url: postSpecificCocktail, form: ourbody};
 
   request.post(myform, (error, response, body) => {
 
