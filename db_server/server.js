@@ -334,3 +334,23 @@ app.get('*', (req, res) => {
 
   })
 });
+
+app.get("/testparser", (req, res) => {
+  parseZutaten("Blablabla+2cl.Cola+1l.Eis+2 Würfel");
+  res.send("Check Dienstnutzer-Console Smash! Please!");
+});
+
+function parseZutaten(zlist) {
+
+  var mylist = [];
+
+  console.log("zlist: " + zlist);
+  for (var i=0; i<zlist.length; ++i) {
+    console.log("i: " + i + " = " + zlist[i]);
+    if (zlist[i] == "+") {
+      console.log("Trenner");
+    } else if (tlist[i] == ".") {
+      console.log("Neue Zutat");
+    }
+  }
+}
