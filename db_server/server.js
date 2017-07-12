@@ -376,11 +376,11 @@ function parseZutaten(zlist) {
       singlezutat.ingr = ingri;
       singlezutat.meng = menge;
 
-      console.log("singlezutat.ingr == " + singlezutat.ingr);
-      console.log("singlezutat.meng == " + singlezutat.meng);
+      //console.log("singlezutat.ingr == " + singlezutat.ingr);
+      //console.log("singlezutat.meng == " + singlezutat.meng);
 
       mylist.push(singlezutat);
-      console.log(JSON.stringify(singlezutat));
+      console.log("Mylist in der Schleife: " + JSON.stringify(mylist));
 
       singlezutat.ingr = null;
       singlezutat.meng = null;
@@ -396,5 +396,5 @@ function parseZutaten(zlist) {
     }
 
   }
-  console.log(JSON.stringify(mylist));
+  console.log("Resultat: " + JSON.stringify(mylist));
 }
