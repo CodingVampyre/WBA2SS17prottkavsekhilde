@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.get('/testparser', (req, res) => {
   console.log("This Query is fulfilled!");
-  parseZutaten(">Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel");
+  parseZutaten(">Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.");
   res.send("Check Dienstnutzer-Console Smash! Please!");
 });
 
