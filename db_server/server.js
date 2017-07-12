@@ -127,7 +127,11 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
     var myform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
+    console.log("Cocktail wird erstellt.");
+
     request.post(myform, (error, response, body) => {
+
+      consolole.log("Error: " + error + "\nResponse: " + response + "\nBody: " + body);
 
       var stuff = JSON.stringify(JSON.parse(parseZutaten(req.body.ingr)));
       var ingform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", form: stuff };
