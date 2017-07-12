@@ -260,7 +260,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
-  console.log("hash: "+hash);
+  console.log("req.body: " + req.body);
 
     var myform = {url: postSpecificCocktail, form: req.body};
 
