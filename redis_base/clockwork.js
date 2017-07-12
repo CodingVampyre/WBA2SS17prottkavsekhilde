@@ -354,13 +354,14 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
     console.log("Reply, Cocktails: " + reply);
 
     res.set({'Content-Type': 'application/json'});
+    res.status(200);
     res.write(JSON.stringify(reply));
     res.end();
   });
 });
 
 
-
+//TODO add http status codes
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
@@ -386,6 +387,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({'Content-Type': 'application/json'});
+  res.status(200);
   res.write(JSON.stringify(reply));
   res.end();
 });
