@@ -350,7 +350,7 @@ function parseZutaten(zlist) {
     console.log("i: " + i + " = " + zlist[i]);
     if (zlist[i] == "+") {
       console.log("Trenner");
-    } else if (tlist[i] == ".") {
+    } else if (zlist[i] == ".") {
       console.log("Neue Zutat");
     }
   }
