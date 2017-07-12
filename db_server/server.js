@@ -136,6 +136,8 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       var stuff = parseZutaten(req.body.ingr);
       var ingform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", form: stuff };
 
+      console.log("Ingform: " + JSON.stringify(ingform));
+
       console.log("Stuff: " + JSON.stringify(stuff));
 
       request.post(ingform, (error1, response1, body1) => {
