@@ -88,6 +88,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
         console.log("REQUEST!!!!!: " + JSON.stringify(response));
         body2 = JSON.parse(body2);
 
+
         if (!error2) {
           res.render("cocktail.pug", {
             cocktail: body.name,
