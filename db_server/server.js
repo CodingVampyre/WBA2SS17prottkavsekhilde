@@ -205,10 +205,8 @@ app.get("/users", (err, res) => {
 });
 
 
-// TODO: GENAU HIER! JA! HIER: app.get("/users/:name") MIT EINER PUG NAMENS "singleuser.pug", die genau so funktionier wie die cocktailsachen.
-// TODO: HILDEBRANDT
-
-app.get("/user/:name", jsonparser, (req, res) => {
+//FINISHED
+app.get("/users/:name", jsonparser, (req, res) => {
   var domain = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users/"+req.params.name;
 
   console.log("--------");
@@ -247,6 +245,44 @@ app.get("/users", (err, res) => {
   res.render("users.pug", {
 
   });
+});
+
+app.get("/new/user", (req, res) => {
+    res.render("user_form.pug", {
+      title: "New User"
+    });
+});
+
+app.post("/createnewuser", jsonparser, (req, res) => {
+
+  var getSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/user/"+req.body.name;
+  var postSpecificCocktail = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/users";
+
+    var myform = {url: postSpecificCocktail, form: req.body};
+
+    request.post(myform, (error, response, body) => {
+
+      var newpost = "http://127.0.0.1:"+DIENSTNUTZERPORT+"/cocktails/"+req.body.name;
+
+      request.get(newpost, (error, response, body) => {
+
+          body = JSON.parse(body);
+
+          if (!error) {
+            res.render("singleuser.pug", {
+              cocktail: body.name,
+              password: body.pass,
+              email: body.mail
+            });
+          } else {
+            res.render("singleuser.pug", {
+              cocktail: body.name,
+              password: body.desc,
+              email: JSON.parse("[]")
+            });
+          }
+        });
+    });
 });
 
 io.on('connection', (socket) => {
