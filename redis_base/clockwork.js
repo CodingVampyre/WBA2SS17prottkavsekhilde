@@ -71,7 +71,7 @@ app.put("/users", jsonparser, (req, res) => {
     if (canupdate) {
       client.hmset("user:" + req.body.name, "name", req.body.name, "email", req.body.email, "pass", req.body.pass, (error, reply) => {
         res.set({ 'Content-Type': 'text/plain' });
-        res.status(201);
+        res.status(200);
         res.write('SUCCESS: UPDATE USER');
         res.end();
       });
@@ -145,7 +145,7 @@ app.post("/cocktails", jsonparser, (req, res) => {
       client.hmset("cocktail:" + req.body.name, "name", req.body.name, "desc", req.body.desc, "mail", req.body.mail, "date", req.body.date, (error, reply) => {
         client.rpush("list:cocktails", req.body.name, (error, listreply) => {
           res.set({ 'Content-Type': 'application/json' });
-          res.status(200);
+          res.status(201);
           res.write(JSON.stringify(reply));
           res.end();
         });
@@ -245,7 +245,7 @@ app.post("/ingredients", jsonparser, (req, res) => {
       client.hmset("ingredient:" + req.body.name, "name", req.body.name, "desc", req.body.desc, (error, reply) => {
         client.rpush("list:ingredients", req.body.name, (error, listreply) => {
           res.set({ 'Content-Type': 'application/json' });
-          res.status(200);
+          res.status(201);
           res.write(JSON.stringify(reply));
           res.end();
         });
@@ -308,6 +308,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
       });
     } else {
       res.set({ 'Content-Type': 'text/plain' });
+      res.status(400);
       res.write('ERROR: NO OBJECT IN DATABASE');
       res.end();
     }
@@ -318,7 +319,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 // KAVSEK, HILDEBRAND & PROTT
 
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-
+//TODO add http status codes
   var allname = "cocktails:" + req.params.name + ":ingredients";
 
   client.lrange(allname, "0", "-1", (error, reply) => {
