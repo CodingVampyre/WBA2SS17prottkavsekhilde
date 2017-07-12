@@ -380,6 +380,7 @@ function parseZutaten(zlist) {
       console.log("singlezutat.meng == " + singlezutat.meng);
 
       mylist.push(singlezutat);
+      console.log(JSON.stringify(singlezutat));
 
       singlezutat.ingr = null;
       singlezutat.meng = null;
@@ -392,8 +393,8 @@ function parseZutaten(zlist) {
       } else if (mengActive) {
         menge += zlist[i];
       }
-      console.log("ingri after iteration: " + ingri);
-      console.log("menge after iteration_ " + menge);
+      //console.log("ingri after iteration: " + ingri);
+      //console.log("menge after iteration: " + menge);
     }
 
     console.log(JSON.stringify(mylist));
