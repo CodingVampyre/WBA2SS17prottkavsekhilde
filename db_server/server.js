@@ -44,9 +44,10 @@ app.get("/", (req, res) => {
 });
 
 app.get('/testparser', (req, res) => {
-  console.log("This Query is fulfilled!");
-  parseZutaten(">Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.");
-  res.send("Check Dienstnutzer-Console Smash! Please!");
+
+  var resu = parseZutaten(">Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.")
+  console.log(resu);
+  res.send(resu);
 });
 
 // STATUS: FINISHED
@@ -344,7 +345,7 @@ app.get('*', (req, res) => {
 function parseZutaten(zlist) {
 
   var mylist = [];
-  var ingrActive = false;
+  var ingrActive = true;
   var mengActive = false;
 
   var ingri = "";
@@ -358,14 +359,7 @@ function parseZutaten(zlist) {
   console.log("zlist: " + zlist);
   for (var i=0; i<=zlist.length; i++) {
 
-    console.log("i: " + i + " == " + zlist.length + "?");
-
-    if (zlist[i] == ">") {
-
-      ingrActive = true;
-      mengActive = false;
-
-    } else if (zlist[i] == "+") {
+    if (zlist[i] == "+") {
       
       ingrActive = false;
       mengActive = true;
@@ -396,5 +390,5 @@ function parseZutaten(zlist) {
     }
 
   }
-  console.log("Resultat: " + JSON.stringify(mylist));
+  return mylist;
 }
