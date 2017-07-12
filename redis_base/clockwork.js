@@ -126,8 +126,13 @@ app.get("/cocktails", (req, res) => {
 app.get("/cocktails/:name", (req, res) => {
   client.hgetall("cocktail:" + req.params.name, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
+    if(reply!=null){
     res.status(200);
     res.write(JSON.stringify(reply));
+    } else {
+      res.status(404);
+      res.write(JSON.stringify("NOT FOUND"));
+    }
     res.end();
   });
 });
