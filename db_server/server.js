@@ -43,6 +43,12 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get('/testparser', (req, res) => {
+  console.log("This Query is fulfilled!");
+  parseZutaten("Blablabla+2cl.Cola+1l.Eis+2 Würfel");
+  res.send("Check Dienstnutzer-Console Smash! Please!");
+});
+
 // STATUS: FINISHED
 app.get("/cocktails", jsonparser, (req, res) => {
 
@@ -333,12 +339,6 @@ app.get('*', (req, res) => {
   res.render("404.pug", {
 
   })
-});
-
-app.get("/testparser", (req, res) => {
-  console.log("This Query is fulfilled!");
-  parseZutaten("Blablabla+2cl.Cola+1l.Eis+2 Würfel");
-  res.send("Check Dienstnutzer-Console Smash! Please!");
 });
 
 function parseZutaten(zlist) {
