@@ -330,7 +330,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
   client.lrange(allname, "0", "-1", (error, reply) => {
 
-    console.log(" req.body: " +req.body);
+    console.log("Stringyfied req.body: " + JSON.stringify(req.body));
 
     if (reply.length == 0) {
       req.body.forEach((element) => {
