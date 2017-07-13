@@ -151,3 +151,23 @@ button:active {
   background-color: #4099FF;
   color: white;
 }
+
+td, th {
+  font-size: 24px;
+  padding: 10px;
+}
+
+.tval {
+  padding-right: 20px;
+  text-align: right;
+}
+
+.tind {
+  padding-left: 50px;
+  text-align: left;
+}
+
+#desq{
+  font-size: 24px;
+  font-family: sans-serif;
+}

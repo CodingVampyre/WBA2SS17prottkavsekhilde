@@ -4,13 +4,18 @@ html(lang="de")
   body
     #content
       include basic/humeb.pug
-      h2 Zwischendurch
-      p= ingredients
 
       h1 #{cocktail}
+
+      table
+        tr 
+          th.tval Menge
+          th.tind Zutat
+        each val, index in ingredients
+          tr
+            td.tval #{val} 
+            td.tind #{index}
+      h3 Zubereitung:
       p#desq #{description}
-      each val, index in ingredients
-        h3= index
-        p Zutat: #{index}: #{val}
 
       a(href="/cocktails") ZURÜÜÜCK!
