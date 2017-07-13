@@ -9,7 +9,9 @@ html(lang="de")
 
       h1 #{cocktail}
       p#desq #{description}
-      each val in ingredients
+      each val, index in ingredients
+        h3= index
+        a(href="/ingredients")= index
         p.ingredient= val
 
       a(href="/cocktails") ZURÜÜÜCK!
