@@ -1,6 +1,7 @@
 'use strict'
 const PORT = process.argv[2];
 const DIENSTNUTZERPORT = 1337;
+const DINU_DEST = "http://127.0.0.1";
 
 var express = require('express');
 var pug = require('pug');
@@ -47,7 +48,7 @@ app.get("/", (req, res) => {
 // GET LIST OF COCKTAILS
 app.get("/cocktails", jsonparser, (req, res) => {
 
-  var myurl = 'http://127.0.0.1:' + DIENSTNUTZERPORT + "/cocktails";
+  var myurl = DINU_DEST+':'+DIENSTNUTZERPORT + "/cocktails";
 
   request.get(myurl, (error, response, body) => {
 
@@ -69,14 +70,14 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
 //GET SINGLE COCKTAIL
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var mycocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
+  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
 
   request.get(mycocktail, (error, response, body) => {
 
     if (!error) {
       body = JSON.parse(body);
 
-      var myingredients = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
+      var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
 
       request.get(myingredients, (error2, response2, body2) => {
         
@@ -125,7 +126,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
-    var myform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
+    var myform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
     console.log("Cocktail wird erstellt.");
 
@@ -134,7 +135,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     //  console.log("Error: " + error + "\nResponse: " + response + "\nBody: " + body);
 
       var stuff = parseZutaten(req.body.ingr);
-      var ingform = { url: "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
+      var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
 
       request.post(ingform, (error1, response1, body1) => {
         res.send("Success: " + JSON.stringify(ingform));
@@ -147,7 +148,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
 // GET SINGLE INGREDIENT
 app.get("/ingredient/:name", jsonparser, (req, res) => {
-  var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
+  var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
   console.log("--------");
   console.log("Request: " + domain);
@@ -191,7 +192,7 @@ app.get("/users", (err, res) => {
 
 //GET SINGLE USER
 app.get("/users/:name", jsonparser, (req, res) => {
-  var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users/" + req.params.name;
+  var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
   console.log("--------");
   console.log("Request: " + domain);
@@ -236,8 +237,8 @@ app.get("/new/user", (req, res) => {
 //POST NEW USER
 app.post("/createnewuser", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/user/" + req.body.name;
-  var postSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users";
+  var getSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/user/" + req.body.name;
+  var postSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
   console.log("req.body.name: " + req.body.name);
@@ -256,7 +257,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
   request.post(myform, (error, response, body) => {
 
-    var newpost = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users/" + req.body.name;
+    var newpost = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.body.name;
 
     request.get(newpost, (error, response, body) => {
 
@@ -282,7 +283,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 //SOCKET IO
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
-  var users = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users"
+  var users = DINU_DEST+":" + DIENSTNUTZERPORT + "/users"
 
   // Real Time Updates Of Tweets by our account
   setInterval(() => {
