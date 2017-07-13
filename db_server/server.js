@@ -289,8 +289,6 @@ io.on('connection', (socket) => {
   setInterval(() => {
     mytwitter.get("statuses/user_timeline", { name: "@CocktailsOrange", count: 1 }, (err, data, response) => {
 
-      console.log("Twitter err: " + err);
-
       if (err == null) {
         var statuses = data[0];
         socket.emit('fakenews', statuses.text);
