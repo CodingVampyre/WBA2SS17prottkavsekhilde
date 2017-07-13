@@ -1,0 +1,173 @@
+@font-face {
+  font-family: clockwork;
+  src: url("Timepiece.TTF");
+}
+
+body  {
+  background-color: #eee;
+  margin: 0 auto;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-size: 64px;
+  text-shadow: 0 10px 10px lightgrey;
+  font-family: clockwork;
+  text-align: center;
+  color: #f27233;
+}
+
+p {
+  font-family: OpenSans;
+}
+
+a {
+  text-decoration: none;
+  color: #f27233;
+}
+
+a:hover {
+  text-shadow: 0 0 10px white;
+}
+
+footer {
+  border-radius: 5px;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 5px;
+  right: 5px;
+  color: white;
+  background-color: black;
+  opacity: .1;
+  text-align: center;
+  margin: 20px;
+}
+
+footer:hover {
+  opacity: 1;
+}
+
+#footer_content {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#content {
+  margin: 0 auto;
+  width: 60%;
+  margin-bottom: 100px;
+}
+
+::selection {
+  color: white;
+  background-color: #f27233;
+}
+
+input {
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #eee;
+  font-size: 30px;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 20px;
+  border-bottom: 5px solid #ddd;
+}
+
+input[type=text] {
+  height: 50px;
+  font-size: 30px;
+}
+
+input:hover {
+  border-bottom: 5px solid #f27233;
+}
+
+
+input:focus {
+  border-bottom: 5px solid #f27233;
+}
+
+textarea {
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  resize: none;
+  width: 100%;
+  font-size: 24px;
+  border: none;
+  background-color: #eee;
+  border-bottom: 5px solid #ddd;
+}
+
+textarea:hover {
+  border-bottom: 5px solid #f27233;
+}
+
+textarea:focus {
+  border-bottom: 5px solid #f27233;
+}
+
+button {
+  border: none;
+  width: 100%;
+  height: 50px;
+  background-color: #f27233;
+  font-size: 24px;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0px 5px 0 #ddd; 
+  margin-bottom: 20px;
+}
+
+button:hover {
+  cursor: pointer;
+  margin-top: -5px;
+  box-shadow: 0px 10px 0 #ddd;
+}
+
+button:active {
+  box-shadow: none;
+  margin-top: 5px;
+}
+
+.errorfour {
+  font-size: 32px;
+  font-style: italic;
+}
+
+#mes {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px 0 black;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+  background-color: #4099FF;
+  color: white;
+}
+
+td, th {
+  font-size: 24px;
+  padding: 10px;
+}
+
+.tval {
+  padding-right: 20px;
+  text-align: right;
+}
+
+.tind {
+  padding-left: 50px;
+  text-align: left;
+}
+
+#desq{
+  font-size: 24px;
+  font-family: sans-serif;
+}
