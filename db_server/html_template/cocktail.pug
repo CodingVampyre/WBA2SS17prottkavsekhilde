@@ -11,7 +11,6 @@ html(lang="de")
       p#desq #{description}
       each val, index in ingredients
         h3= index
-        a(href="/ingredients")= index
-        p.ingredient= val
+        p Zutat: #{index}: #{val}
 
       a(href="/cocktails") ZURÜÜÜCK!
