@@ -289,8 +289,13 @@ io.on('connection', (socket) => {
   // Real Time Updates Of Tweets by our account
   setInterval(() => {
     mytwitter.get("statuses/user_timeline", { name: "@CocktailsOrange", count: 1 }, (err, data, response) => {
-      var statuses = data[0];
-      socket.emit('fakenews', statuses.text);
+
+      if (!err) {
+        var statuses = data[0];
+        socket.emit('fakenews', statuses.text);
+      } else {
+        socket.emit('fakenews', "No Tweets on this account.");
+      }
     });
   }, 5000);
 
