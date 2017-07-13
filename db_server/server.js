@@ -225,15 +225,6 @@ app.get("/users/:name", jsonparser, (req, res) => {
 
 });
 
-//???????
-/*
-app.get("/users", (err, res) => {
-  res.render("users.pug", {
-
-  });
-});
-*/
-
 //GET CREATE USER
 app.get("/new/user", (req, res) => {
   res.render("user_form.pug", {
@@ -386,3 +377,8 @@ function parseZutaten(zlist) {
   }
   return mylist;
 }
+
+
+/*
+* User mit seinen Cocktails verlinken
+*/
