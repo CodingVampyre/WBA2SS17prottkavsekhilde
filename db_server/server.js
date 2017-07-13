@@ -380,4 +380,5 @@ function parseZutaten(zlist) {
 
 /*
 * User mit seinen Cocktails verlinken
+* Weiterleitung nach erstellen eines Cocktails
 */
