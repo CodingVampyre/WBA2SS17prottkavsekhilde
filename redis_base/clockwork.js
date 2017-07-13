@@ -419,6 +419,17 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 });
 
 //GET COCKTAIL COMMENT
+app.get("/cocktails/:name/comments", jsonparser, (req, res) => {
+  client.hgetall("inme:" + req.params.name, (error, reply) => {
+
+    console.log("Comments Reply" + reply);
+
+    res.set({ 'Content-Type': 'application/json' });
+    res.status(200);
+    res.write(JSON.stringify(reply));
+    res.end();
+  });
+});
 
 //POST COCKTAIL COMMENTS
 app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
