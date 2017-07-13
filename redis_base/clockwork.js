@@ -334,8 +334,10 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
         console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
-          client.rpush(allname, element.ingr, (error, listreply) => {
+          client.rpush(allname, element.ingr, (error, listreply) => { 
+            client.hset("inme:"+req.params.name, element.ingr, element.meng, (error2, reply2) => {
 
+            });
           });
         });
       });
