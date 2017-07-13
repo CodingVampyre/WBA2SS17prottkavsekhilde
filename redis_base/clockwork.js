@@ -344,7 +344,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
     if (reply.length == 0) {
       req.body.forEach((element) => {
-
+        console.log("Älement: " +element)
         console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
@@ -415,6 +415,46 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.status(200);
   res.write(JSON.stringify(reply));
+  res.end();
+});
+
+//GET COCKTAIL COMMENT
+
+//POST COCKTAIL COMMENTS
+app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+
+  var allcomm = "cocktails:" + req.params.name + ":comments";
+
+  client.lrange(allcomm, "0", "-1", (error, reply) => {
+
+    if (reply.length == 0) {
+      req.body.forEach((element) => {
+
+        console.log("Element: " + element.auth + " - " + element.comm);
+
+        client.hmset("comment:" + element.auth, "auth", element.auth, "comm", element.comm, (error, reply) => {
+          client.rpush(allcomm, element.auth, (error, listreply) => { 
+            client.hset("inme:"+req.params.name, element.auth, element.comm, (error2, reply2) => {
+              /*
+              * Writes into an inme:[name] hash
+              */
+            });
+          });
+        });
+      });
+    } else {
+      client.lrange(allname, "0", "-1", (errr, repp) => {
+      });
+    }
+  });
+  next();
+});
+
+// CALLBACK: POST COCKTAIL COMMENTS
+app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+  res.set({ 'Content-Type': 'application/json' });
+  res.status(201);
+  res.write("Oki Doki");
   res.end();
 });
 

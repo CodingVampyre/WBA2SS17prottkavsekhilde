@@ -135,6 +135,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
     //  console.log("Error: " + error + "\nResponse: " + response + "\nBody: " + body);
 
       var stuff = parseZutaten(req.body.ingr);
+      console.log("STUFF: " +stuff)
       var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
 
       request.post(ingform, (error1, response1, body1) => {
@@ -279,6 +280,11 @@ app.post("/createnewuser", jsonparser, (req, res) => {
     });
   });
 });
+
+//POST COMMENT
+app.post("/createnewcomment", jsonparser, (req, res) =>{ 
+});
+
 
 //SOCKET IO
 io.on('connection', (socket) => {
