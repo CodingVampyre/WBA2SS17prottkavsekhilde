@@ -4,6 +4,9 @@ html(lang="de")
   body
     #content
       include basic/humeb.pug
+      h2 Zwischendurch
+      p= ingredients
+
       h1 #{cocktail}
       p#desq #{description}
       each val in ingredients

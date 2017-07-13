@@ -90,6 +90,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
         console.log("body2: "+body2)
 
         if (!error2) {
+
           res.render("cocktail.pug", {
             cocktail: body.name,
             description: body.desc,
@@ -97,11 +98,13 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
           });
         } else {
+
           res.render("cocktail.pug", {
             cocktail: body.name,
             description: body.desc,
             ingredients: null
           });
+          
         }
       });
     } else {
