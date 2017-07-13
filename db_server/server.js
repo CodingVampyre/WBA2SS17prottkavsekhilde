@@ -43,14 +43,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get('/testparser', (req, res) => {
 
-  var resu = parseZutaten("Zitrone+1 Scheibe.Cola+1l.Eis+2 Würfel.Liebe+2 Esslöffel.")
-  console.log(resu);
-  res.send(resu);
-});
-
-// STATUS: FINISHED
+// GET LIST OF COCKTAILS
 app.get("/cocktails", jsonparser, (req, res) => {
 
   var myurl = 'http://127.0.0.1:' + DIENSTNUTZERPORT + "/cocktails";
@@ -73,6 +67,7 @@ app.get("/cocktails", jsonparser, (req, res) => {
   });
 });
 
+//GET SINGLE COCKTAIL
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
 
@@ -116,14 +111,14 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   })
 });
 
-// STATUS: FINISHED
+// GET CREATE COCKTAIL 
 app.get("/new/cocktail", (req, res) => {
   res.render("cocktail_form.pug", {
     title: "New Cocktail"
   });
 });
 
-// TODO test_required
+// POST NEW COCKTAIL
 app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
@@ -150,6 +145,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
 });
 
+// GET SINGLE INGREDIENT
 app.get("/ingredient/:name", jsonparser, (req, res) => {
   var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
@@ -185,7 +181,7 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 });
 
 
-//STATUS: FINISHED
+//GET LIST OF USERS
 app.get("/users", (err, res) => {
   res.render("users.pug", {
 
@@ -193,7 +189,7 @@ app.get("/users", (err, res) => {
 });
 
 
-//FINISHED
+//GET SINGLE USER
 app.get("/users/:name", jsonparser, (req, res) => {
   var domain = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
@@ -229,18 +225,24 @@ app.get("/users/:name", jsonparser, (req, res) => {
 
 });
 
+//???????
+/*
 app.get("/users", (err, res) => {
   res.render("users.pug", {
 
   });
 });
+*/
 
+//GET CREATE USER
 app.get("/new/user", (req, res) => {
   res.render("user_form.pug", {
     title: "New User"
   });
 });
 
+
+//POST NEW USER
 app.post("/createnewuser", jsonparser, (req, res) => {
 
   var getSpecificCocktail = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/user/" + req.body.name;
@@ -286,6 +288,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   });
 });
 
+//SOCKET IO
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
   var users = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/users"

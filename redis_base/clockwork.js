@@ -10,7 +10,8 @@ app.use(bodyParser.urlencoded({
 }));
 var jsonparser = bodyParser.json();
 
-// KAVSEK
+//KAVSEK
+//GET ALLUSERS
 app.get("/users", (req, res) => {
   client.lrange("list:users", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -20,6 +21,7 @@ app.get("/users", (req, res) => {
   });
 });
 
+//GET SINGLE USER
 app.get("/users/:id", (req, res) => {
   client.hgetall("user:" + req.params.id, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -29,6 +31,7 @@ app.get("/users/:id", (req, res) => {
   });
 });
 
+//POST NEW USER
 app.post("/users", jsonparser, (req, res) => {
   var canset = true;
 
@@ -56,6 +59,7 @@ app.post("/users", jsonparser, (req, res) => {
   });
 });
 
+//PUT USER
 app.put("/users", jsonparser, (req, res) => {
   var canupdate = false;
 
@@ -84,6 +88,7 @@ app.put("/users", jsonparser, (req, res) => {
   });
 });
 
+//DELETE USER
 app.delete("/users/:id", jsonparser, (req, res) => {
   var candelete = false;
 
@@ -113,7 +118,8 @@ app.delete("/users/:id", jsonparser, (req, res) => {
   });
 });
 
-// HILDEBRANDT
+//HILDEBRANDT
+//GET ALL COCKTAILS
 app.get("/cocktails", (req, res) => {
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -123,6 +129,7 @@ app.get("/cocktails", (req, res) => {
   });
 });
 
+//GET SINGLE COCKTAIL
 app.get("/cocktails/:name", (req, res) => {
   client.hgetall("cocktail:" + req.params.name, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -137,6 +144,7 @@ app.get("/cocktails/:name", (req, res) => {
   });
 });
 
+//POST COCKTAIL
 app.post("/cocktails", jsonparser, (req, res) => {
   var canset = true;
   //console.log(req);
@@ -164,6 +172,7 @@ app.post("/cocktails", jsonparser, (req, res) => {
   });
 });
 
+//PUT COCKTAIL
 app.put("/cocktails", jsonparser, (req, res) => {
   var canupdate = false;
 
@@ -190,6 +199,7 @@ app.put("/cocktails", jsonparser, (req, res) => {
   });
 });
 
+//DELETE COCKTAIL
 app.delete("/cocktails/:name", jsonparser, (req, res) => {
   var candelete = false;
   client.lrange("list:cocktails", "0", "-1", (error, reply) => {
@@ -217,7 +227,8 @@ app.delete("/cocktails/:name", jsonparser, (req, res) => {
   });
 });
 
-// PROTT
+//PROTT
+//GET ALL INGREDIENTS
 app.get("/ingredients", (req, res) => {
   client.lrange("list:ingredients", "0", "-1", (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -227,7 +238,7 @@ app.get("/ingredients", (req, res) => {
   });
 });
 
-//TODO the GET method for a specific ingredient does not work properly yet
+//GET SINGLE INGREDIENT
 app.get("/ingredients/:ingredient", (req, res) => {
   client.hgetall("ingredient:" + req.params.ingredient, (error, reply) => {
     res.set({ 'Content-Type': 'application/json' });
@@ -237,6 +248,7 @@ app.get("/ingredients/:ingredient", (req, res) => {
   });
 });
 
+//POST INGREDIENT
 app.post("/ingredients", jsonparser, (req, res) => {
   var canset = true;
 
@@ -264,6 +276,7 @@ app.post("/ingredients", jsonparser, (req, res) => {
   });
 });
 
+//PUT INGREDIENT
 app.put("/ingredients", jsonparser, (req, res) => {
   var canupdate = false;
 
@@ -291,6 +304,7 @@ app.put("/ingredients", jsonparser, (req, res) => {
   });
 });
 
+//DELETE INGREDIENT
 app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
   var candelete = false;
 
@@ -321,7 +335,7 @@ app.delete("/ingredients/:ingredient", jsonparser, (req, res) => {
 });
 
 
-// TODO instead of LIST and HASH, Only save in Hash!!!
+//POST COKCTAIL INGREDIENTS
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
   var allname = "cocktails:" + req.params.name + ":ingredients";
@@ -351,6 +365,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
+//CALLBACK POST COCKTAIL INGREDIENTS
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.status(201);
@@ -358,7 +373,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.end();
 });
 
-// TODO Change; Should get Single hash
+// GET COCKTAILS INGREDIENTS
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   client.hgetall("inme:" + req.params.name, (error, reply) => {
 
@@ -371,6 +386,7 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   });
 });
 
+//PUT COCKTAILS INGREDIENTS
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   var canset = true;
   client.lrange("cocktails:" + req.name + ":ingredients", "0", "-1", (error, reply) => {
@@ -394,6 +410,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
+//CALLBACK PUT COCKTAIL INGREDIENTS
 app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.status(200);
@@ -401,6 +418,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.end();
 });
 
+//LISTEN
 app.listen(PORT, '0.0.0.0', function () {
   console.log("Port is ready for take off: " + PORT);
 });
