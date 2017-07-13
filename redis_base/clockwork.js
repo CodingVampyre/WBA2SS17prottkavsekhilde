@@ -336,7 +336,9 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
           client.rpush(allname, element.ingr, (error, listreply) => { 
             client.hset("inme:"+req.params.name, element.ingr, element.meng, (error2, reply2) => {
-
+              /*
+              * Writes into an inme:[name] hash
+              */
             });
           });
         });
@@ -358,7 +360,7 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 // TODO Change; Should get Single hash
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
-  client.lrange("cocktails:" + req.params.name + ":ingredients", "0", "-1", (error, reply) => {
+  client.hgetall("inme:" + req.params.name, (error, reply) => {
 
     console.log("Reply, Cocktails: " + reply);
 
