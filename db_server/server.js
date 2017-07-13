@@ -84,12 +84,10 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
       var myingredients = "http://127.0.0.1:" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
 
       request.get(myingredients, (error2, response2, body2) => {
-
-        console.log("REQUEST!!!!!: " + JSON.stringify(response));
         
-        console.log("vorParseBody2 "+body2)
+        console.log("vorParseBody2: "+body2)
         body2 = JSON.parse(body2);
-        console.log("body2 "+body2)
+        console.log("body2: "+body2)
 
         if (!error2) {
           res.render("cocktail.pug", {
