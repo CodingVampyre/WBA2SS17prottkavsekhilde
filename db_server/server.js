@@ -85,12 +85,19 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
         body2 = JSON.parse(body2);
         console.log("body2: "+body2)
 
+        // TODO instead of dummy, insert real comments
+        var dummy = [
+          {crea:"Nightmare", comm: "Das ist 1 Nicer Cocktail"},
+          {crea:"Jeanne", comm: "Ist jetzt nicht sooo lecker!"}
+        ];
+
         if (!error2) {
 
           res.render("cocktail.pug", {
             cocktail: body.name,
             description: body.desc,
-            ingredients: body2
+            ingredients: body2,
+            comments: dummy
 
           });
         } else {
@@ -98,7 +105,8 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
           res.render("cocktail.pug", {
             cocktail: body.name,
             description: body.desc,
-            ingredients: null
+            ingredients: null,
+            comments: dummy
           });
           
         }
