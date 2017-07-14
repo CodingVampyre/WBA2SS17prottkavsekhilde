@@ -54,9 +54,6 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
     if (!error) {
       body = JSON.parse(body);
-      body.forEach((element) => {
-        console.log(element);
-      });
       res.render("cocktaillist.pug", {
         listi: body
       });
@@ -81,17 +78,10 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
     if (!error) {
       body = JSON.parse(body);
 
-      console.log(myingredients);
       request.get(myingredients, (error2, response2, body2) => {
 
-        console.log(mycomments);
         request.get(mycomments, (error3, response3, body3) =>{
           body3 =JSON.parse(body3);
-          console.log("BODY DREI: " +body3);
-          console.log("BODY ÄRROR: " +error);
-          console.log("BODY RESTEPE: " +response);
-
-
           body2 = JSON.parse(body2);
 
           if (!error2) {
@@ -133,21 +123,15 @@ app.get("/new/cocktail", (req, res) => {
 
 // POST NEW COCKTAIL
 app.post("/createnewcocktail", jsonparser, (req, res) => {
-
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
 
   mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
     var myform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
-    console.log("Cocktail wird erstellt.");
-
     request.post(myform, (error, response, body) => {
 
-    //  console.log("Error: " + error + "\nResponse: " + response + "\nBody: " + body);
-
       var stuff = parseZutaten(req.body.ingr);
-      console.log("STUFF: " +stuff)
       var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
 
       request.post(ingform, (error1, response1, body1) => {
@@ -163,16 +147,11 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 app.get("/ingredient/:name", jsonparser, (req, res) => {
   var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
-  console.log("--------");
-  console.log("Request: " + domain);
-
   request.get(domain, (error, response, body) => {
 
     if (!error) {
 
       body = JSON.parse(body);
-
-      console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
 
       res.render("ingredient.pug", {
         name: body.name,
@@ -180,8 +159,6 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
       });
 
     } else {
-
-      console.log("There WAS in fact an Error, bitch!");
 
       res.render("ingredient.pug", {
         name: "Swiggity Swooty",
@@ -207,16 +184,11 @@ app.get("/users", (err, res) => {
 app.get("/users/:name", jsonparser, (req, res) => {
   var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
-  console.log("--------");
-  console.log("Request: " + domain);
-
   request.get(domain, (error, response, body) => {
 
     if (!error) {
 
       body = JSON.parse(body);
-
-      console.log("--> No Error. Writing " + body.name + " and " + body.pass + " to the shizzle");
 
       res.render("singleuser.pug", {
         name: body.name,
@@ -225,8 +197,6 @@ app.get("/users/:name", jsonparser, (req, res) => {
       });
 
     } else {
-
-      console.log("There WAS in fact an Error, bitch!");
 
       res.render("ingredient.pug", {
         name: "Swiggity Swooty",
@@ -254,17 +224,12 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   var postSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
-  console.log("req.body.name: " + req.body.name);
-  console.log("req.body.mail: " + req.body.mail);
-  console.log("req.body.pass: " + req.body.pass);
 
   var ourbody = {
     name: req.body.name,
     mail: req.body.mail,
     pass: hash
   }
-
-  console.log(JSON.stringify(ourbody));
 
   var myform = { url: postSpecificCocktail, form: ourbody };
 
@@ -275,7 +240,6 @@ app.post("/createnewuser", jsonparser, (req, res) => {
     request.get(newpost, (error, response, body) => {
 
       body = JSON.parse(body);
-      console.log("body: " + body)
       if (!error) {
         res.render("singleuser.pug", {
           name: body.name,
@@ -363,7 +327,6 @@ function parseZutaten(zlist) {
     meng: null
   };
 
-  console.log("zlist: " + zlist);
   for (var i = 0; i <= zlist.length; i++) {
 
     if (zlist[i] == "+") {
