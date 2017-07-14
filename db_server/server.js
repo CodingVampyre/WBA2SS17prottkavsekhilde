@@ -80,38 +80,29 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
       request.get(myingredients, (error2, response2, body2) => {
 
-        request.get(mycomments, (error3, response3, body3) =>{
+        request.get(mycomments, (error3, response3, body3) => {
           body3 =JSON.parse(body3);
           body2 = JSON.parse(body2);
+          console.log(JSON.stringify(body3));
 
-          if (!error2) {
+           res.render("cocktail.pug", {
+             cocktail: body.name,
+             description: body.desc,
+             ingredients: body2,
+             comments: body3
+          });
 
-            res.render("cocktail.pug", {
-              cocktail: body.name,
-              description: body.desc,
-              ingredients: body2,
-              comments: body3
-
-            });
-          } else {
-
-            res.render("cocktail.pug", {
-              cocktail: body.name,
-              description: body.desc,
-              ingredients: null,
-              comments: null
-            });
-            
-          }
         });
+
       });
+
     } else {
       res.render("cocktail.pug", {
         cocktail: "Fehler",
         description: "leider Konnten wir ihren Cock...Tail nicht finden."
       });
     }
-  })
+  });
 });
 
 // GET CREATE COCKTAIL 
@@ -259,8 +250,13 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
 //POST COMMENT
 app.post("/createnewcomment", jsonparser, (req, res) =>{ 
+  console.log(req.body);
+  var domain = DINU_DEST+":"+DIENSTNUTZERPORT+"/cocktails/"+req.body.cock+"/comments";
+
+  res.send(domain);
 });
 
+//FLUSH REDIS
 app.get("/flushredis", (req, res) => {
 
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/flushall";

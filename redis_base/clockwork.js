@@ -388,9 +388,23 @@ app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
 
     console.log("Reply, Cocktails: " + reply);
 
+    var dummy = 
+      {
+        "Keine": "Da ist irgendwas schief gelaufen"
+      };
+
     res.set({ 'Content-Type': 'application/json' });
-    res.status(200);
-    res.write(JSON.stringify(reply));
+    if (!reply) {
+      console.log("Dummy wurde eingefügt!");
+      res.status(404);
+      res.write(JSON.stringify(dummy));
+      console.log(dummy);
+    } else {
+      console.log("Kein Dummy, dummerchen!");
+      res.status(200);
+      res.write(JSON.stringify(reply));
+      console.log(reply);
+    }
     res.end();
   });
 });
@@ -431,11 +445,24 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 app.get("/cocktails/:name/comments", jsonparser, (req, res) => {
   client.hgetall("inme2:" + req.params.name, (error, reply) => {
 
-    console.log("Comments Reply" + reply);
-
+    console.log("Comments Reply" + JSON.stringify(reply));
+    console.log("COMMENTS ERROR: " +error);
     res.set({ 'Content-Type': 'application/json' });
-    res.status(200);
-    res.write(JSON.stringify(reply));
+
+    var dummy = 
+      {
+        "Noch keine Kommentare vorhanden...":
+        "Schreibe doch einfach den Ersten!"
+      }
+    
+
+    if(!reply){
+      res.status(404);
+      res.write(JSON.stringify(dummy));
+    } else{
+      res.status(200);
+      res.write(JSON.stringify(reply));
+    }
     res.end();
   });
 });
