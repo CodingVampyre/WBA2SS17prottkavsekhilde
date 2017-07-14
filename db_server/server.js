@@ -86,7 +86,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
         console.log(mycomments);
         request.get(mycomments, (error3, response3, body3) =>{
-
+          body3 =JSON.parse(body3);
           console.log("BODY DREI: " +body3);
           console.log("BODY ÄRROR: " +error);
           console.log("BODY RESTEPE: " +response);
