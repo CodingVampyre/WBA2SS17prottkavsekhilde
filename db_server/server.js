@@ -1,7 +1,7 @@
 'use strict'
 const PORT = process.argv[2];
 const DIENSTNUTZERPORT = 1337;
-const DINU_DEST = "http://127.0.0.1";
+const DINU_DEST = process.argv[3]//"http://127.0.0.1";
 
 var express = require('express');
 var pug = require('pug');
@@ -27,6 +27,10 @@ const server = app.listen(PORT, function () {
   if (PORT == undefined) {
     console.log("Please provide a port number as command parameter");
     process.exit(-1);
+  }
+
+  if (DINU_DEST == undefined) {
+    console.log("Please provide the domain of the other thing like 'http://domain'");
   }
 
   fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
