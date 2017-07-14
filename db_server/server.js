@@ -31,6 +31,7 @@ const server = app.listen(PORT, function () {
 
   if (DINU_DEST == undefined) {
     console.log("Please provide the domain of the other thing like 'http://domain'");
+    process.exit(-1);
   }
 
   fs.readFile("misc/twitter_credentials.json", jsonparser, (err, rep) => {
