@@ -364,6 +364,14 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
+//CALLBACK POST COCKTAIL INGREDIENTS
+app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+  res.set({ 'Content-Type': 'application/json' });
+  res.status(201);
+  res.write("Oki Doki");
+  res.end();
+});
+
 // DELETES ALL DATA :-)
 app.get("/flushall", jsonparser, (req, res) => {
   client.flushall((error, reply) => {
@@ -373,14 +381,6 @@ app.get("/flushall", jsonparser, (req, res) => {
     res.end();
   });
 })
-
-//CALLBACK POST COCKTAIL INGREDIENTS
-app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
-  res.set({ 'Content-Type': 'application/json' });
-  res.status(201);
-  res.write("Oki Doki");
-  res.end();
-});
 
 // GET COCKTAILS INGREDIENTS
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
@@ -429,7 +429,7 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
 //GET COCKTAIL COMMENT
 app.get("/cocktails/:name/comments", jsonparser, (req, res) => {
-  client.hgetall("inme:" + req.params.name, (error, reply) => {
+  client.hgetall("inme2:" + req.params.name, (error, reply) => {
 
     console.log("Comments Reply" + reply);
 
@@ -445,10 +445,10 @@ app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
 
   var allcomm = "cocktails:" + req.params.name + ":comments";
 
-  console.log("Element: " + element.auth + " - " + element.comm);
+  console.log("Element: " + req.body.auth + " - " + req.body.comm);
 
-  client.hmset("comment:" + element.auth, "auth", element.auth, "comm", element.comm, (error, reply) => {
-    client.hset("inme:" + req.params.name, element.auth, element.comm, (error2, reply2) => {
+  client.hmset("comment:" + req.body.auth, "auth", req.body.auth, "comm", req.body.comm, (error, reply) => {
+    client.hset("inme2:" + req.params.name, req.body.auth, req.body.comm, (error3, reply3) => {
       /*
       * Writes into an inme:[name] hash
       */

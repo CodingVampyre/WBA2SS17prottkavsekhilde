@@ -68,48 +68,52 @@ app.get("/cocktails", jsonparser, (req, res) => {
   });
 });
 
-//GET SINGLE COCKTAIL
+//GET SINGLE/MARRIED COCKTAIL
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
+  var cocktailname= req.params.cocktail;
+  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname;
+  var mycomments= DINU_DEST+":" +DIENSTNUTZERPORT+ "/cocktails/" +cocktailname + "/comments";
+  var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname + "/ingredients";
+  
 
   request.get(mycocktail, (error, response, body) => {
 
     if (!error) {
       body = JSON.parse(body);
 
-      var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
-
+      console.log(myingredients);
       request.get(myingredients, (error2, response2, body2) => {
-        
-        console.log("vorParseBody2: "+body2)
-        body2 = JSON.parse(body2);
-        console.log("body2: "+body2)
 
-        // TODO instead of dummy, insert real comments
-        var dummy = [
-          {crea:"Nightmare", comm: "Das ist 1 Nicer Cocktail"},
-          {crea:"Jeanne", comm: "Ist jetzt nicht sooo lecker!"}
-        ];
+        console.log(mycomments);
+        request.get(mycomments, (error3, response3, body3) =>{
 
-        if (!error2) {
+          console.log("BODY DREI: " +body3);
+          console.log("BODY ÄRROR: " +error);
+          console.log("BODY RESTEPE: " +response);
 
-          res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: body2,
-            comments: dummy
 
-          });
-        } else {
+          body2 = JSON.parse(body2);
 
-          res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: null,
-            comments: dummy
-          });
-          
-        }
+          if (!error2) {
+
+            res.render("cocktail.pug", {
+              cocktail: body.name,
+              description: body.desc,
+              ingredients: body2,
+              comments: body3
+
+            });
+          } else {
+
+            res.render("cocktail.pug", {
+              cocktail: body.name,
+              description: body.desc,
+              ingredients: null,
+              comments: null
+            });
+            
+          }
+        });
       });
     } else {
       res.render("cocktail.pug", {

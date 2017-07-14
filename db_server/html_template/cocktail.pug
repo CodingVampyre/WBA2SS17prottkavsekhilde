@@ -19,9 +19,9 @@ html(lang="de")
       p#desq #{description}
 
       h1 Kommentare
-      each comm, crea in comments
-        h2= crea
-        p= comm
+      each val, index in comments
+        h2= index
+        p= val
 
       form(method="POST" action="/createnewcomment")
         input.form-control(type='text' id='user' placeholder='Autor' name='crea')
