@@ -364,6 +364,16 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   next();
 });
 
+// DELETES ALL DATA :-)
+app.get("/flushall", jsonparser, (req, res) => {
+  client.flushall((error, reply) => {
+    res.set({'Content-Type' : 'application/json'});
+    res.status(201);
+    res.write("Alles gut");
+    res.end();
+  });
+})
+
 //CALLBACK POST COCKTAIL INGREDIENTS
 app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
