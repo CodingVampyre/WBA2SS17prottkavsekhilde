@@ -18,4 +18,14 @@ html(lang="de")
       h3 Zubereitung:
       p#desq #{description}
 
+      h1 Kommentare
+      each val, index in comments
+        h2= index
+        p= val
+
+      form(method="POST" action="/createnewcomment")
+        input.form-control(type='text' id='user' placeholder='Autor' name='auth')
+        textarea(rows="4" placeholder="Kommentar" name="comm")
+        input.form-control(type="hidden" id="cockt" name='cock' value=cocktail)
+        button Kommentieren                
       a(href="/cocktails") ZURÜÜÜCK!

@@ -1,8 +1,7 @@
 'use strict'
 const PORT = process.argv[2];
 const DIENSTNUTZERPORT = 1337;
-//const DINU_DEST = "http://192.168.43.96";
-const DINU_DEST = "http://127.0.0.0";
+const DINU_DEST = process.argv[3] //"http://127.0.0.1";
 
 var express = require('express');
 var pug = require('pug');
@@ -27,6 +26,11 @@ const server = app.listen(PORT, function () {
 
   if (PORT == undefined) {
     console.log("Please provide a port number as command parameter");
+    process.exit(-1);
+  }
+
+  if (DINU_DEST == undefined) {
+    console.log("Please provide the domain of the other thing like 'http://domain'");
     process.exit(-1);
   }
 
@@ -55,9 +59,6 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
     if (!error) {
       body = JSON.parse(body);
-      body.forEach((element) => {
-        console.log(element);
-      });
       res.render("cocktaillist.pug", {
         listi: body
       });
@@ -69,48 +70,44 @@ app.get("/cocktails", jsonparser, (req, res) => {
   });
 });
 
-//GET SINGLE COCKTAIL
+//GET SINGLE/MARRIED COCKTAIL
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail;
+  var cocktailname= req.params.cocktail;
+  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname;
+  var mycomments= DINU_DEST+":" +DIENSTNUTZERPORT+ "/cocktails/" +cocktailname + "/comments";
+  var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname + "/ingredients";
+  
 
   request.get(mycocktail, (error, response, body) => {
 
     if (!error) {
       body = JSON.parse(body);
 
-      var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.params.cocktail + "/ingredients";
-
       request.get(myingredients, (error2, response2, body2) => {
+        
+        request.get(mycomments, (error3, response3, body3) => {
+          body3 =JSON.parse(body3);
+          body2 = JSON.parse(body2);
+          console.log(JSON.stringify(body3));
 
-        console.log("vorParseBody2: "+body2)
-        body2 = JSON.parse(body2);
-        console.log("body2: "+body2)
-
-        if (!error2) {
-
-          res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: body2
-
-          });
-        } else {
-
-          res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: null
+           res.render("cocktail.pug", {
+             cocktail: body.name,
+             description: body.desc,
+             ingredients: body2,
+             comments: body3
           });
 
-        }
+        });
+
       });
+
     } else {
       res.render("cocktail.pug", {
         cocktail: "Fehler",
         description: "leider Konnten wir ihren Cock...Tail nicht finden."
       });
     }
-  })
+  });
 });
 
 // GET CREATE COCKTAIL
@@ -122,18 +119,13 @@ app.get("/new/cocktail", (req, res) => {
 
 // POST NEW COCKTAIL
 app.post("/createnewcocktail", jsonparser, (req, res) => {
-
   var mymessage = "Hey droogs! There was a BRAND NEW cocktail on our site: /cocktail/" + req.body.name;
 
   mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
     var myform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
-    console.log("Cocktail wird erstellt.");
-
     request.post(myform, (error, response, body) => {
-
-    //  console.log("Error: " + error + "\nResponse: " + response + "\nBody: " + body);
 
       var stuff = parseZutaten(req.body.ingr);
       var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
@@ -151,16 +143,11 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 app.get("/ingredient/:name", jsonparser, (req, res) => {
   var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
-  console.log("--------");
-  console.log("Request: " + domain);
-
   request.get(domain, (error, response, body) => {
 
     if (!error) {
 
       body = JSON.parse(body);
-
-      console.log("--> No Error. Writing " + body.name + " and " + body.desc + " to the shizzle");
 
       res.render("ingredient.pug", {
         name: body.name,
@@ -168,8 +155,6 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
       });
 
     } else {
-
-      console.log("There WAS in fact an Error, bitch!");
 
       res.render("ingredient.pug", {
         name: "Swiggity Swooty",
@@ -195,16 +180,11 @@ app.get("/users", (err, res) => {
 app.get("/users/:name", jsonparser, (req, res) => {
   var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
-  console.log("--------");
-  console.log("Request: " + domain);
-
   request.get(domain, (error, response, body) => {
 
     if (!error) {
 
       body = JSON.parse(body);
-
-      console.log("--> No Error. Writing " + body.name + " and " + body.pass + " to the shizzle");
 
       res.render("singleuser.pug", {
         name: body.name,
@@ -213,8 +193,6 @@ app.get("/users/:name", jsonparser, (req, res) => {
       });
 
     } else {
-
-      console.log("There WAS in fact an Error, bitch!");
 
       res.render("ingredient.pug", {
         name: "Swiggity Swooty",
@@ -242,17 +220,12 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   var postSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
-  console.log("req.body.name: " + req.body.name);
-  console.log("req.body.mail: " + req.body.mail);
-  console.log("req.body.pass: " + req.body.pass);
 
   var ourbody = {
     name: req.body.name,
     mail: req.body.mail,
     pass: hash
   }
-
-  console.log(JSON.stringify(ourbody));
 
   var myform = { url: postSpecificCocktail, form: ourbody };
 
@@ -263,7 +236,6 @@ app.post("/createnewuser", jsonparser, (req, res) => {
     request.get(newpost, (error, response, body) => {
 
       body = JSON.parse(body);
-      console.log("body: " + body)
       if (!error) {
         res.render("singleuser.pug", {
           name: body.name,
@@ -280,6 +252,28 @@ app.post("/createnewuser", jsonparser, (req, res) => {
     });
   });
 });
+
+//POST COMMENT
+app.post("/createnewcomment", jsonparser, (req, res) =>{ 
+  console.log(req.body);
+  var domain = DINU_DEST+":"+DIENSTNUTZERPORT+"/cocktails/"+req.body.cock+"/comments";
+  var sendurl = {url:domain, body: req.body, json: true};
+
+  request.post(sendurl, (error, response, body) => {
+    res.send("Error: " + error +" and Body: " + body + "and status code is + "+ response);
+  });
+});
+
+//FLUSH REDIS
+app.get("/flushredis", (req, res) => {
+
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/flushall";
+
+  request.get(domain, (error, reply, body) => {
+    res.send("Error: " + error + "\n" + "Reply: " + reply + "Body: " + body);
+  });
+})
+
 
 //SOCKET IO
 io.on('connection', (socket) => {
@@ -337,7 +331,6 @@ function parseZutaten(zlist) {
     meng: null
   };
 
-  console.log("zlist: " + zlist);
   for (var i = 0; i <= zlist.length; i++) {
 
     if (zlist[i] == "+") {

@@ -344,12 +344,11 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
     if (reply.length == 0) {
       req.body.forEach((element) => {
-
         console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
-          client.rpush(allname, element.ingr, (error, listreply) => { 
-            client.hset("inme:"+req.params.name, element.ingr, element.meng, (error2, reply2) => {
+          client.rpush(allname, element.ingr, (error, listreply) => {
+            client.hset("inme:" + req.params.name, element.ingr, element.meng, (error2, reply2) => {
               /*
               * Writes into an inme:[name] hash
               */
@@ -373,15 +372,39 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.end();
 });
 
+// DELETES ALL DATA :-)
+app.get("/flushall", jsonparser, (req, res) => {
+  client.flushall((error, reply) => {
+    res.set({ 'Content-Type': 'application/json' });
+    res.status(201);
+    res.write("Alles gut");
+    res.end();
+  });
+})
+
 // GET COCKTAILS INGREDIENTS
 app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
   client.hgetall("inme:" + req.params.name, (error, reply) => {
 
     console.log("Reply, Cocktails: " + reply);
 
+    var dummy = 
+      {
+        "Keine": "Da ist irgendwas schief gelaufen"
+      };
+
     res.set({ 'Content-Type': 'application/json' });
-    res.status(200);
-    res.write(JSON.stringify(reply));
+    if (!reply) {
+      console.log("Dummy wurde eingefügt!");
+      res.status(404);
+      res.write(JSON.stringify(dummy));
+      console.log(dummy);
+    } else {
+      console.log("Kein Dummy, dummerchen!");
+      res.status(200);
+      res.write(JSON.stringify(reply));
+      console.log(reply);
+    }
     res.end();
   });
 });
@@ -415,6 +438,57 @@ app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
   res.set({ 'Content-Type': 'application/json' });
   res.status(200);
   res.write(JSON.stringify(reply));
+  res.end();
+});
+
+//GET COCKTAIL COMMENT
+app.get("/cocktails/:name/comments", jsonparser, (req, res) => {
+  client.hgetall("inme2:" + req.params.name, (error, reply) => {
+
+    console.log("Comments Reply" + JSON.stringify(reply));
+    console.log("COMMENTS ERROR: " +error);
+    res.set({ 'Content-Type': 'application/json' });
+
+    var dummy = 
+      {
+        "Noch keine Kommentare vorhanden...":
+        "Schreibe doch einfach den Ersten!"
+      }
+    
+
+    if(!reply){
+      res.status(404);
+      res.write(JSON.stringify(dummy));
+    } else{
+      res.status(200);
+      res.write(JSON.stringify(reply));
+    }
+    res.end();
+  });
+});
+
+//POST COCKTAIL COMMENTS
+app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+
+  var allcomm = "cocktails:" + req.params.name + ":comments";
+
+  console.log("Element: " + req.body.auth + " - " + req.body.comm);
+
+  client.hmset("comment:" + req.body.auth, "auth", req.body.auth, "comm", req.body.comm, (error, reply) => {
+    client.hset("inme2:" + req.params.name, req.body.auth, req.body.comm, (error3, reply3) => {
+      /*
+      * Writes into an inme:[name] hash
+      */
+    });
+  });
+  next();
+});
+
+// CALLBACK: POST COCKTAIL COMMENTS
+app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+  res.set({ 'Content-Type': 'application/json' });
+  res.status(201);
+  res.write("Oki Doki");
   res.end();
 });
 
