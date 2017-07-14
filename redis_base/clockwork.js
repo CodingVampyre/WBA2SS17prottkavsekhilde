@@ -344,7 +344,6 @@ app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
     if (reply.length == 0) {
       req.body.forEach((element) => {
-        console.log("Älement: " +element)
         console.log("Element: " + element.ingr + " - " + element.meng);
 
         client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
