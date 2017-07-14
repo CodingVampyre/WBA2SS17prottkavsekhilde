@@ -293,6 +293,15 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 app.post("/createnewcomment", jsonparser, (req, res) =>{ 
 });
 
+app.get("/flushredis", (req, res) => {
+
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/flushall";
+
+  request.get(domain, (error, reply, body) => {
+    res.send("Error: " + error + "\n" + "Reply: " + reply + "Body: " + body);
+  });
+})
+
 
 //SOCKET IO
 io.on('connection', (socket) => {
