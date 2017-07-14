@@ -252,8 +252,11 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 app.post("/createnewcomment", jsonparser, (req, res) =>{ 
   console.log(req.body);
   var domain = DINU_DEST+":"+DIENSTNUTZERPORT+"/cocktails/"+req.body.cock+"/comments";
+  var sendurl = {url:domain, body: req.body, json: true};
 
-  res.send(domain);
+  request.post(sendurl, (error, response, body) => {
+    res.send("Error: " + error +" and Body: " + body + "and status code is + "+ response);
+  });
 });
 
 //FLUSH REDIS
