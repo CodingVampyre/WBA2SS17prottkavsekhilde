@@ -1,7 +1,7 @@
 'use strict'
 const PORT = process.argv[2];
 const DIENSTNUTZERPORT = 1337;
-const DINU_DEST = process.argv[3]//"http://127.0.0.1";
+const DINU_DEST = process.argv[3] //"http://127.0.0.1";
 
 var express = require('express');
 var pug = require('pug');
@@ -84,7 +84,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
       body = JSON.parse(body);
 
       request.get(myingredients, (error2, response2, body2) => {
-
+        
         request.get(mycomments, (error3, response3, body3) => {
           body3 =JSON.parse(body3);
           body2 = JSON.parse(body2);
@@ -110,7 +110,7 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   });
 });
 
-// GET CREATE COCKTAIL 
+// GET CREATE COCKTAIL
 app.get("/new/cocktail", (req, res) => {
   res.render("cocktail_form.pug", {
     title: "New Cocktail"
@@ -374,5 +374,4 @@ function parseZutaten(zlist) {
 
 /*
 * User mit seinen Cocktails verlinken
-* Weiterleitung nach erstellen eines Cocktails
 */
