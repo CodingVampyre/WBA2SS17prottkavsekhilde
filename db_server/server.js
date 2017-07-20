@@ -131,7 +131,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
       var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
 
       request.post(ingform, (error1, response1, body1) => {
-        res.send("Success: " + JSON.stringify(ingform));
+        res.redirect("/cocktails/"+req.body.name);
       });
 
     });
@@ -260,7 +260,7 @@ app.post("/createnewcomment", jsonparser, (req, res) =>{
   var sendurl = {url:domain, body: req.body, json: true};
 
   request.post(sendurl, (error, response, body) => {
-    res.send("Error: " + error +" and Body: " + body + "and status code is + "+ response);
+    res.redirect("/cocktails/"+req.body.cock);
   });
 });
 
