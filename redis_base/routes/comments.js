@@ -7,16 +7,8 @@ module.exports = (app, jsonparser, client) => {
             console.log("COMMENTS ERROR: " + error);
             res.set({ 'Content-Type': 'application/json' });
 
-            var dummy =
-                {
-                    "Noch keine Kommentare vorhanden...":
-                    "Schreibe doch einfach den Ersten!"
-                }
-
-
             if (!reply) {
                 res.status(404);
-                res.write(JSON.stringify(dummy));
             } else {
                 res.status(200);
                 res.write(JSON.stringify(reply));
@@ -34,18 +26,20 @@ module.exports = (app, jsonparser, client) => {
 
         client.hmset("comment:" + req.body.auth, "auth", req.body.auth, "comm", req.body.comm, (error, reply) => {
             client.hset("inme2:" + req.params.name, req.body.auth, req.body.comm, (error3, reply3) => {
-
-                // Writes into an inme:[name] hash
+                res.set({ 'Content-Type': 'application/json' });
+                res.status(201);
+                res.write("Oki Doki");
+                res.end();
             });
         });
-        next();
+        //next();
     });
 
     // CALLBACK: POST COCKTAIL COMMENTS
-    app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+    /*app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
         res.set({ 'Content-Type': 'application/json' });
         res.status(201);
         res.write("Oki Doki");
         res.end();
-    });
+    });*/
 }
