@@ -77,29 +77,37 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   var mycomments = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + cocktailname + "/comments";
   var myingredients = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + cocktailname + "/ingredients";
 
-
   request.get(mycocktail, (error, response, body) => {
 
     if (!error) {
-      body = JSON.parse(body);
 
-      request.get(myingredients, (error2, response2, body2) => {
+      if (response.statusCode == 404) {
+        res.status(404);
+        res.redirect("/cocktails");
+        res.end();
+      } else {
+        body = JSON.parse(body);
 
-        request.get(mycomments, (error3, response3, body3) => {
-          body3 = JSON.parse(body3);
-          body2 = JSON.parse(body2);
-          console.log(JSON.stringify(body3));
+        request.get(myingredients, (ingredient_error, ingredient_response, ingredient_body) => {
+          request.get(mycomments, (comment_error, comment_response, comment_body) => {
 
-          res.render("cocktail.pug", {
-            cocktail: body.name,
-            description: body.desc,
-            ingredients: body2,
-            comments: body3
+            if (comment_response.statusCode == 200) {
+              comment_body = JSON.parse(comment_body);
+            }
+
+            ingredient_body = JSON.parse(ingredient_body);
+
+            res.render("cocktail.pug", {
+              cocktail: body.name,
+              description: body.desc,
+              ingredients: ingredient_body,
+              comments: comment_body
+            });
+
           });
 
         });
-
-      });
+      }
 
     } else {
       res.render("cocktail.pug", {
@@ -266,17 +274,15 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
 //DELETE USER
 app.post("/users/delete", jsonparser, (req, res) => {
-    console.log(JSON.stringify(req.body));
-    var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
-  
-    request.delete(domain, (error, response, body) => {
-      res.redirect("/users");
-    })
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
+
+  request.delete(domain, (error, response, body) => {
+    res.redirect("/users");
   })
+})
 
 //POST COMMENT
 app.post("/createnewcomment", jsonparser, (req, res) => {
-  console.log(req.body);
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cock + "/comments";
   var sendurl = { url: domain, body: req.body, json: true };
 

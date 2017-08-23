@@ -8,7 +8,6 @@ module.exports = (app, jsonparser, client) => {
 
             if (reply.length == 0) {
                 req.body.forEach((element) => {
-                    console.log("Element: " + element.ingr + " - " + element.meng);
 
                     client.hmset("ingredient:" + element.ingr, "name", element.ingr, "desc", element.meng, (error, reply) => {
                         client.rpush(allname, element.ingr, (error, listreply) => {
@@ -41,24 +40,17 @@ module.exports = (app, jsonparser, client) => {
     app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
         client.hgetall("inme:" + req.params.name, (error, reply) => {
 
-            console.log("Reply, Cocktails: " + reply);
-
-            var dummy =
-                {
-                    "Keine": "Da ist irgendwas schief gelaufen"
-                };
+            var dummy = {
+                "Keine": "Da ist irgendwas schief gelaufen"
+            };
 
             res.set({ 'Content-Type': 'application/json' });
             if (!reply) {
-                console.log("Dummy wurde eingefügt!");
                 res.status(404);
-                res.write(JSON.stringify(dummy));
-                console.log(dummy);
+                res.write(JSON.stringify(dummy)); // Keinen Dummy mitsenden
             } else {
-                console.log("Kein Dummy, dummerchen!");
                 res.status(200);
                 res.write(JSON.stringify(reply));
-                console.log(reply);
             }
             res.end();
         });

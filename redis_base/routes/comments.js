@@ -3,8 +3,6 @@ module.exports = (app, jsonparser, client) => {
     app.get("/cocktails/:name/comments", jsonparser, (req, res) => {
         client.hgetall("inme2:" + req.params.name, (error, reply) => {
 
-            console.log("Comments Reply" + JSON.stringify(reply));
-            console.log("COMMENTS ERROR: " + error);
             res.set({ 'Content-Type': 'application/json' });
 
             if (!reply) {
@@ -21,8 +19,6 @@ module.exports = (app, jsonparser, client) => {
     app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
 
         var allcomm = "cocktails:" + req.params.name + ":comments";
-
-        console.log("Element: " + req.body.auth + " - " + req.body.comm);
 
         client.hmset("comment:" + req.body.auth, "auth", req.body.auth, "comm", req.body.comm, (error, reply) => {
             client.hset("inme2:" + req.params.name, req.body.auth, req.body.comm, (error3, reply3) => {
