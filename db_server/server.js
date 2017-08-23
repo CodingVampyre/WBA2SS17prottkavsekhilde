@@ -113,10 +113,10 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 //DELETE COCKTAIL
 app.post("/cocktails/delete", jsonparser, (req, res) => {
   console.log("This is my Body:" + JSON.stringify(req.body.cock));
-  
+
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cock;
   console.log(domain);
-  
+
   request.delete(domain, (error, response, body) => {
     res.redirect("/cocktails");
     console.log(JSON.stringify(error));
