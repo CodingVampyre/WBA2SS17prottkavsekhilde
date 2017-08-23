@@ -103,7 +103,6 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
               ingredients: ingredient_body,
               comments: comment_body
             });
-
           });
 
         });
@@ -401,4 +400,5 @@ function parseZutaten(zlist) {
 
 /*
 * User mit seinen Cocktails verlinken
+* Weiterleitung nach erstellen eines Cocktails
 */
