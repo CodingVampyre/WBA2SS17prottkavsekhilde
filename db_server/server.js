@@ -1,7 +1,7 @@
 'use strict'
-const PORT = process.argv[2];
-const DIENSTNUTZERPORT = 1337;
-const DINU_DEST = process.argv[3] //"http://127.0.0.1";
+const PORT = process.argv[2] || 8080;
+const DIENSTNUTZERPORT = 8081;
+const DINU_DEST = "http://127.0.0.1"
 
 var express = require('express');
 var pug = require('pug');

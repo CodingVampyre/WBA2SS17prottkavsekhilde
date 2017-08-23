@@ -3,7 +3,7 @@ var client = require("redis").createClient();
 var bodyParser = require("body-parser");
 var app = express();
 
-const PORT = process.argv[2];
+const PORT = process.argv[2] || 8081;
 
 app.use(bodyParser.urlencoded({
   extended: true
