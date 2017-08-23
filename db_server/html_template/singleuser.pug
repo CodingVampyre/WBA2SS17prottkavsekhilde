@@ -9,4 +9,8 @@ html(lang="de")
       p#desq email: #{mail}
       p#desq passwort: #{pass}
 
+      form(method="POST" action="/users/delete") 
+        input.form-control(type="hidden" id="singleuser" name='usa' value=name)
+        button User löschen   
+
       a(href="/users") ZURÜÜÜCK!

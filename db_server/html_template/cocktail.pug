@@ -27,5 +27,10 @@ html(lang="de")
         input.form-control(type='text' id='user' placeholder='Autor' name='auth')
         textarea(rows="4" placeholder="Kommentar" name="comm")
         input.form-control(type="hidden" id="cockt" name='cock' value=cocktail)
-        button Kommentieren                
+        button Kommentieren
+
+      form(method="POST" action="/cocktails/delete") 
+        input.form-control(type="hidden" id="cockt" name='cock' value=cocktail)
+        button Cocktail löschen          
+
       a(href="/cocktails") ZURÜÜÜCK!

@@ -1,7 +1,7 @@
 'use strict'
-const PORT = process.argv[2];
-const DIENSTNUTZERPORT = 1337;
-const DINU_DEST = process.argv[3]//"http://127.0.0.1";
+const PORT = process.argv[2] || 8080;
+const DIENSTNUTZERPORT = 8081;
+const DINU_DEST = "http://127.0.0.1"
 
 var express = require('express');
 var pug = require('pug');
@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 // GET LIST OF COCKTAILS
 app.get("/cocktails", jsonparser, (req, res) => {
 
-  var myurl = DINU_DEST+':'+DIENSTNUTZERPORT + "/cocktails";
+  var myurl = DINU_DEST + ':' + DIENSTNUTZERPORT + "/cocktails";
 
   request.get(myurl, (error, response, body) => {
 
@@ -72,34 +72,41 @@ app.get("/cocktails", jsonparser, (req, res) => {
 
 //GET SINGLE/MARRIED COCKTAIL
 app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
-  var cocktailname= req.params.cocktail;
-  var mycocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname;
-  var mycomments= DINU_DEST+":" +DIENSTNUTZERPORT+ "/cocktails/" +cocktailname + "/comments";
-  var myingredients = DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" +cocktailname + "/ingredients";
-  
+  var cocktailname = req.params.cocktail;
+  var mycocktail = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + cocktailname;
+  var mycomments = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + cocktailname + "/comments";
+  var myingredients = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + cocktailname + "/ingredients";
 
   request.get(mycocktail, (error, response, body) => {
 
     if (!error) {
-      body = JSON.parse(body);
 
-      request.get(myingredients, (error2, response2, body2) => {
+      if (response.statusCode == 404) {
+        res.status(404);
+        res.redirect("/cocktails");
+        res.end();
+      } else {
+        body = JSON.parse(body);
 
-        request.get(mycomments, (error3, response3, body3) => {
-          body3 =JSON.parse(body3);
-          body2 = JSON.parse(body2);
-          console.log(JSON.stringify(body3));
+        request.get(myingredients, (ingredient_error, ingredient_response, ingredient_body) => {
+          request.get(mycomments, (comment_error, comment_response, comment_body) => {
 
-           res.render("cocktail.pug", {
-             cocktail: body.name,
-             description: body.desc,
-             ingredients: body2,
-             comments: body3
+            if (comment_response.statusCode == 200) {
+              comment_body = JSON.parse(comment_body);
+            }
+
+            ingredient_body = JSON.parse(ingredient_body);
+
+            res.render("cocktail.pug", {
+              cocktail: body.name,
+              description: body.desc,
+              ingredients: ingredient_body,
+              comments: comment_body
+            });
           });
 
         });
-
-      });
+      }
 
     } else {
       res.render("cocktail.pug", {
@@ -110,7 +117,18 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
   });
 });
 
-// GET CREATE COCKTAIL 
+//DELETE COCKTAIL
+app.post("/cocktails/delete", jsonparser, (req, res) => {
+
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cock;
+
+  request.delete(domain, (error, response, body) => {
+    res.redirect("/cocktails");
+    console.log(JSON.stringify(error));
+  })
+})
+
+// GET CREATE COCKTAIL
 app.get("/new/cocktail", (req, res) => {
   res.render("cocktail_form.pug", {
     title: "New Cocktail"
@@ -123,15 +141,15 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
   mytwitter.post('statuses/update', { status: mymessage }, (err, data, response) => {
 
-    var myform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
+    var myform = { url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails", form: req.body };
 
     request.post(myform, (error, response, body) => {
 
       var stuff = parseZutaten(req.body.ingr);
-      var ingform = { url: DINU_DEST+":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
+      var ingform = { url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", body: stuff, json: true };
 
       request.post(ingform, (error1, response1, body1) => {
-        res.send("Success: " + JSON.stringify(ingform));
+        res.redirect("/cocktails/" + req.body.name);
       });
 
     });
@@ -141,7 +159,7 @@ app.post("/createnewcocktail", jsonparser, (req, res) => {
 
 // GET SINGLE INGREDIENT
 app.get("/ingredient/:name", jsonparser, (req, res) => {
-  var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/ingredients/" + req.params.name;
 
   request.get(domain, (error, response, body) => {
 
@@ -178,7 +196,7 @@ app.get("/users", (err, res) => {
 
 //GET SINGLE USER
 app.get("/users/:name", jsonparser, (req, res) => {
-  var domain = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.params.name;
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.params.name;
 
   request.get(domain, (error, response, body) => {
 
@@ -216,8 +234,8 @@ app.get("/new/user", (req, res) => {
 //POST NEW USER
 app.post("/createnewuser", jsonparser, (req, res) => {
 
-  var getSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/user/" + req.body.name;
-  var postSpecificCocktail = DINU_DEST+":" + DIENSTNUTZERPORT + "/users";
+  var getSpecificCocktail = DINU_DEST + ":" + DIENSTNUTZERPORT + "/user/" + req.body.name;
+  var postSpecificCocktail = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users";
 
   var hash = crypto.createHash('sha256').update(req.body.pass).digest('base64');
 
@@ -231,7 +249,7 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
   request.post(myform, (error, response, body) => {
 
-    var newpost = DINU_DEST+":" + DIENSTNUTZERPORT + "/users/" + req.body.name;
+    var newpost = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.name;
 
     request.get(newpost, (error, response, body) => {
 
@@ -253,14 +271,22 @@ app.post("/createnewuser", jsonparser, (req, res) => {
   });
 });
 
+//DELETE USER
+app.post("/users/delete", jsonparser, (req, res) => {
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
+
+  request.delete(domain, (error, response, body) => {
+    res.redirect("/users");
+  })
+})
+
 //POST COMMENT
-app.post("/createnewcomment", jsonparser, (req, res) =>{ 
-  console.log(req.body);
-  var domain = DINU_DEST+":"+DIENSTNUTZERPORT+"/cocktails/"+req.body.cock+"/comments";
-  var sendurl = {url:domain, body: req.body, json: true};
+app.post("/createnewcomment", jsonparser, (req, res) => {
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cock + "/comments";
+  var sendurl = { url: domain, body: req.body, json: true };
 
   request.post(sendurl, (error, response, body) => {
-    res.send("Error: " + error +" and Body: " + body + "and status code is + "+ response);
+    res.redirect("/cocktails/" + req.body.cock);
   });
 });
 
@@ -278,7 +304,7 @@ app.get("/flushredis", (req, res) => {
 //SOCKET IO
 io.on('connection', (socket) => {
   console.log("Another day began, another user connected.");
-  var users = DINU_DEST+":" + DIENSTNUTZERPORT + "/users"
+  var users = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users"
 
   // Real Time Updates Of Tweets by our account
   setInterval(() => {
