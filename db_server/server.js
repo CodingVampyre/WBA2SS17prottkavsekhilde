@@ -112,10 +112,8 @@ app.get("/cocktails/:cocktail", jsonparser, (req, res) => {
 
 //DELETE COCKTAIL
 app.post("/cocktails/delete", jsonparser, (req, res) => {
-  console.log("This is my Body:" + JSON.stringify(req.body.cock));
 
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cock;
-  console.log(domain);
 
   request.delete(domain, (error, response, body) => {
     res.redirect("/cocktails");
@@ -265,6 +263,16 @@ app.post("/createnewuser", jsonparser, (req, res) => {
     });
   });
 });
+
+//DELETE USER
+app.post("/users/delete", jsonparser, (req, res) => {
+    console.log(JSON.stringify(req.body));
+    var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
+  
+    request.delete(domain, (error, response, body) => {
+      res.redirect("/users");
+    })
+  })
 
 //POST COMMENT
 app.post("/createnewcomment", jsonparser, (req, res) => {

@@ -83,15 +83,15 @@ module.exports = (app, jsonparser, client) => {
 
     client.lrange("list:users", "0", "-1", (error, reply) => {
       for (var j = 0; j < reply.length; j++) {
-        if (reply[j] == req.body.name) {
+       if (reply[j] == req.params.id) {
           candelete = true;
           break;
         }
       }
 
       if (candelete) {
-        client.del("user:" + req.body.name, (error, reply) => {
-          client.lrem("list:users", "0", req.body.name, (error, reply) => {
+        client.del("user:" + req.params.id, (error, reply) => {
+          client.lrem("list:users", "0", req.params.id, (error, reply) => {
             res.set({ 'Content-Type': 'text/plain' });
             res.status(200);
             res.write('SUCCESS: DELETE USER');
