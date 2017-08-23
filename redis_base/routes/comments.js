@@ -26,20 +26,17 @@ module.exports = (app, jsonparser, client) => {
 
         client.hmset("comment:" + req.body.auth, "auth", req.body.auth, "comm", req.body.comm, (error, reply) => {
             client.hset("inme2:" + req.params.name, req.body.auth, req.body.comm, (error3, reply3) => {
-                res.set({ 'Content-Type': 'application/json' });
-                res.status(201);
-                res.write("Oki Doki");
-                res.end();
+
             });
         });
-        //next();
+        next();
     });
 
     // CALLBACK: POST COCKTAIL COMMENTS
-    /*app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
+    app.post("/cocktails/:name/comments", jsonparser, (req, res, next) => {
         res.set({ 'Content-Type': 'application/json' });
         res.status(201);
         res.write("Oki Doki");
         res.end();
-    });*/
+    });
 }
