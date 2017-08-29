@@ -1,5 +1,5 @@
 module.exports = (app, jsonparser, client) => {
-    //POST COKCTAIL INGREDIENTS
+    //POST COCKTAIL INGREDIENTS
     app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
 
         var allname = "cocktails:" + req.params.name + ":ingredients";
@@ -41,7 +41,7 @@ module.exports = (app, jsonparser, client) => {
     app.get("/cocktails/:name/ingredients", jsonparser, (req, res) => {
         client.hgetall("inme:" + req.params.name, (error, reply) => {
 
-            console.log("Reply, Cocktails: " + reply);
+            //console.log("Reply, Cocktails: " + reply);
 
             var dummy =
                 {
@@ -95,4 +95,37 @@ module.exports = (app, jsonparser, client) => {
         res.write(JSON.stringify(reply));
         res.end();
     });
+
+    //DELETE COCKTAIL INGREDIENTS
+    app.delete("/cocktails/:cocktail_name/ingredients/:ingredient_name", jsonparser, (req, res, next) => {
+        var candelete = false;
+        var allname = "cocktails:" + req.params.cocktail_name + ":ingredients";
+        client.lrange(allname, "0", "-1", (error, reply) => {
+            for (var j = 0; j < reply.length; j++) {
+                if (reply[j] == req.params.ingredient_name) {
+                    candelete = true;
+                    break;
+                }
+            }
+            if (candelete) {
+                client.hdel("inme:" + req.params.cocktail_name, req.params.ingredient_name, (error, reply) => {
+                    if (!error) {
+                        res.set({ 'Content-Type': 'text/plain' });
+                        res.status(200);
+                        res.end();
+
+                    } else {
+                        res.status(500);
+                        res.json(error);
+                        res.end();
+                    }
+                });
+            } else {
+                res.set({ 'Content-Type': 'text/plain' });
+                res.status(404);
+                res.end();
+            }
+        });
+    });
+
 }

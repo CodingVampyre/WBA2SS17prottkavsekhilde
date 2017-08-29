@@ -121,6 +121,17 @@ app.post("/cocktails/delete", jsonparser, (req, res) => {
   })
 })
 
+//DELETE COCKTAIL INGREDIENTS
+app.post("/cocktails/ingredients/delete", jsonparser, (req, res) => {
+
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cocktail_name + "/ingredients/" + req.body.ingr_name;
+
+  request.delete(domain, (error, response, body) => {
+    res.redirect("/cocktails/" + req.body.cocktail_name);
+    console.log(JSON.stringify(error));
+  })
+})
+
 // GET CREATE COCKTAIL
 app.get("/new/cocktail", (req, res) => {
   res.render("cocktail_form.pug", {
@@ -266,13 +277,13 @@ app.post("/createnewuser", jsonparser, (req, res) => {
 
 //DELETE USER
 app.post("/users/delete", jsonparser, (req, res) => {
-    console.log(JSON.stringify(req.body));
-    var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
-  
-    request.delete(domain, (error, response, body) => {
-      res.redirect("/users");
-    })
+  console.log(JSON.stringify(req.body));
+  var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/users/" + req.body.usa;
+
+  request.delete(domain, (error, response, body) => {
+    res.redirect("/users");
   })
+})
 
 //POST COMMENT
 app.post("/createnewcomment", jsonparser, (req, res) => {
