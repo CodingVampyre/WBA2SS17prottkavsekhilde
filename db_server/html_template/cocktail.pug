@@ -20,6 +20,13 @@ html(lang="de")
                 input.form-control(type="hidden" id="cockt" name="cocktail_name" value=cocktail)
                 input.form-control(type="hidden" id="ingr" name="ingr_name" value=index)
                 button Zutat löschen
+        
+      form(method="POST" action="/cocktails/ingredients/put")
+        input.form-control(type='text' id='ingr' placeholder='Zutat' name='ingr')
+        input.form-control(type='text' id='meng' placeholder='Menge' name='meng')
+        input.form-control(type="hidden" id="cockt" name='name' value=cocktail)
+        button Zutat hinzufügen
+
              
 
       h3 Zubereitung:

@@ -27,12 +27,35 @@ module.exports = (app, jsonparser, client) => {
         next();
     });
 
+
     //CALLBACK POST COCKTAIL INGREDIENTS
     app.post("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
         res.set({ 'Content-Type': 'application/json' });
         res.status(201);
         res.write("Oki Doki");
         res.end();
+    });
+
+    //PUT COCKTAIL INGREDIENTS
+    app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
+        var allname = "cocktails:" + req.params.cocktail_name + ":ingredients";
+        console.log("Request: " + JSON.stringify(req.body));
+
+        client.hset("inme:" + req.params.name, req.body.ingr, req.body.meng, (error, reply) => {
+            client.rpush(allname, req.params.ingr, (error, listreply) => {
+                if (!error) {
+                    res.status(200);
+                    res.end();
+                } else {
+
+                    console.log(JSON.stringify(error + " :)"));
+
+                    res.status(500);
+                    res.end();
+                }
+
+            });
+        });
     });
 
 
@@ -55,7 +78,7 @@ module.exports = (app, jsonparser, client) => {
             res.end();
         });
     });
-
+    /*
     //PUT COCKTAILS INGREDIENTS
     app.put("/cocktails/:name/ingredients", jsonparser, (req, res, next) => {
         var canset = true;
@@ -87,36 +110,48 @@ module.exports = (app, jsonparser, client) => {
         res.write(JSON.stringify(reply));
         res.end();
     });
+    */
 
     //DELETE COCKTAIL INGREDIENTS
     app.delete("/cocktails/:cocktail_name/ingredients/:ingredient_name", jsonparser, (req, res, next) => {
         var candelete = false;
         var allname = "cocktails:" + req.params.cocktail_name + ":ingredients";
-        client.lrange(allname, "0", "-1", (error, reply) => {
-            for (var j = 0; j < reply.length; j++) {
-                if (reply[j] == req.params.ingredient_name) {
-                    candelete = true;
-                    break;
-                }
-            }
-            if (candelete) {
-                client.hdel("inme:" + req.params.cocktail_name, req.params.ingredient_name, (error, reply) => {
-                    if (!error) {
-                        res.set({ 'Content-Type': 'text/plain' });
-                        res.status(200);
-                        res.end();
+        client.hget("inme:" + req.params.cocktail_name, req.params.ingredient_name, (error, reply) => {
 
-                    } else {
-                        res.status(500);
-                        res.json(error);
-                        res.end();
-                    }
-                });
+            if (!error) {
+
+                if (reply != null) {
+                    console.log("Exists!");
+                    client.hdel("inme:" + req.params.cocktail_name, req.params.ingredient_name, (error, reply) => {
+                        if (!error) {
+                            res.set({ 'Content-Type': 'text/plain' });
+                            res.status(200);
+                            res.end();
+
+                        } else {
+                            res.status(500);
+                            res.json(error);
+                            res.end();
+                        }
+                    });
+                } else {
+                    res.status(404);
+                    res.end();
+                }
+
             } else {
-                res.set({ 'Content-Type': 'text/plain' });
-                res.status(404);
+                res.status(500);
                 res.end();
             }
+            console.log("REPLY: " + JSON.stringify(reply));
+            /*   for (var j = 0; j < reply.length; j++) {
+                   if (reply[j] == req.params.ingredient_name) {
+                       candelete = true;
+                       break;
+                   }
+               }*/
+
+
         });
     });
 

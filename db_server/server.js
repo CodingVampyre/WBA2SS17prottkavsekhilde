@@ -128,14 +128,42 @@ app.post("/cocktails/delete", jsonparser, (req, res) => {
   });
 });
 
+//PUT COCKTAIL ZUTATEN
+app.post("/cocktails/ingredients/put", jsonparser, (req, res) => {
+  console.log("Body:   " + JSON.stringify(req.body))
+  var domain = { url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.name + "/ingredients", form: req.body };
+  console.log("DOMAIN: " + JSON.stringify(domain));
+
+  console.log("Body: ");
+  logjson(req.body);
+  request.put(domain, (error, response, body) => {
+
+    if (!error) {
+      res.redirect("/cocktails/" + req.body.name);
+    } else {
+      res.send(JSON.stringify(error));
+    }
+
+  });
+});
+
+
 //PUT COCKTAIL ZUBEREITUNG
 app.post("/cocktails/put", jsonparser, (req, res) => {
-  console.log("body: " + JSON.stringify(req.body))
-  console.log("name: " + req.body.name)
-  console.log("desc:" + req.body.desc)
-  var domain = {url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails", form:req.body}
+  var domain = { url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails", form: req.body }
   request.put(domain, (error, response, body) => {
-    res.redirect("/cocktails/" + req.body.name);
+
+    if (!error) {
+      if (response.statusCode == 200) {
+        res.redirect("/cocktails/" + req.body.name);
+      } else {
+        res.redirect("/cocktails");
+      }
+    } else {
+      console.log("There was an error while updating a cocktail!");
+      res.redirect("/");
+    }
+
   });
 });
 
@@ -145,7 +173,17 @@ app.post("/cocktails/ingredients/delete", jsonparser, (req, res) => {
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails/" + req.body.cocktail_name + "/ingredients/" + req.body.ingr_name;
 
   request.delete(domain, (error, response, body) => {
-    res.redirect("/cocktails/" + req.body.cocktail_name);
+    
+    if (!error) {
+      if (response.statusCode == 200) {
+        res.redirect("/cocktails/" + req.body.cocktail_name);        
+      } else {
+        res.redirect("/cocktails");
+      }
+    } else {
+      res.redirect("/");
+    }
+
   })
 })
 
@@ -209,6 +247,7 @@ app.get("/ingredient/:name", jsonparser, (req, res) => {
 
 //GET LIST OF USERS
 app.get("/users", (err, res) => {
+  res.status(200);
   res.render("users.pug", {
 
   });
@@ -307,7 +346,20 @@ app.post("/createnewcomment", jsonparser, (req, res) => {
   var sendurl = { url: domain, body: req.body, json: true };
 
   request.post(sendurl, (error, response, body) => {
-    res.redirect("/cocktails/" + req.body.cock);
+
+    if (!error) {
+      if (response.statusCode == 200) {
+        res.redirect("/cocktails/" + req.body.cock);        
+      } else {
+        console.log("Comment was not posted");
+        res.status(404);
+        res.redirect("/cocktails/" + req.body.cock);
+      }
+    } else {
+      console.log("There was an error");
+      res.status(500);
+      res.redirect("/cocktails/" + req.body.cock);
+    }
   });
 });
 
@@ -317,7 +369,7 @@ app.get("/flushredis", (req, res) => {
   var domain = DINU_DEST + ":" + DIENSTNUTZERPORT + "/flushall";
 
   request.get(domain, (error, reply, body) => {
-    res.send("Error: " + error + "\n" + "Reply: " + reply + "Body: " + body);
+    res.redirect("/");
   });
 })
 
@@ -418,6 +470,9 @@ function parseZutaten(zlist) {
   return mylist;
 }
 
+function logjson(msg) {
+  console.log(JSON.stringify(msg));
+}
 
 /*
 * User mit seinen Cocktails verlinken
