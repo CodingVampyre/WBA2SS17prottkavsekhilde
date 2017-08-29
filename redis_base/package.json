@@ -1,0 +1,16 @@
+{
+  "name": "noderedis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "clockwork.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.2",
+    "redis": "^2.7.1"
+  }
+}

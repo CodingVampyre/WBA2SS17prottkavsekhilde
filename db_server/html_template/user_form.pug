@@ -1,0 +1,12 @@
+doctype html
+html
+  include basic/head.pug
+  body
+    #content
+      include basic/humeb.pug
+      h1 New User
+      form(method='POST' action='/createnewuser')
+        input.form-control(type='text' id='name' placeholder='Name' name='name')
+        input.form-control(type='text' id='mail' placeholder='E-Mail' name='mail')
+        input.form-control(type='text' id='pass' placeholder='Passwort' name='pass')
+        button Senden

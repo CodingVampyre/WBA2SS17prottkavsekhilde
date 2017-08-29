@@ -1,0 +1,16 @@
+doctype html
+html(lang="de")
+  include basic/head.pug
+  body
+    #content
+      include basic/humeb.pug
+      h1 #{name}
+      
+      p#desq email: #{mail}
+      p#desq passwort: #{pass}
+
+      form(method="POST" action="/users/delete") 
+        input.form-control(type="hidden" id="singleuser" name='usa' value=name)
+        button User löschen   
+
+      a(href="/users") ZURÜÜÜCK!

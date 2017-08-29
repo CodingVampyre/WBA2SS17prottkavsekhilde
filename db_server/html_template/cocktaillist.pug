@@ -1,0 +1,14 @@
+doctype html
+html
+  include basic/head.pug
+  body
+    #content
+        include basic/humeb.pug
+        h1 Alle Cocktails
+        
+        each val in listi
+            p
+                a(href="/cocktails/"+val)= val
+
+        form(action="/")
+            button(type="submit" value="Alright!") Rightyright!
