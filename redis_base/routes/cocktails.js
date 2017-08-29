@@ -17,18 +17,17 @@ module.exports = (app, jsonparser, client) => {
             if (reply != null) {
                 res.status(200);
                 res.write(JSON.stringify(reply));
+                res.end();
             } else {
                 res.status(404);
-                res.write(JSON.stringify("NOT FOUND"));
+                res.end();
             }
-            res.end();
         });
     });
 
     //POST COCKTAIL
     app.post("/cocktails", jsonparser, (req, res) => {
         var canset = true;
-        //console.log(req);
         client.lrange("list:cocktails", "0", "-1", (error, reply) => {
 
             for (var i = 0; i < reply.length; i++) {
@@ -47,7 +46,6 @@ module.exports = (app, jsonparser, client) => {
             } else {
                 res.set({ 'Content-Type': 'text/plain' });
                 res.status(400);
-                res.write('OBJECT ALREADY EXISTS');
                 res.end();
             }
         });
@@ -74,7 +72,6 @@ module.exports = (app, jsonparser, client) => {
             } else {
                 res.set({ 'Content-Type': 'text/plain' });
                 res.status(404);
-                res.write('ERROR: NO OBJECT IN DATABASE');
                 res.end();
             }
         });
@@ -102,7 +99,6 @@ module.exports = (app, jsonparser, client) => {
             } else {
                 res.set({ 'Content-Type': 'text/plain' });
                 res.status(404);
-                res.write('ERROR: NO OBJECT IN DATABASE');
                 res.end();
             }
         });

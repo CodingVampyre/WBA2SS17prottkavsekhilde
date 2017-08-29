@@ -7,7 +7,7 @@ html
       h1 New Cocktail
       form(method='POST' action='/createnewcocktail')
         input.form-control(type='text' id='name' placeholder='Name' name='name')
-        input.form-control(type='text' id='mail' placeholder='E-Mail' name='mail')
+        input.form-control(type='mail' id='mail' placeholder='E-Mail' name='mail')
         textarea(rows="4" placeholder="Beschreibung" name="desc")
         textarea(rows="8" placeholder="'Zutat+Menge.Zutat+Menge.'..." name='ingr')
         button Senden
