@@ -125,8 +125,19 @@ app.post("/cocktails/delete", jsonparser, (req, res) => {
   request.delete(domain, (error, response, body) => {
     res.redirect("/cocktails");
     console.log(JSON.stringify(error));
-  })
-})
+  });
+});
+
+//PUT COCKTAIL ZUBEREITUNG
+app.post("/cocktails/put", jsonparser, (req, res) => {
+  console.log("body: " + JSON.stringify(req.body))
+  console.log("name: " + req.body.name)
+  console.log("desc:" + req.body.desc)
+  var domain = {url: DINU_DEST + ":" + DIENSTNUTZERPORT + "/cocktails", form:req.body}
+  request.put(domain, (error, response, body) => {
+    res.redirect("/cocktails/" + req.body.name);
+  });
+});
 
 //DELETE COCKTAIL INGREDIENTS
 app.post("/cocktails/ingredients/delete", jsonparser, (req, res) => {
@@ -135,7 +146,6 @@ app.post("/cocktails/ingredients/delete", jsonparser, (req, res) => {
 
   request.delete(domain, (error, response, body) => {
     res.redirect("/cocktails/" + req.body.cocktail_name);
-    console.log(JSON.stringify(error));
   })
 })
 

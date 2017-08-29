@@ -25,6 +25,12 @@ html(lang="de")
       h3 Zubereitung:
       p#desq #{description}
 
+      h2 Zubereitung aktuallisieren
+      form(method="POST" action="/cocktails/put")
+        textarea(rows="5" placeholder="..." name="desc")
+        input.form-control(type="hidden" id="cockt" name='name' value=cocktail)
+        button Aktuallisieren
+
       h1 Kommentare
       each val, index in comments
         h2= index
